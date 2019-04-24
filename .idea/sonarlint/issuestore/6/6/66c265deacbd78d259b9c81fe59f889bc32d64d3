@@ -1,10 +1,0 @@
-
-^squid:UselessImportCheck
-".Remove this unused import 'java.util.HashMap'.(™˜”€ùÿÿÿÿ8ûíÚâ -
-Ysquid:UselessImportCheck".Remove this unused import 'org.testng.Assert'.(Ø£ÿ§8ûíÚâ -
-asquid:UselessImportCheck"6Remove this unused import 'com.google.gson.JsonArray'.(ÎöêŠ8ûíÚâ -
-ysquid:UselessImportCheck"NRemove this unused import 'com.vibrent.health.interactions.services.Response'.(Ú“ïî8ûíÚâ -
-Zsquid:UselessImportCheck
-"*Remove this unused import 'java.util.Map'.(¼è½Òþÿÿÿÿ8ûíÚâ -
-}squid:UselessImportCheck"MRemove this unused import 'com.vibrent.health.exceptions.VibrentIOException'.(à¸÷úÿÿÿÿ8ûíÚâ -
-Dsquid:S1068"'Remove this unused "log" private field.(ã­üK8ûíÚâ -
