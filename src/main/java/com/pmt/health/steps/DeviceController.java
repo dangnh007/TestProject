@@ -3,7 +3,6 @@ package com.pmt.health.steps;
 import com.pmt.health.exceptions.AppNotFoundException;
 import com.pmt.health.exceptions.InvalidDeviceException;
 import com.pmt.health.interactions.application.App;
-import com.pmt.health.interactions.application.AppFactory;
 import com.pmt.health.utilities.Device;
 import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
@@ -194,7 +193,7 @@ public abstract class DeviceController {
      */
     protected void setupLogging(Scenario scenario) throws IOException {
         setReporter(new Reporter(CUSTOM_REPORT_LOCATION, scenario, getDevice(), this.configuration));
-        setApp(AppFactory.getApp(getDriver(), getDevice(), getReporter()));
+        setApp(new App(getDriver(), getDevice(), getReporter()));
         getReporter().setApp(getApp());
     }
 
