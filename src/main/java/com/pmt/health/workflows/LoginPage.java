@@ -37,7 +37,7 @@ public class LoginPage {
         this.loginPage = app.newElement(LocatorType.CLASSNAME, "signin-signup");
         this.emailInput = app.newElement(LocatorType.NAME, "email");
         this.passwordInput = app.newElement(LocatorType.NAME, "password");
-        this.loginButton = app.newElement(LocatorType.CLASSNAME, "submit-button-login");
+        this.loginButton = app.newElement(LocatorType.CLASSNAME, "submit-button");
         this.mfaInput = app.newElement(LocatorType.NAME, "enter6DigitCode");
         this.emailMessage =
                 app.newElement(LocatorType.ID, "usernameEmail").findChild(app.newElement(LocatorType.TAGNAME, "div"));
