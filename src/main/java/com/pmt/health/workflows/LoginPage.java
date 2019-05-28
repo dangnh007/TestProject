@@ -19,7 +19,6 @@ public class LoginPage {
 
     private final WebbElement loginPage;
     private final WebbElement emailMessage;
-    private final WebbElement loggedInHeading;
     private final App app;
     private final WebbElement emailInput;
     private final WebbElement passwordInput;
@@ -41,7 +40,6 @@ public class LoginPage {
         this.mfaInput = app.newElement(LocatorType.NAME, "enter6DigitCode");
         this.emailMessage =
                 app.newElement(LocatorType.ID, "usernameEmail").findChild(app.newElement(LocatorType.TAGNAME, "div"));
-        this.loggedInHeading = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
     }
 
     public void enterEmail(String username) {
@@ -105,12 +103,7 @@ public class LoginPage {
         // TODO
     }
 
-    /**
-     * Waits for the header indicating the user has logged in to be displayed.
-     */
-    public void waitForLoginLoad() {
-        loggedInHeading.waitFor().displayed();
-    }
+
 
     /**
      * Activates the login control for the user parameter
@@ -138,10 +131,5 @@ public class LoginPage {
         return mfaInput;
     }
 
-    /**
-     * Asserts that the current user is logged out by making sure the login page is displayed.
-     */
-    public void assertLoggedIn() {
-        loggedInHeading.assertState().displayed();
-    }
+
 }

@@ -118,6 +118,7 @@ public class Jira {
         String issueId = getIssueId(issue);
         JsonObject json = new JsonObject();
         json.add(FIELDS, fields);
+        System.out.println("HEYYYYYYYYYYYY"+fields.toString());
         RequestData requestData = new RequestData();
         requestData.setJSON(json);
         Response response = jira.simplePut(ISSUE + issueId, requestData);

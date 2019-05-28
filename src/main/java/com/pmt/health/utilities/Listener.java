@@ -151,7 +151,7 @@ public class Listener extends TestListenerAdapter {
                 log.error("Create Cycle", e);
             }
         }
-    }
+   }
 
     @Override
     public void onFinish(ITestContext context) {

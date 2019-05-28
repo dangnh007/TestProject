@@ -165,7 +165,16 @@
             <artifactId>websocket-client</artifactId>
             <version>9.4.11.v20180605</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>com.github.javafaker</groupId>
+            <artifactId>javafaker</artifactId>
+            <version>0.16</version>
+        </dependency>
+
     </dependencies>
+
+
 
     <!-- vibrent nexus repo -->
     <repositories>
@@ -229,6 +238,21 @@
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
+                        <configuration>
+                            <argLine>${failsafeArgLine}</argLine>
+                            <skipTests>${skip.integration.tests}</skipTests>
+                            <testFailureIgnore>false</testFailureIgnore>
+                            <testFailureIgnore>true</testFailureIgnore>
+                            <systemPropertyVariables>
+                                <jira.username>${jira.username}</jira.username>
+                                <jira.password>${jira.password}</jira.password>
+                                <s3access>${s3access}</s3access>
+                                <s3secret>${s3secret}</s3secret>
+                                <s3bucket>${s3bucket}</s3bucket>
+                                <email.username>${email.username}</email.username>
+                                <email.password>${email.password}</email.password>
+                            </systemPropertyVariables>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

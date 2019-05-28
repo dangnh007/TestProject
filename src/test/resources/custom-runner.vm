@@ -16,5 +16,6 @@ import cucumber.api.testng.AbstractTestNGCucumberTests;
         tags = #stringArray($tags),
 #end
         glue = #stringArray($glue))
+@Listeners({ com.pmt.health.utilities.Listener.class })
 public class $className extends AbstractTestNGCucumberTests {
 }

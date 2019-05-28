@@ -1,6 +1,8 @@
 package com.pmt.health.objects.user;
 
 import com.pmt.health.exceptions.VibrentJSONException;
+import com.pmt.health.steps.Configuration;
+import com.pmt.health.utilities.Property;
 
 import java.io.IOException;
 import java.util.*;
@@ -34,9 +36,9 @@ public class User {
         firstName = "Automation";
         middleInitial = "Q";
         lastName = "user";
-        email = "matthew.grasberger+pmt@coveros.com";
+        email = Property.getProgramProperty(Configuration.getEnvironment() + ".admin.user");
         setLogin(email);
-        password = "Password123!"; // NOSONAR
+        password = Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"); // NOSONAR
         verify = password;
         dob = getDefaultDOB();
         roles = new ArrayList<>(Collections.singletonList(Role.USER));
