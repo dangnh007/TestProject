@@ -9,7 +9,7 @@ Feature: Login and Logout
     When I login
     Then I am logged in
 
-    
+
   @mc-4309 @smoke
   Scenario Outline: Create a user
     When I login
