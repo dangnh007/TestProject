@@ -120,6 +120,7 @@ public class LoginPage {
         enterMFA(HTTP.obtainOath2Key());
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
+
         }
     }
 

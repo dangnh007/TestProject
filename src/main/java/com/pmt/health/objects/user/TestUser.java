@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-public class User {
+public class TestUser {
 
     public static final String API_DONTKNOW = "PMI_DontKnow";
     public static final String DONTKNOW = "don't know";
@@ -26,17 +26,19 @@ public class User {
     protected String lastName;
     protected String phoneNumber;
     protected Date dob;
+
+
     protected List<Role> roles;
 
     private String login = null;
     private SignUpType signUpType = SignUpType.EMAIL;
     private String xauthToken;
 
-    public User() throws IOException, VibrentJSONException {
+    public TestUser() throws IOException, VibrentJSONException {
         firstName = "Automation";
         middleInitial = "Q";
-        lastName = "user";
-        email = Property.getProgramProperty(Configuration.getEnvironment()+ ".admin.user");
+        lastName = "User";
+        email = UserUtility.makeRandomUserEmail();
         setLogin(email);
         password = Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"); // NOSONAR
         verify = password;
@@ -44,23 +46,6 @@ public class User {
         roles = new ArrayList<>(Collections.singletonList(Role.USER));
     }
 
-    public User copy() throws IOException, VibrentJSONException {
-        User newUser = new User();
-
-        newUser.setLogin(login);
-        newUser.setSignUpType(signUpType);
-        newUser.setSESSIONToken(xauthToken);
-        newUser.setUserId(userId);
-        newUser.setEmail(email);
-        newUser.setPassword(password);
-        newUser.setFirstName(firstName);
-        newUser.setMiddleInitial(middleInitial);
-        newUser.setLastName(lastName);
-        newUser.setDOB(dob);
-        newUser.roles = roles;
-
-        return newUser;
-    }
 
     public int getUserId() {
         return userId;

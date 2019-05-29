@@ -11,6 +11,7 @@ import com.pmt.health.utilities.Reporter;
 import org.testng.log4testng.Logger;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class UserUtility {
 
@@ -21,7 +22,11 @@ public class UserUtility {
     public static final String EMAIL = "email";
     public static final String ADMIN_USER = ".admin.user";
     public static final String ADMIN_PASS = ".admin.pass";
+
+    private static final String VQA3 = "VibQA3+";
+
     protected final Reporter reporter;
+    private static Random r = new Random();
     private final User user;
     protected HTTP userHttp;
     private HTTP adminHttp;
@@ -34,6 +39,7 @@ public class UserUtility {
         this.userHttp.setSESSION(this.user.getSESSIONToken());
         this.adminHttp = setupAdminHttp(reporter);
     }
+
 
     /**
      * Creates an HTTP connection to the admin console, based on the admin user listed in the properties file.
@@ -62,5 +68,51 @@ public class UserUtility {
         requestData.setJSON(authObject);
         Response adminAuthCode = adminHTTP.simplePost("/api/login/authenticatorCode", requestData);
         return adminHTTP;
+    }
+
+    /**
+     * Generates a semi-unique string to place on the end of a test user email address.
+     * This is to get around an issue with GMail not forwarding complex email addresses.
+     * Also uses the randomly generated String in filling up support and security qustions
+     *
+     * @return A String containing a random guid depending on size provided.
+     */
+    public static String generateUUID(int size) {
+        r.setSeed(r.nextInt() * System.currentTimeMillis());
+        int guidLength = size;
+        char[] myGuid = new char[guidLength];
+        char[] letterSet = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+        for (int i = 0; i < guidLength; i++) {
+            char c = letterSet[r.nextInt(letterSet.length)];
+            myGuid[i] = c;
+        }
+        return new String(myGuid);
+    }
+
+    /**
+     * Generates a semi-unique string to place on the end of a test user email address.
+     * Also uses the randomly generated String in filling up support and security qustions
+     * @return A String containing random guid with the size of 16 characters
+     */
+    public static String generateUUID() {
+        return generateUUID(16);
+    }
+
+    /**
+     * Creates a random user prepended with VibrentQA3+ every time and generates DOB with age of 20 years.
+     */
+    public static String makeRandomUserEmail() {
+        return makeRandomUserEmail(VQA3);
+    }
+
+    public static String makeRandomUserEmail(String preamble) {
+        String uuid = generateUUID();
+        String env = Property.getProgramProperty("email.env");
+        String emailDomain = Property.getProgramProperty("email.domain");
+        if (emailDomain != null) {
+            return preamble + env + "+" + uuid + "@" + emailDomain + ".com";
+        } else {
+            return preamble + uuid + "@example.com";
+        }
     }
 }

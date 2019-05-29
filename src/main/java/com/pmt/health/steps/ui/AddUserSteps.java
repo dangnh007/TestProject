@@ -23,21 +23,15 @@ public class AddUserSteps {
     @Description("Creating a user with a specific parameters")
     @Then("^I set auth level Awardee$")
     public void setAuthLvl() {
+        addUserPage.defaultAwardee();
+        addUserPage.saveUser();
         // Write code here that turns the phrase above into concrete actions
 
     }
 
     @Then("^I set group as Test Awardee$")
-    public void setGroup(){
+    public void setGroup() {
         // Write code here that turns the phrase above into concrete actions
 
     }
-
-    @Then("^I see created user$")
-    public void assertCreatedUser() {
-        // Write code here that turns the phrase above into concrete actions
-
-    }
-
-
 }

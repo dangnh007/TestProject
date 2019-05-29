@@ -16,7 +16,9 @@ public class AddUserPage {
     private final WebbElement lastNameInput;
     private final WebbElement emailInput;
     private final WebbElement rolesInput;
-
+    private final WebbElement saveButton;
+    private final WebbElement defaultChecbox;
+    private final WebbElement secondChecbox;
 
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
@@ -28,6 +30,24 @@ public class AddUserPage {
         this.lastNameInput = app.newElement(LocatorType.NAME, "lastName");
         this.emailInput = app.newElement(LocatorType.NAME, "email");
         this.rolesInput = app.newElement(LocatorType.XPATH, "//input[contains(@role, 'combobox')]");
+        this.saveButton = app.newElement(LocatorType.ID, "save");
+        this.defaultChecbox = app.newElement(LocatorType.XPATH, "//input[@value='24']");
+        this.secondChecbox = app.newElement(LocatorType.XPATH, "//input[@value='27']");
+
+    }
+
+    public void defaultAwardee() {
+        if (defaultChecbox.is().present()) {
+            defaultChecbox.click();
+        } else {
+            secondChecbox.click();
+        }
+    }
+
+    public void saveUser() {
+        if (saveButton.is().present()) {
+            saveButton.click();
+        }
     }
 
     public void enterFirstName(String firstName) {

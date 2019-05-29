@@ -1,44 +1,59 @@
 package com.pmt.health.steps.ui;
 
 import com.github.javafaker.Faker;
+import com.pmt.health.exceptions.VibrentJSONException;
+import com.pmt.health.interactions.element.selenified.WebbElement;
+import com.pmt.health.objects.user.TestUser;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
+import com.pmt.health.steps.api.AuthSteps;
+import com.pmt.health.utilities.LocatorType;
 import com.pmt.health.workflows.AddUserPage;
 import com.pmt.health.workflows.UserAdminPage;
 import cucumber.api.java.en.Then;
 import org.springframework.context.annotation.Description;
 
+import java.io.IOException;
+
 public class UserAdminSteps {
 
     private final User user;
+    private final TestUser testUser;
     private final DeviceController deviceController;
     private final UserAdminPage userAdminPage;
     private final AddUserPage addUserPage;
 
-    /**
-     * Faker class called to use testing library
-     */
-    Faker faker = new Faker();
-    private final String firstName = faker.name().firstName();
-    private final String lastName = faker.name().lastName();
-    private final String email = (firstName+"."+lastName).toLowerCase() + "@gmail.com";
 
-    public UserAdminSteps(DeviceController deviceController, User user) {
+
+
+
+
+    public UserAdminSteps(DeviceController deviceController, User user, TestUser testUser) throws IOException, VibrentJSONException {
         this.user = user;
+        this.testUser = testUser;
         this.deviceController = deviceController;
-        userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
+        userAdminPage = new UserAdminPage(this.deviceController.getApp(), user, testUser);
         addUserPage = new AddUserPage(this.deviceController.getApp(), user);
+
     }
 
     @Description("Creating a user with a specific parameters")
     @Then("^I create user with \"([^\"]*)\"$")
-    public void createUser(String role) {
+    public void createUser(String role) throws IOException, VibrentJSONException {
         this.userAdminPage.addUser();
-        this.addUserPage.enterFirstName(firstName);
-        this.addUserPage.enterLastName(lastName);
-        this.addUserPage.enterEmail(email);
+        this.addUserPage.enterFirstName(testUser.getFirstName());
+        this.addUserPage.enterLastName(testUser.getLastName());
+        this.addUserPage.enterEmail(testUser.getEmail());
         this.addUserPage.selectRole(role);
 
+
+    }
+
+    @Then("^I see created user$")
+    public void assertCreatedUser() {
+        this.userAdminPage.assertCreatedUser();
+
+        // Write code here that turns the phrase above into concrete actions
 
     }
 
