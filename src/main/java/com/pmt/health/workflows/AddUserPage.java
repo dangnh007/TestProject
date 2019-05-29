@@ -10,15 +10,14 @@ import org.testng.log4testng.Logger;
 
 public class AddUserPage {
 
-
     private final App app;
     private final WebbElement firstNameInput;
     private final WebbElement lastNameInput;
     private final WebbElement emailInput;
     private final WebbElement rolesInput;
     private final WebbElement saveButton;
-    private final WebbElement defaultChecbox;
-    private final WebbElement secondChecbox;
+    private final WebbElement defaultCheckbox;
+    private final WebbElement secondCheckbox;
 
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
@@ -31,16 +30,15 @@ public class AddUserPage {
         this.emailInput = app.newElement(LocatorType.NAME, "email");
         this.rolesInput = app.newElement(LocatorType.XPATH, "//input[contains(@role, 'combobox')]");
         this.saveButton = app.newElement(LocatorType.ID, "save");
-        this.defaultChecbox = app.newElement(LocatorType.XPATH, "//input[@value='24']");
-        this.secondChecbox = app.newElement(LocatorType.XPATH, "//input[@value='27']");
-
+        this.defaultCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='24']");
+        this.secondCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='27']");
     }
 
     public void defaultAwardee() {
-        if (defaultChecbox.is().present()) {
-            defaultChecbox.click();
+        if (defaultCheckbox.is().present()) {
+            defaultCheckbox.click();
         } else {
-            secondChecbox.click();
+            secondCheckbox.click();
         }
     }
 
@@ -71,7 +69,6 @@ public class AddUserPage {
         if ("".equals(email)) {
             emailInput.type("a");
             emailInput.type(Keys.BACK_SPACE);
-
         }
     }
 

@@ -92,6 +92,7 @@ public class UserUtility {
     /**
      * Generates a semi-unique string to place on the end of a test user email address.
      * Also uses the randomly generated String in filling up support and security qustions
+     *
      * @return A String containing random guid with the size of 16 characters
      */
     public static String generateUUID() {

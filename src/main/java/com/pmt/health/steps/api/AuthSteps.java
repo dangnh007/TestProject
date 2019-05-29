@@ -18,9 +18,9 @@ public class AuthSteps {
 
     // used to share context of responses and requests between step declarations and workflows
 
-    private String uniqueEmail = "VibrentQA3+" + UserUtility.generateUUID() + "@gmail.com";
-    private String name = "Alex";
-    private String lastName = "Duchenko";
+    private String uniqueEmail;
+    private String name;
+    private String lastName;
 
     private Logger log = Logger.getLogger(AuthSteps.class);
 

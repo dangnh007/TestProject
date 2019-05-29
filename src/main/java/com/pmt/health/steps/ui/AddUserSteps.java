@@ -12,12 +12,10 @@ public class AddUserSteps {
     private final DeviceController deviceController;
     private final AddUserPage addUserPage;
 
-
     public AddUserSteps(DeviceController deviceController, User user) {
         this.user = user;
         this.deviceController = deviceController;
         addUserPage = new AddUserPage(this.deviceController.getApp(), user);
-
     }
 
     @Description("Creating a user with a specific parameters")
@@ -25,13 +23,10 @@ public class AddUserSteps {
     public void setAuthLvl() {
         addUserPage.defaultAwardee();
         addUserPage.saveUser();
-        // Write code here that turns the phrase above into concrete actions
-
     }
 
     @Then("^I set group as Test Awardee$")
     public void setGroup() {
-        // Write code here that turns the phrase above into concrete actions
-
+        //TODO
     }
 }

@@ -1,13 +1,9 @@
 package com.pmt.health.steps.ui;
 
-import com.github.javafaker.Faker;
 import com.pmt.health.exceptions.VibrentJSONException;
-import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.TestUser;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
-import com.pmt.health.steps.api.AuthSteps;
-import com.pmt.health.utilities.LocatorType;
 import com.pmt.health.workflows.AddUserPage;
 import com.pmt.health.workflows.UserAdminPage;
 import cucumber.api.java.en.Then;
@@ -23,18 +19,12 @@ public class UserAdminSteps {
     private final UserAdminPage userAdminPage;
     private final AddUserPage addUserPage;
 
-
-
-
-
-
     public UserAdminSteps(DeviceController deviceController, User user, TestUser testUser) throws IOException, VibrentJSONException {
         this.user = user;
         this.testUser = testUser;
         this.deviceController = deviceController;
         userAdminPage = new UserAdminPage(this.deviceController.getApp(), user, testUser);
         addUserPage = new AddUserPage(this.deviceController.getApp(), user);
-
     }
 
     @Description("Creating a user with a specific parameters")
@@ -45,16 +35,10 @@ public class UserAdminSteps {
         this.addUserPage.enterLastName(testUser.getLastName());
         this.addUserPage.enterEmail(testUser.getEmail());
         this.addUserPage.selectRole(role);
-
-
     }
 
     @Then("^I see created user$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
-
-        // Write code here that turns the phrase above into concrete actions
-
     }
-
 }

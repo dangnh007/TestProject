@@ -165,17 +165,8 @@
             <artifactId>websocket-client</artifactId>
             <version>9.4.11.v20180605</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
-        <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>0.16</version>
-        </dependency>
 
     </dependencies>
-
-
-
     <!-- vibrent nexus repo -->
     <repositories>
         <repository>

@@ -46,7 +46,6 @@ public class TestUser {
         roles = new ArrayList<>(Collections.singletonList(Role.USER));
     }
 
-
     public int getUserId() {
         return userId;
     }

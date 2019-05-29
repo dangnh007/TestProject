@@ -103,8 +103,6 @@ public class LoginPage {
         // TODO
     }
 
-
-
     /**
      * Activates the login control for the user parameter
      *
@@ -120,7 +118,6 @@ public class LoginPage {
         enterMFA(HTTP.obtainOath2Key());
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
-
         }
     }
 
@@ -131,6 +128,5 @@ public class LoginPage {
     private Element getMFA() {
         return mfaInput;
     }
-
 
 }
