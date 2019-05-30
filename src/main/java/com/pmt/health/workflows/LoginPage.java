@@ -5,7 +5,9 @@ import com.pmt.health.interactions.element.Element;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.objects.user.User;
+import com.pmt.health.steps.Configuration;
 import com.pmt.health.utilities.LocatorType;
+import com.pmt.health.utilities.Property;
 import org.openqa.selenium.Keys;
 import org.testng.log4testng.Logger;
 
@@ -19,7 +21,6 @@ public class LoginPage {
 
     private final WebbElement loginPage;
     private final WebbElement emailMessage;
-    private final WebbElement loggedInHeading;
     private final App app;
     private final WebbElement emailInput;
     private final WebbElement passwordInput;
@@ -41,7 +42,22 @@ public class LoginPage {
         this.mfaInput = app.newElement(LocatorType.NAME, "enter6DigitCode");
         this.emailMessage =
                 app.newElement(LocatorType.ID, "usernameEmail").findChild(app.newElement(LocatorType.TAGNAME, "div"));
-        this.loggedInHeading = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
+    }
+
+    /**
+     * Activates the login control for default user "System Administrator"
+     */
+    public void loginAdmin() {
+        enterEmail(Property.getProgramProperty(Configuration.getEnvironment()+ ".admin.user"));
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment()+ ".admin.pass"));
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+        enterMFA(HTTP.obtainOath2Key());
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
     }
 
     public void enterEmail(String username) {
@@ -106,13 +122,6 @@ public class LoginPage {
     }
 
     /**
-     * Waits for the header indicating the user has logged in to be displayed.
-     */
-    public void waitForLoginLoad() {
-        loggedInHeading.waitFor().displayed();
-    }
-
-    /**
      * Activates the login control for the user parameter
      *
      * @param user A User with an email and password
@@ -138,10 +147,4 @@ public class LoginPage {
         return mfaInput;
     }
 
-    /**
-     * Asserts that the current user is logged out by making sure the login page is displayed.
-     */
-    public void assertLoggedIn() {
-        loggedInHeading.assertState().displayed();
-    }
 }

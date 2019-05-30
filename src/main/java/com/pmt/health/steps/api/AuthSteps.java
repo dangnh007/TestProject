@@ -15,7 +15,12 @@ public class AuthSteps {
     private final UserUtility userUtility;
     private final DeviceController deviceController;
     protected RequestData requestData;
+
     // used to share context of responses and requests between step declarations and workflows
+
+    private String uniqueEmail;
+    private String name;
+    private String lastName;
 
     private Logger log = Logger.getLogger(AuthSteps.class);
 
