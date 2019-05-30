@@ -7,69 +7,27 @@ import com.pmt.health.utilities.Property;
 import java.io.IOException;
 import java.util.*;
 
-
 public class TestUser {
 
-    public static final String API_DONTKNOW = "PMI_DontKnow";
-    public static final String DONTKNOW = "don't know";
-    public static final String NOTSURE = "Not sure";
-    public static final String API_PREFERNOANSWER = "PMI_PreferNotToAnswer";
-    public static final String PREFERNOANSWER = "Prefer not to answer";
-    public static final int YEARS_OLD = 20;
-
-    protected int userId = 0;
     protected String verify;
     protected String email;
-    protected String password; // NOSONAR
+    protected String password;
     protected String firstName;
-    protected String middleInitial;
     protected String lastName;
-    protected String phoneNumber;
-    protected Date dob;
-
 
     protected List<Role> roles;
 
     private String login = null;
-    private SignUpType signUpType = SignUpType.EMAIL;
     private String xauthToken;
 
     public TestUser() throws IOException, VibrentJSONException {
         firstName = "Automation";
-        middleInitial = "Q";
         lastName = "User";
         email = UserUtility.makeRandomUserEmail();
         setLogin(email);
-        password = Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"); // NOSONAR
+        password = Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass");
         verify = password;
-        dob = getDefaultDOB();
         roles = new ArrayList<>(Collections.singletonList(Role.USER));
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public Date getDOB() {
-        return this.dob;
-    }
-
-    public void setDOB(Date dob) {
-        this.dob = dob;
-    }
-
-    public Date getDOB(int yearsOld) {
-        Calendar calendar = new GregorianCalendar();
-        calendar.add(Calendar.YEAR, -1 * yearsOld);
-        return calendar.getTime();
-    }
-
-    public Date getDefaultDOB() {
-        return getDOB(YEARS_OLD);
     }
 
     public String getEmail() {
@@ -85,6 +43,7 @@ public class TestUser {
     }
 
     public void setFirstName(String firstname) {
+
         this.firstName = firstname;
     }
 
@@ -96,14 +55,6 @@ public class TestUser {
         this.lastName = lastname;
     }
 
-    public String getMiddleInitial() {
-        return this.middleInitial;
-    }
-
-    public void setMiddleInitial(String middleinitial) {
-        this.middleInitial = middleinitial;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -113,28 +64,8 @@ public class TestUser {
         this.verify = password;
     }
 
-
-    public String getLogin() {
-        if (signUpType == SignUpType.EMAIL) {
-            return email;
-        }
-        return phoneNumber;
-    }
-
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public SignUpType getSignUpType() {
-        return signUpType;
-    }
-
-    public void setSignUpType(SignUpType signUpType) {
-        this.signUpType = signUpType;
-    }
-
-    public enum SignUpType {
-        EMAIL, PHONE, NONE, BOTHPHONEANDEMAIL, EMAILMISMATCH
     }
 
     public String getSESSIONToken() {
@@ -145,5 +76,5 @@ public class TestUser {
         this.xauthToken = authToken;
     }
 
-    public enum Role {USER, ADMIN, SUPPORT, PROVIDER, DEVELOPER, T2_SUPPORT, MC_SUPPORT_ADMIN, MC_SUPPORT_STAFF}
+    public enum Role {USER, NULL}
 }
