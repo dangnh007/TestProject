@@ -6,17 +6,14 @@ Feature: Login and Logout
 
   @mc-4246 @acceptance @smoke
   Scenario: Admin login
-    When I login
+    When I login as System Administrator
     Then I am logged in
-
 
   @mc-4309 @smoke
   Scenario Outline: Create a user
-    When I login
+    When I login as System Administrator
     Then I am logged in
-    Then I create user with "<role>"
-    Then I set auth level Awardee
-    Then I set group as Test Awardee
+    When I create user with "<role>"
     Then I see created user
     Examples:
       | role            |

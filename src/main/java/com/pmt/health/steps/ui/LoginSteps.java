@@ -1,6 +1,5 @@
 package com.pmt.health.steps.ui;
 
-import com.pmt.health.objects.user.TestUser;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.LoginPage;
@@ -12,17 +11,25 @@ import org.springframework.context.annotation.Description;
 public class LoginSteps {
 
     private final User user;
-    private final TestUser testUser;
+
     private final DeviceController deviceController;
     private final LoginPage loginPage;
     private final UserAdminPage userAdminPage;
 
-    public LoginSteps(DeviceController deviceController, User user, TestUser testUser) {
+    public LoginSteps(DeviceController deviceController, User user) {
         this.user = user;
-        this.testUser = testUser;
         this.deviceController = deviceController;
         loginPage = new LoginPage(this.deviceController.getApp(), user);
-        userAdminPage = new UserAdminPage(this.deviceController.getApp(), user, testUser);
+        userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
+    }
+
+    @When("^I (try to)?login as System Administrator$")
+    public void loginAsAdministrator(String attempt) {
+        this.loginPage.loadEnvironment();
+        this.loginPage.loginAdmin();
+        if (!"try to ".equals(attempt)) {
+            this.userAdminPage.waitForLoginLoad();
+        }
     }
 
     @Description("Logs in with the option of providing an attempt prefix for special login cases.")
@@ -42,6 +49,6 @@ public class LoginSteps {
 
     @Then("^I am logged in$")
     public void assertLoggedIn() {
-        userAdminPage.assertLoggedIn();
+        this.userAdminPage.assertLoggedIn();
     }
 }

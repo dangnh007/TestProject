@@ -28,7 +28,7 @@ public class AddUserPage {
         this.firstNameInput = app.newElement(LocatorType.NAME, "firstName");
         this.lastNameInput = app.newElement(LocatorType.NAME, "lastName");
         this.emailInput = app.newElement(LocatorType.NAME, "email");
-        this.rolesInput = app.newElement(LocatorType.XPATH, "//input[contains(@role, 'combobox')]");
+        this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
         this.saveButton = app.newElement(LocatorType.ID, "save");
         this.defaultCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='24']");
         this.secondCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='27']");
