@@ -107,14 +107,6 @@ public class LoginPage {
             app.maximize();
         }
         app.goToURL(app.getSite().toString());
-        clearCookies();
-    }
-
-    /**
-     * Clears all cookies from the browser.
-     */
-    public void clearCookies() {
-        app.deleteAllCookies();
     }
 
     public void logout() {
