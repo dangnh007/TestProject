@@ -16,16 +16,15 @@ import org.testng.log4testng.Logger;
  */
 public class LoginPage {
 
-    private static final String COOKIE_NAME = "token";
     private static final String SCREEN_SIZE = "screensize";
 
-    private final WebbElement loginPage;
-    private final WebbElement emailMessage;
     private final App app;
     private final WebbElement emailInput;
     private final WebbElement passwordInput;
     private final WebbElement loginButton;
     private final WebbElement mfaInput;
+    private final WebbElement userDropdown;
+    private final WebbElement logoutButton;
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
 
@@ -35,13 +34,12 @@ public class LoginPage {
     public LoginPage(App app, User user) {
         this.app = app;
         this.user = user;
-        this.loginPage = app.newElement(LocatorType.CLASSNAME, "signin-signup");
         this.emailInput = app.newElement(LocatorType.NAME, "email");
         this.passwordInput = app.newElement(LocatorType.NAME, "password");
         this.loginButton = app.newElement(LocatorType.CLASSNAME, "submit-button");
         this.mfaInput = app.newElement(LocatorType.NAME, "enter6DigitCode");
-        this.emailMessage =
-                app.newElement(LocatorType.ID, "usernameEmail").findChild(app.newElement(LocatorType.TAGNAME, "div"));
+        this.userDropdown = app.newElement(LocatorType.CSS, "button[class='dropdown-toggle btn btn-default']");
+        this.logoutButton = app.newElement(LocatorType.XPATH, "//a[text()='Log out']");
     }
 
     /**
@@ -76,18 +74,8 @@ public class LoginPage {
         }
     }
 
-    public Element getEmail() {
-        emailInput.waitFor().displayed();
-        return emailInput;
-    }
-
     public Element getLoginButton() {
         return loginButton;
-    }
-
-    public Element getPasswordInput() {
-        passwordInput.waitFor().displayed();
-        return passwordInput;
     }
 
     /**
@@ -107,18 +95,11 @@ public class LoginPage {
             app.maximize();
         }
         app.goToURL(app.getSite().toString());
-        clearCookies();
-    }
-
-    /**
-     * Clears all cookies from the browser.
-     */
-    public void clearCookies() {
-        app.deleteAllCookies();
     }
 
     public void logout() {
-        // TODO
+        userDropdown.click();
+        logoutButton.click();
     }
 
     /**
