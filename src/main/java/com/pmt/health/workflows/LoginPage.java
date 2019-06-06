@@ -23,6 +23,8 @@ public class LoginPage {
     private final WebbElement passwordInput;
     private final WebbElement loginButton;
     private final WebbElement mfaInput;
+    private final WebbElement userDropdown;
+    private final WebbElement logoutButton;
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
 
@@ -36,6 +38,8 @@ public class LoginPage {
         this.passwordInput = app.newElement(LocatorType.NAME, "password");
         this.loginButton = app.newElement(LocatorType.CLASSNAME, "submit-button");
         this.mfaInput = app.newElement(LocatorType.NAME, "enter6DigitCode");
+        this.userDropdown = app.newElement(LocatorType.CSS, "button[class='dropdown-toggle btn btn-default']");
+        this.logoutButton = app.newElement(LocatorType.XPATH, "//a[text()='Log out']");
     }
 
     /**
@@ -94,7 +98,8 @@ public class LoginPage {
     }
 
     public void logout() {
-        // TODO
+        userDropdown.click();
+        logoutButton.click();
     }
 
     /**
