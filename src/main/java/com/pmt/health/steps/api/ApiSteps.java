@@ -10,7 +10,6 @@ import java.io.IOException;
 
 public class ApiSteps {
 
-    private final DeviceController deviceController;
     private final User user;
     private final UserUtility userUtility;
     // used to share context of responses and requests between step declarations and workflows
@@ -19,7 +18,6 @@ public class ApiSteps {
     public ApiSteps(DeviceController deviceController, User user, RequestData requestData) {
         this.user = user;
         this.userUtility = new UserUtility(user, deviceController.getReporter());
-        this.deviceController = deviceController;
         this.requestData = requestData;
     }
 
