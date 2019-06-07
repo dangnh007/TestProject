@@ -23,15 +23,10 @@ public class UserUtility {
 
     protected final Reporter reporter;
     private static Random r = new Random();
-    private final User user;
-    protected HTTP userHttp;
     private HTTP adminHttp;
 
-    public UserUtility(User user, Reporter reporter) {
-        this.user = user;
+    public UserUtility(Reporter reporter) {
         this.reporter = reporter;
-        this.userHttp = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);
-        this.userHttp.setSESSION(this.user.getSESSIONToken());
         this.adminHttp = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);
     }
 
