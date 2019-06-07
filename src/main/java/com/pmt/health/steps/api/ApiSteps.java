@@ -5,6 +5,7 @@ import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.utilities.APIUtility;
+import cucumber.api.java.en.When;
 import org.testng.log4testng.Logger;
 
 import java.io.IOException;
@@ -25,6 +26,12 @@ public class ApiSteps {
         this.apiUtility = new APIUtility(user, deviceController, requestData);
         this.deviceController = deviceController;
         this.requestData = requestData;
+    }
+
+    @When("^I login as System Admin via API$")
+    public void loginAsSystemAdminViaAPI() throws IOException {
+        userUtility.apiLoginAdmin();
+        userUtility.apiLoginAdminMFA();
     }
 
 }

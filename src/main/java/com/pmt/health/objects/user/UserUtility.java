@@ -1,24 +1,19 @@
 package com.pmt.health.objects.user;
 
 import com.google.gson.JsonObject;
-import com.pmt.health.exceptions.VibrentIOException;
 import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.interactions.services.Response;
 import com.pmt.health.steps.Configuration;
 import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
-import org.testng.log4testng.Logger;
 
 import java.io.IOException;
 import java.util.Random;
 
 public class UserUtility {
 
-    public static final String USER_ID = "userId";
-    @SuppressWarnings("squid:S2068")
     public static final String PASSWORD = "password";
-    public static final String USERNAME = "username";
     public static final String EMAIL = "email";
     public static final String ADMIN_USER = ".admin.user";
     public static final String ADMIN_PASS = ".admin.pass";
@@ -30,44 +25,13 @@ public class UserUtility {
     private final User user;
     protected HTTP userHttp;
     private HTTP adminHttp;
-    private Logger log = Logger.getLogger(UserUtility.class);
 
     public UserUtility(User user, Reporter reporter) throws IOException {
         this.user = user;
         this.reporter = reporter;
         this.userHttp = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);
         this.userHttp.setSESSION(this.user.getSESSIONToken());
-        this.adminHttp = setupAdminHttp(reporter);
-    }
-
-
-    /**
-     * Creates an HTTP connection to the admin console, based on the admin user listed in the properties file.
-     * If no admin user exists, a null connection will be returned
-     *
-     * @param reporter
-     * @return HTTP
-     */
-    public static HTTP setupAdminHttp(Reporter reporter) throws IOException {
-        // setup our admin form for this information
-        HTTP adminHTTP = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);
-        JsonObject authObject = new JsonObject();
-        authObject.addProperty(EMAIL, Property.getDefaultProgramProperty(ADMIN_USER));
-        authObject.addProperty(PASSWORD, Property.getDefaultProgramProperty(ADMIN_PASS));
-        RequestData requestData = new RequestData();
-        requestData.setJSON(authObject);
-        try {
-            adminHTTP.get("/api/login");
-        } catch (VibrentIOException vioe) {
-            // Expect 403 to get Session
-        }
-        Response adminAuth = adminHTTP.simplePost("/api/login", requestData);
-        authObject = new JsonObject();
-        authObject.addProperty("mfaCode", adminHTTP.obtainOath2Key());
-        requestData = new RequestData();
-        requestData.setJSON(authObject);
-        Response adminAuthCode = adminHTTP.simplePost("/api/login/authenticatorCode", requestData);
-        return adminHTTP;
+        this.adminHttp = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);
     }
 
     /**
@@ -115,5 +79,52 @@ public class UserUtility {
         } else {
             return preamble + uuid + "@example.com";
         }
+    }
+
+    /**
+     * Logs as System admin user in via the API.
+     * Pass credentials
+     */
+    public Response apiLoginAdmin() throws IOException {
+        String action = "Logging in via the API";
+        String expected = "Successfully login in via the API";
+        // setup our user credentials
+        JsonObject credentials = new JsonObject();
+        credentials.addProperty(EMAIL, Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_USER));
+        credentials.addProperty(PASSWORD, Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
+        RequestData requestData = new RequestData();
+        requestData.setJSON(credentials);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simplePost("/api/login", requestData);
+        if (response.getCode() == 200) {
+            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        } else {
+            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        }
+        return response;
+    }
+
+    /**
+     * Logs as System admin user in via the API.
+     * Pass authenticator code
+     */
+    public Response apiLoginAdminMFA() throws IOException {
+        String action = "Logging in via the API";
+        String expected = "Successfully pass authenticator code via the API";
+        // setup our user mfa
+        JsonObject mfa = new JsonObject();
+        mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
+        RequestData requestData = new RequestData();
+        requestData.setJSON(mfa);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+        if (response.getCode() == 200) {
+            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        } else {
+            reporter.warn(action, expected, "User not successfully passed authenticator code. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        }
+        return response;
     }
 }

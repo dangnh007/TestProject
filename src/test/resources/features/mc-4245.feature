@@ -6,11 +6,13 @@ Feature: Login and Logout
 
   @mc-4246 @acceptance @smoke
   Scenario: Admin login
+    Given I am an admin user
     When I login as System Administrator
     Then I am logged in
 
   @mc-4309 @smoke
-  Scenario Outline: Create a user
+  Scenario Outline: Create a user as a System Administrator
+    Given I am an admin user
     When I login as System Administrator
     Then I am logged in
     When I create user with "<role>"
@@ -20,7 +22,9 @@ Feature: Login and Logout
       | Program manager |
       | Site manager    |
 
-
-
+  @mc-4448 @smoke
+  Scenario: Admin login via API
+    Given I am an admin user
+    Then I login as System Admin via API
 
 
