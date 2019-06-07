@@ -13,6 +13,7 @@ import java.util.Random;
 
 public class UserUtility {
 
+    @SuppressWarnings("squid:S2068")
     public static final String PASSWORD = "password";
     public static final String EMAIL = "email";
     public static final String ADMIN_USER = ".admin.user";
@@ -26,7 +27,7 @@ public class UserUtility {
     protected HTTP userHttp;
     private HTTP adminHttp;
 
-    public UserUtility(User user, Reporter reporter) throws IOException {
+    public UserUtility(User user, Reporter reporter) {
         this.user = user;
         this.reporter = reporter;
         this.userHttp = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);

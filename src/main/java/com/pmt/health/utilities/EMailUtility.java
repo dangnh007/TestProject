@@ -27,7 +27,7 @@ public class EMailUtility {
     private final User user;
     protected final Reporter reporter;
 
-    public EMailUtility(User user, Reporter reporter) throws IOException {
+    public EMailUtility(User user, Reporter reporter) {
         this.user = user;
         this.reporter = reporter;
     }
