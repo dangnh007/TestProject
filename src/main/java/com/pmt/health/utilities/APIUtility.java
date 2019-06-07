@@ -22,7 +22,7 @@ public class APIUtility {
     public APIUtility(User user, DeviceController deviceController, RequestData requestData) throws IOException {
         this.user = user;
         this.reporter = deviceController.getReporter();
-        this.userUtility = new UserUtility(user, deviceController.getReporter());
+        this.userUtility = new UserUtility(deviceController.getReporter());
         this.deviceController = deviceController;
         this.requestData = requestData;
     }

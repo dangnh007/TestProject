@@ -16,8 +16,8 @@ public class AddUserPage {
     private final WebbElement emailInput;
     private final WebbElement rolesInput;
     private final WebbElement saveButton;
-    private final WebbElement defaultCheckbox;
-    private final WebbElement secondCheckbox;
+    private final WebbElement smCheckbox;
+    private final WebbElement nhiCheckbox;
 
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
@@ -30,15 +30,15 @@ public class AddUserPage {
         this.emailInput = app.newElement(LocatorType.NAME, "email");
         this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
         this.saveButton = app.newElement(LocatorType.ID, "save");
-        this.defaultCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='24']");
-        this.secondCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='27']");
+        this.smCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='17']");
+        this.nhiCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='419']");
     }
 
-    public void defaultAwardee() {
-        if (defaultCheckbox.is().present()) {
-            defaultCheckbox.click();
+    public void checkAwardee() {
+        if (smCheckbox.is().present()) {
+            smCheckbox.click();
         } else {
-            secondCheckbox.click();
+            nhiCheckbox.click();
         }
     }
 

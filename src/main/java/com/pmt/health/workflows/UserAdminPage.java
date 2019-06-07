@@ -13,6 +13,8 @@ public class UserAdminPage {
     private final WebbElement loggedInHeadingAdmin;
     private final WebbElement loggedInHeadingUser;
     private final WebbElement createdUser;
+    private final WebbElement headUserAdmin;
+    private final WebbElement userAdminButton;
 
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
@@ -21,9 +23,15 @@ public class UserAdminPage {
         this.app = app;
         this.user = user;
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
-        this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
+        this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
+        this.headUserAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
         this.loggedInHeadingUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
         this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
+        this.userAdminButton = app.newElement(LocatorType.CSS, "ul li:nth-of-type(4) a");
+    }
+
+    public void userAdmin() {
+        userAdminButton.click();
     }
 
     /**

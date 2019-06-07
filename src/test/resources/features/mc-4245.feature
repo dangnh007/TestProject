@@ -16,9 +16,9 @@ Feature: Login and Logout
     When I create user with "<role>"
     Then I see created user
     Examples:
-      | role            |
-      | Program manager |
-      | Site manager    |
+      | role         |
+      | NIH          |
+      | Site manager |
 
   @mc-4448 @smoke
   Scenario: Admin login via API
