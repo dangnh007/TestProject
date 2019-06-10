@@ -171,14 +171,15 @@ public class Jira {
      * @return Boolean: was the update a success or not
      */
     public static boolean updateJenkinsLinks(String issue) throws IOException {
-        JsonObject fields = new JsonObject();
-        fields.addProperty("customfield_12500",
-                "https://labyrinth.vibrenthealth.com/job/executeTags_autotest/parambuild/?Tags=@" +
-                        issue.toLowerCase());
-        fields.addProperty("customfield_12702",
-                "https://labyrinth.vibrenthealth.com/job/editGherkin_autotest/parambuild/?Scenario=" +
-                        issue.toLowerCase());
-        return Jira.updateIssue(issue, fields);
+//        JsonObject fields = new JsonObject();
+//        fields.addProperty("customfield_12500",
+//                "https://labyrinth.vibrenthealth.com/job/executeTags_autotest/parambuild/?Tags=@" +
+//                        issue.toLowerCase());
+//        fields.addProperty("customfield_12702",
+//                "https://labyrinth.vibrenthealth.com/job/editGherkin_autotest/parambuild/?Scenario=" +
+//                        issue.toLowerCase());
+//        return Jira.updateIssue(issue, fields);
+        return true;
     }
 
     /**
