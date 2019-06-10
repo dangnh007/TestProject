@@ -10,17 +10,18 @@ Feature: Login and Logout
     Then I am logged in
 
   @mc-4309 @smoke
-  Scenario Outline: Create a user
+  Scenario Outline: Create a user as a System Administrator
     When I login as System Administrator
     Then I am logged in
     When I create user with "<role>"
     Then I see created user
     Examples:
-      | role            |
-      | Program manager |
-      | Site manager    |
+      | role         |
+      | NIH          |
+      | Site manager |
 
-
-
+  @mc-4448 @smoke
+  Scenario: Admin login via API
+    Then I login as System Administrator via API
 
 

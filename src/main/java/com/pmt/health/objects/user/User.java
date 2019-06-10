@@ -7,7 +7,6 @@ import java.util.*;
 
 public class User {
 
-    protected int userId = 0;
     protected String email;
     protected String password; // NOSONAR
     protected String firstName;
