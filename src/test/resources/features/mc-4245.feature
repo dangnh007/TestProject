@@ -23,5 +23,3 @@ Feature: Login and Logout
   @mc-4448 @smoke
   Scenario: Admin login via API
     Then I login as System Administrator via API
-
-
