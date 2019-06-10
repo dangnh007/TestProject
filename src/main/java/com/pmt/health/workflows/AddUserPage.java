@@ -1,12 +1,10 @@
 package com.pmt.health.workflows;
 
 import com.pmt.health.interactions.application.App;
-import com.pmt.health.interactions.element.Element;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.utilities.LocatorType;
 import org.openqa.selenium.Keys;
-import org.testng.log4testng.Logger;
 
 public class AddUserPage {
 
