@@ -24,7 +24,7 @@ public class AuthSteps {
 
     public AuthSteps(DeviceController deviceController, User user, RequestData requestData) {
         this.user = user;
-        this.userUtility = new UserUtility(deviceController.getReporter());
+        this.userUtility = new UserUtility(deviceController.getReporter(), user);
         this.deviceController = deviceController;
         this.requestData = requestData;
     }
