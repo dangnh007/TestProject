@@ -23,8 +23,8 @@ public class UserUtility {
     public static final String ADMIN_PASS = ".admin.pass";
 
     private static final String VQA3 = "VibQA3+";
-    private final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment()+".url.sub");
-    private final String REFERER = MAIN_URL+"/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
+    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment()+".url.sub");
+    private static final String REFERER = MAIN_URL+"/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
 
     protected final Reporter reporter;
     private static Random r = new Random();
