@@ -4,27 +4,40 @@ import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.DeviceController;
-import com.pmt.health.utilities.APIUtility;
-import org.testng.log4testng.Logger;
+import com.pmt.health.utilities.EMailUtility;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 import java.io.IOException;
 
 public class ApiSteps {
 
-    private final DeviceController deviceController;
-    private final User user;
     private final UserUtility userUtility;
-    private final APIUtility apiUtility;
+    private final EMailUtility eMailUtility;
     // used to share context of responses and requests between step declarations and workflows
     protected RequestData requestData;
-    private Logger log = Logger.getLogger(ApiSteps.class);
+    private final User user;
 
-    public ApiSteps(DeviceController deviceController, User user, RequestData requestData) throws IOException {
+    public ApiSteps(DeviceController deviceController, RequestData requestData, User user) {
         this.user = user;
-        this.userUtility = new UserUtility(user, deviceController.getReporter());
-        this.apiUtility = new APIUtility(user, deviceController, requestData);
-        this.deviceController = deviceController;
+        this.userUtility = new UserUtility(deviceController.getReporter(), user);
         this.requestData = requestData;
+        this.eMailUtility = new EMailUtility(user, deviceController.getReporter());
     }
 
+    @When("^I login as System Administrator via API$")
+    public void loginAsSystemAdminViaAPI() throws IOException {
+        userUtility.apiLoginAdmin();
+        userUtility.apiLoginAdminMFA();
+    }
+
+    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\" via API$" )
+    public void createUser(String role, String group) throws IOException {
+        userUtility.apiCreateUser(role,group);
+    }
+
+    @Then("^I check email inbox$")
+    public void emailInbox() throws IOException {
+        eMailUtility.emailInbox();
+    }
 }

@@ -29,6 +29,9 @@ import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.interactions.services.Response;
 import com.pmt.health.steps.Configuration;
 import cucumber.api.Scenario;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.testng.Assert;
 import org.testng.log4testng.Logger;
 
@@ -497,10 +500,26 @@ public class Reporter {
         // reopen the reporter
         try (FileWriter fw = new FileWriter(file, true); BufferedWriter out = new BufferedWriter(fw)) {
             out.write("  </table>\n");
+            if (app.getDriver() != null && Device.CHROME.equals(app.getDevice())) {
+                LogEntries logEntries = app.getDriver().manage().logs().get(LogType.BROWSER);
+                out.write(" <div align='center' font-size='big' style='cursor:pointer;color: blue;' onclick='this" +
+                        ".nextSibling.style.display == \"none\" ? this.nextSibling.style.display=\"block\" : this" +
+                        ".nextSibling.style.display=\"none\";'>");
+                out.write("<font size='5'> Chrome Logs </font></div><div style='display:none;margin-left:auto;" +
+                        "margin-right:auto;width:90%;'>");
+                for (LogEntry entry : logEntries) {
+                    out.write(new Date(entry.getTimestamp()) + " " + entry.getLevel() + " " + entry.getMessage() +
+                            "<br>");
+                }
+                out.write("</div>");
+            }
             out.write(" </body>\n");
             out.write("</html>\n");
         } catch (IOException e) {
             log.error(e);
+        }
+        if (app.getDriver() != null) {
+            app.getDriver().quit();
         }
         // Record the metrics
         int passes = countInstancesOf("<td class='pass'>Pass</td>");

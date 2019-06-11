@@ -233,7 +233,6 @@
                             <argLine>${failsafeArgLine}</argLine>
                             <skipTests>${skip.integration.tests}</skipTests>
                             <testFailureIgnore>false</testFailureIgnore>
-                            <testFailureIgnore>true</testFailureIgnore>
                             <systemPropertyVariables>
                                 <jira.username>${jira.username}</jira.username>
                                 <jira.password>${jira.password}</jira.password>

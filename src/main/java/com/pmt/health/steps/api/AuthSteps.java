@@ -6,8 +6,6 @@ import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.DeviceController;
 import org.testng.log4testng.Logger;
 
-import java.io.IOException;
-
 public class AuthSteps {
 
     public static final String UTF_8 = "UTF-8";
@@ -24,9 +22,9 @@ public class AuthSteps {
 
     private Logger log = Logger.getLogger(AuthSteps.class);
 
-    public AuthSteps(DeviceController deviceController, User user, RequestData requestData) throws IOException {
+    public AuthSteps(DeviceController deviceController, User user, RequestData requestData) {
         this.user = user;
-        this.userUtility = new UserUtility(user, deviceController.getReporter());
+        this.userUtility = new UserUtility(deviceController.getReporter(), user);
         this.deviceController = deviceController;
         this.requestData = requestData;
     }

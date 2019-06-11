@@ -273,7 +273,7 @@ public class HTTP {
 
     private void setSESSIONToken(HttpURLConnection connection, boolean isSESSIONNotNull, String session) {
         if (isSESSIONNotNull) {
-            connection.addRequestProperty("Cookie", "SESSION=" + session);
+            connection.addRequestProperty("Cookie", "JSESSIONID=" + session);
         }
     }
 
