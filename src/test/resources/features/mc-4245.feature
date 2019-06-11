@@ -32,3 +32,15 @@ Feature: Login and Logout
       | role                 | group |
       | ROLE_MC_NIH          | 17    |
       | ROLE_MC_SITE_MANAGER | 423   |
+
+  @mc-emailUtil @smoke
+  Scenario Outline: Log in with created user
+    When I login as System Administrator via API
+    Then I create user with "<role>" and "<group>" via API
+    And I wait 5 seconds
+    Then I check email inbox
+    And I verify email and get its id
+    Examples:
+      | role                 | group |
+      | ROLE_MC_NIH          | 17    |
+      | ROLE_MC_SITE_MANAGER | 423   |
