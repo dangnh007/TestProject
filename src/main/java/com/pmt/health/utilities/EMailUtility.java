@@ -48,7 +48,6 @@ public class EMailUtility {
         if (response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
-
             reporter.warn(action, expected, "User not successfully passed authenticator code. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         }
         return response;
