@@ -32,4 +32,3 @@ Feature: Login and Logout
       | role                 | group |
       | ROLE_MC_NIH          | 17    |
       | ROLE_MC_SITE_MANAGER | 423   |
-

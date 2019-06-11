@@ -230,9 +230,6 @@ public abstract class DeviceController {
         } catch (ClassCastException | WebDriverException e) {
             log.error(e);
         } finally {
-            if (driver != null) {
-                driver.quit();
-            }
             // TODO: Make sure that we're still catching all errors in listener even when we don't have a reporters.
             int errors = 0;
             if(reporter != null) {
