@@ -136,7 +136,7 @@ public class UserUtility {
         String expected = "Successfully created user via the API";
         //setup our body for creating user
         JsonObject createUser = new JsonObject();
-        createUser.addProperty("email", user.getEmail());
+        createUser.addProperty(EMAIL, user.getEmail());
         createUser.addProperty("firstName", user.getFirstName());
         createUser.addProperty("lastName", user.getLastName());
         //some of the fields in the body has array parameter
