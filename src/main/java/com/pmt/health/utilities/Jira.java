@@ -165,23 +165,6 @@ public class Jira {
     }
 
     /**
-     * Makes a call out to JIRA to update the custom execute and edit links of the issue provided
-     *
-     * @param issue - the unique jira id of the issue to be updated
-     * @return Boolean: was the update a success or not
-     */
-    public static boolean updateJenkinsLinks(String issue) throws IOException {
-        JsonObject fields = new JsonObject();
-        fields.addProperty("customfield_12500",
-                "https://labyrinth.vibrenthealth.com/job/executeTags_autotest/parambuild/?Tags=@" +
-                        issue.toLowerCase());
-        fields.addProperty("customfield_12702",
-                "https://labyrinth.vibrenthealth.com/job/editGherkin_autotest/parambuild/?Scenario=" +
-                        issue.toLowerCase());
-        return Jira.updateIssue(issue, fields);
-    }
-
-    /**
      * Makes a call out to JIRA to update the labels associated with the issue. All old labels will be removed, and
      * the provided labels will be added
      *
