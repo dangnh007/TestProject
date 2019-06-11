@@ -1,12 +1,10 @@
 package com.pmt.health.workflows;
 
 import com.pmt.health.interactions.application.App;
-import com.pmt.health.interactions.element.Element;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.utilities.LocatorType;
 import org.openqa.selenium.Keys;
-import org.testng.log4testng.Logger;
 
 public class AddUserPage {
 
@@ -19,7 +17,6 @@ public class AddUserPage {
     private final WebbElement smCheckbox;
     private final WebbElement nhiCheckbox;
 
-    Logger log = Logger.getLogger(LoginPage.class);
     private User user;
 
     public AddUserPage(App app, User user) {
@@ -31,7 +28,7 @@ public class AddUserPage {
         this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
         this.saveButton = app.newElement(LocatorType.ID, "save");
         this.smCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='17']");
-        this.nhiCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='419']");
+        this.nhiCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='423']");
     }
 
     public void checkAwardee() {

@@ -18,7 +18,7 @@ public class APIUtility {
     public APIUtility(User user, DeviceController deviceController, RequestData requestData) {
         this.user = user;
         this.reporter = deviceController.getReporter();
-        this.userUtility = new UserUtility(deviceController.getReporter());
+        this.userUtility = new UserUtility(deviceController.getReporter(), user);
         this.deviceController = deviceController;
         this.requestData = requestData;
     }

@@ -22,6 +22,14 @@ Feature: Login and Logout
 
   @mc-4448 @smoke
   Scenario: Admin login via API
-    Then I login as System Administrator via API
+    When I login as System Administrator via API
 
+  @mc-createUser @smoke
+  Scenario Outline: Create a user as a System Administrator via API
+    When I login as System Administrator via API
+    Then I create user with "<role>" and "<group>" via API
+    Examples:
+      | role                 | group |
+      | ROLE_MC_NIH          | 17    |
+      | ROLE_MC_SITE_MANAGER | 423   |
 
