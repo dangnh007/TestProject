@@ -55,7 +55,7 @@ public class EMailUtility {
         return response;
     }
 
-    public Response emailGetValue() throws IOException {
+    public String emailGetValue() throws IOException {
         String action = "Getting into an inbox and grab password via the API";
         String expected = "Successfully get into an inbox and grab password via the API";
         // setup BaseURL
@@ -71,13 +71,13 @@ public class EMailUtility {
         int size = response.getArrayData().size();
         JsonArray arrayData = response.getArrayData();
         //Loop through to get a new response for valid message
+        String password = "";
         for (int i = 0; i < size; i++) {
             if (arrayData.get(i).toString().contains(user.getEmail())) {
                 response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
                 //Gets password from the html response
-                //TODO
                 String resp = response.getMessage();
-                String password = StringUtils.substringBetween(resp, "Password", "</span>");
+                password = StringUtils.substringBetween(resp, "Password", "</span>");
                 //Verify psw length
                 break;
             }
@@ -87,6 +87,6 @@ public class EMailUtility {
         } else {
             reporter.warn(action, expected, "Email does not exist, not successful " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         }
-        return response;
+        return password.substring(11);
     }
 }
