@@ -307,7 +307,6 @@ public class Listener extends TestListenerAdapter {
         updatedTestCases.add(testKey);
         Jira.updateTitle(testKey, GherkinFeature.getScenarioName(result));
         Jira.updateDescription(testKey, GherkinFeature.getScenarioDescription(result)); //get the githash
-        Jira.updateJenkinsLinks(testKey);
         Collection<String> testLinks = GherkinFeature.getTestLinks(result);
         Jira.updateTestLinks(testKey, testLinks.toArray(new String[testLinks.size()]));
         Collection<String> automateLinks = GherkinFeature.getAutomateLinks(result);
