@@ -75,10 +75,10 @@ public class EMailUtility {
             if (arrayData.get(i).toString().contains(user.getEmail())) {
                 response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
                 //Gets password from the html response
+                //TODO
                 String resp = response.getMessage();
                 String password = StringUtils.substringBetween(resp, "Password", "</span>");
                 //Verify psw length
-                //TODO
                 break;
             }
         }
