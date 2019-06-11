@@ -46,7 +46,7 @@ public class EMailUtility {
         emailAPI.addHeaders(token);
         requestData.setHeaders(token);
         // make the actual call
-        Response response = emailAPI.get("/api/v1/inboxes//611509/messages", requestData);
+        Response response = emailAPI.get(MESSAGES_ENDPOINT, requestData);
         if (response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
