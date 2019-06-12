@@ -83,11 +83,7 @@ public class EMailUtility {
                     String resp = response.getMessage();
                     password = StringUtils.substringBetween(resp, "Password", "</span>");
                     //generate report
-                    if (response.getCode() == 200) {
-                        reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-                    } else {
-                        reporter.warn(action, expected, "Message was not found. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-                    }
+                    generateReport(action, expected, response);
                     break;
                 }
             }
@@ -95,5 +91,13 @@ public class EMailUtility {
         } while (password.isEmpty() && count < 5);
         //return string from index where string become valuable
         return password.substring(11);
+    }
+
+    private void generateReport(String action, String expected, Response response) {
+        if (response.getCode() == 200) {
+            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        } else {
+            reporter.warn(action, expected, "Message was not found. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        }
     }
 }
