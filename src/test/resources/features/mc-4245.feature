@@ -20,11 +20,11 @@ Feature: Login and Logout
       | NIH          |
       | Site manager |
 
-  @mc-4448 @smoke
+  @mc-4448 @smoke @api
   Scenario: Admin login via API
     When I login as System Administrator via API
 
-  @mc-createUser @smoke
+  @mc-4592 @smoke @api
   Scenario Outline: Create a user as a System Administrator via API
     When I login as System Administrator via API
     Then I create user with "<role>" and "<group>" via API
@@ -33,7 +33,7 @@ Feature: Login and Logout
       | ROLE_MC_NIH          | 17    |
       | ROLE_MC_SITE_MANAGER | 540   |
 
-  @mc-emailUtil @smoke
+  @mc-emailUtil @smoke @api
   Scenario Outline: Log in with created user
     When I login as System Administrator via API
     Then I create user with "<role>" and "<group>" via API

@@ -47,11 +47,7 @@ public class EMailUtility {
         requestData.setHeaders(token);
         // make the actual call
         Response response = emailAPI.get(MESSAGES_ENDPOINT, requestData);
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "User not successfully passed authenticator code. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+        generateReport(action, expected, response);
         return response;
     }
 
