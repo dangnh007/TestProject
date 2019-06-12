@@ -5,6 +5,7 @@ import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.utilities.EMailUtility;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -40,4 +41,10 @@ public class ApiSteps {
     public void emailInbox() throws IOException {
         eMailUtility.emailInbox();
     }
+
+    @And("^I verify email and get its id$")
+    public void getEmailId() throws IOException {
+        eMailUtility.emailGetValue();
+    }
+
 }
