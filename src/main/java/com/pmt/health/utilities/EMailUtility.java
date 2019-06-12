@@ -97,7 +97,7 @@ public class EMailUtility {
         if (response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
-            reporter.warn(action, expected, "Message was not found. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+            reporter.fail(action, expected, "Value was not found. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         }
     }
 }
