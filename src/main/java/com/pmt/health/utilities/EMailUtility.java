@@ -56,8 +56,8 @@ public class EMailUtility {
     }
 
     public String emailGetValue() throws IOException {
-        String action = "Getting into an inbox and grab password via the API";
-        String expected = "Successfully get into an inbox and grab password via the API";
+        String action = "Getting into an inbox and retrieve message via API";
+        String expected = "Successfully get into an inbox and retrieve message via the API";
         // setup BaseURL
         HTTP emailAPI = new HTTP(EMAIL_URL, reporter);
         RequestData requestData = new RequestData();
@@ -65,28 +65,35 @@ public class EMailUtility {
         token.put("Api-Token", API_TOKEN);
         emailAPI.addHeaders(token);
         requestData.setHeaders(token);
-        // make the actual call
-        Response response = emailAPI.get(MESSAGES_ENDPOINT, requestData);
-        //Initialize ArrayData rom response
-        int size = response.getArrayData().size();
-        JsonArray arrayData = response.getArrayData();
-        //Loop through to get a new response for valid message
+        //string to return password value
         String password = "";
-        for (int i = 0; i < size; i++) {
-            if (arrayData.get(i).toString().contains(user.getEmail())) {
-                response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
-                //Gets password from the html response
-                String resp = response.getMessage();
-                password = StringUtils.substringBetween(resp, "Password", "</span>");
-                //Verify psw length
-                break;
+        int count = 0;
+        //do-while to check inbox again if email was not found
+        do {
+            // make the actual call
+            Response response = emailAPI.get(MESSAGES_ENDPOINT, requestData);
+            //Initialize ArrayData rom response
+            int size = response.getArrayData().size();
+            JsonArray arrayData = response.getArrayData();
+            //Loop through to get a new response for a valid message
+            for (int i = 0; i < size; i++) {
+                if (arrayData.get(i).toString().contains(user.getEmail())) {
+                    response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
+                    //Gets password from the html response
+                    String resp = response.getMessage();
+                    password = StringUtils.substringBetween(resp, "Password", "</span>");
+                    //generate report
+                    if (response.getCode() == 200) {
+                        reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+                    } else {
+                        reporter.warn(action, expected, "Message was not found. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+                    }
+                    break;
+                }
             }
-        }
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "Email does not exist, not successful " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+            count++;
+        } while (password.isEmpty() && count < 5);
+        //return string from index where string become valuable
         return password.substring(11);
     }
 }

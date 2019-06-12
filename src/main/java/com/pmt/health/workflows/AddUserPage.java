@@ -28,7 +28,7 @@ public class AddUserPage {
         this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
         this.saveButton = app.newElement(LocatorType.ID, "save");
         this.smCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='17']");
-        this.nhiCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='423']");
+        this.nhiCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='540']");
     }
 
     public void checkAwardee() {
