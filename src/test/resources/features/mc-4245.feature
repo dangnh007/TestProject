@@ -33,8 +33,8 @@ Feature: Login and Logout
       | ROLE_MC_NIH          | 17    |
       | ROLE_MC_SITE_MANAGER | 540   |
 
-  @mc-emailUtil @smoke @api
-  Scenario Outline: Log in with created user
+  @mc-4607 @smoke @api
+  Scenario Outline: Verify email for created user
     When I login as System Administrator via API
     Then I create user with "<role>" and "<group>" via API
     Then I check email inbox
