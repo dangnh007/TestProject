@@ -12,6 +12,8 @@ public class UserAdminPage {
     private final WebbElement loggedInHeadingAdmin;
     private final WebbElement createdUser;
     private final WebbElement userAdminButton;
+    private final WebbElement spinner;
+    private final WebbElement createdSortButton;
 
     private User user;
 
@@ -21,17 +23,21 @@ public class UserAdminPage {
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
         this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
+        this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
         this.userAdminButton = app.newElement(LocatorType.CSS, "ul li:nth-of-type(4) a");
+        this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
     }
 
     public void userAdmin() {
         userAdminButton.click();
+        addUserButton.hover();
     }
 
     /**
      * Clicks on the "Add User" button
      */
     public void addUser() {
+        spinner.waitFor().notDisplayed();
         addUserButton.click();
     }
 
@@ -53,6 +59,8 @@ public class UserAdminPage {
      * Asserts that the created user is present by making sure it's email is present
      */
     public void assertCreatedUser() {
+        spinner.waitFor().notDisplayed();
+        createdSortButton.click();
         createdUser.assertState().displayed();
     }
 }
