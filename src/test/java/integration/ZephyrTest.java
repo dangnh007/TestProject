@@ -20,7 +20,6 @@ import static org.testng.Assert.assertTrue;
 public class ZephyrTest {
     private final Zephyr zephyr = new Zephyr();
     private final String username = System.getProperty("jira.username").toLowerCase();
-
     private final SimpleDateFormat dt = new SimpleDateFormat("dd/MMM/yy");
 
     private final JsonParser parser = new JsonParser();
