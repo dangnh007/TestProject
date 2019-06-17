@@ -43,7 +43,7 @@ public class ApiSteps {
     }
 
     @And("^I verify email and get its id$")
-    public void getEmailId() throws IOException {
+    public void getEmailId() throws IOException, InterruptedException {
         eMailUtility.emailGetValue();
     }
 
