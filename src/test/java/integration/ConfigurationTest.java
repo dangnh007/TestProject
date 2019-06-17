@@ -15,10 +15,10 @@ public class ConfigurationTest {
 
     private final Configuration configuration = new Configuration(null);
     JsonParser parser = new JsonParser();
-    private final JsonObject mockedSysInfo = (JsonObject) parser.parse("{\"buildName\":\"pmi-cot-api\"," +
-            "\"buildNumber\":\"377\",\"branch\":\"release/2.14.0\",\"timestamp\":\"Fri Feb 23 09:12:59 UTC 2018\"," +
-            "\"timezone\":\"Coordinated Universal Time\",\"currentTimeString\":\"Fri Feb 23 19:19:11 UTC 2018\"," +
-            "\"dataVersion\":20,\"sha\":\"7f63441f130f989b309eab47b264f2bc04a8ad06\"}");
+    private final JsonObject mockedSysInfo = (JsonObject) parser.parse("{\"gitBranch" +
+            "\":\"eca7aaaccfaa028b87bab87cc2110ac67c08dedc\",\"buildTime\":\"2019-06-17T11:05:40+0000\"," +
+            "\"buildVersion\":\"3.1.0-SNAPSHOT\",\"commitId\":\"eca7aaaccfaa028b87bab87cc2110ac67c08dedc\"," +
+            "\"commitTime\":\"2019-06-17T06:35:13+0000\"}");
     private String env;
 
     @BeforeClass
@@ -44,7 +44,7 @@ public class ConfigurationTest {
     @Test
     public void getBuildTest() {
         System.setProperty("environment", "cot");
-        Assert.assertTrue(configuration.getBuild(mockedSysInfo).matches("(?:\\w+-)*\\w+ - Build #\\d+"));
+        Assert.assertTrue(configuration.getBuild(mockedSysInfo).matches("Build Version: .*"));
     }
 
     private void testURLConnection(URL environmentURL) throws IOException {

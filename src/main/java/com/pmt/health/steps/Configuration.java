@@ -148,7 +148,7 @@ public class Configuration {
      * @return
      */
     public String getBuild(JsonObject sysInfo) {
-        return sysInfo.get("buildName").getAsString() + " - Build #" + sysInfo.get("buildNumber").getAsString();
+        return "Build Version: " + sysInfo.get("buildVersion").getAsString();
     }
 
     /**
