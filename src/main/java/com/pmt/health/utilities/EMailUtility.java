@@ -51,7 +51,7 @@ public class EMailUtility {
         return response;
     }
 
-    public String emailGetValue() throws IOException {
+    public String emailGetValue() throws IOException, InterruptedException {
         String action = "Getting into an inbox and retrieve message via API";
         String expected = "Successfully get into an inbox and retrieve message via the API";
         // setup BaseURL
@@ -84,8 +84,12 @@ public class EMailUtility {
                 }
             }
             count++;
+            Thread.sleep(1000);
         } while (password.isEmpty() && count < 5);
         //return string from index where string become valuable
+        if (password.isEmpty()) {
+            reporter.fail(action, expected, "Value was not found.");
+        }
         return password.substring(11);
     }
 
