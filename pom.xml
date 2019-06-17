@@ -16,7 +16,7 @@
         <threads>5</threads>
 
         <!-- SonarQube Properties -->
-        <sonar.exclusions>src/main/java/com/vibrent/health/interactions/services/SSLUtilities.java</sonar.exclusions>
+        <sonar.exclusions>src/main/java/com/pmt/health/interactions/services/SSLUtilities.java</sonar.exclusions>
         <sonar.host.url>https://sonar.vibrenthealth.com</sonar.host.url>
         <sonar.sources>pom.xml,src/main/java,src/main/resources,src/test/resources/features</sonar.sources>
         <sonar.test>src/test/java</sonar.test>

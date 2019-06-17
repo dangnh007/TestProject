@@ -91,7 +91,7 @@ public class Configuration {
      *
      * @return url that should be used for specified environment
      */
-    private static URL getSubscriberEnvironmentURL() {
+    public static URL getSubscriberEnvironmentURL() {
         return getEnvironmentURL("sub");
     }
 
@@ -148,8 +148,7 @@ public class Configuration {
      * @return
      */
     public String getBuild(JsonObject sysInfo) {
-        return "";
-//        return sysInfo.get("buildName").getAsString() + " - Build #" + sysInfo.get("buildNumber").getAsString();
+        return sysInfo.get("buildName").getAsString() + " - Build #" + sysInfo.get("buildNumber").getAsString();
     }
 
     /**
