@@ -40,7 +40,7 @@ public class LoginSteps {
     public void setLogin() {
         this.loginPage.loadEnvironment();
         this.loginPage.setLogin();
-        this.loginPage.passwordSet();
+        this.loginPage.typeNewPassword();
         this.loginPage.clickSubmitButton();
     }
 

@@ -157,7 +157,7 @@ public class LoginPage {
         submitButton.click();
     }
 
-    public void passwordSet() {
+    public void typeNewPassword() {
         passwordSet.type(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"));
     }
 
