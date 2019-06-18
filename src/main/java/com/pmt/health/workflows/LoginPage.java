@@ -17,7 +17,6 @@ import org.testng.log4testng.Logger;
 public class LoginPage {
 
     private static final String SCREEN_SIZE = "screensize";
-
     private final App app;
     private final WebbElement emailInput;
     private final WebbElement passwordInput;
@@ -25,6 +24,11 @@ public class LoginPage {
     private final WebbElement mfaInput;
     private final WebbElement userDropdown;
     private final WebbElement logoutButton;
+    private final WebbElement okButton;
+    private final WebbElement passwordSet;
+    private final WebbElement submitButton;
+    private final WebbElement secretKey;
+
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
 
@@ -40,14 +44,37 @@ public class LoginPage {
         this.mfaInput = app.newElement(LocatorType.NAME, "enter6DigitCode");
         this.userDropdown = app.newElement(LocatorType.CSS, "button[class='dropdown-toggle btn btn-default']");
         this.logoutButton = app.newElement(LocatorType.XPATH, "//a[text()='Log out']");
+        this.okButton = app.newElement(LocatorType.ID, "btnOK");
+        this.secretKey = app.newElement(LocatorType.XPATH, "//div[@class='scan-qr-code-secret']");
+        this.passwordSet = app.newElement(LocatorType.XPATH, "//input[@name='password']");
+        this.submitButton = app.newElement(LocatorType.XPATH, "//input[@class='center-block submit-button btn btn-primary']");
+    }
+
+
+    /**
+     * Activates the login flow for just created user
+     */
+    public void setLogin() {
+        enterEmail(user.getEmail());
+        enterPassword(user.getPassword());
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+        setKey();
+        okButton.click();
+        enterMFA(HTTP.obtainOath2KeyCreatedUser());
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
     }
 
     /**
      * Activates the login control for default user "System Administrator"
      */
     public void loginAdmin() {
-        enterEmail(Property.getProgramProperty(Configuration.getEnvironment()+ ".admin.user"));
-        enterPassword(Property.getProgramProperty(Configuration.getEnvironment()+ ".admin.pass"));
+        enterEmail(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.user"));
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"));
         getLoginButton().waitFor().displayed();
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
@@ -107,14 +134,14 @@ public class LoginPage {
      *
      * @param user A User with an email and password
      */
-    public void login(User user) {
+    public void login() {
         enterEmail(user.getEmail());
-        enterPassword(user.getPassword());
+        enterPassword(user.getDefaultPassword());
         getLoginButton().waitFor().displayed();
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
         }
-        enterMFA(HTTP.obtainOath2Key());
+        enterMFA(HTTP.obtainOath2KeyCreatedUser());
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
         }
@@ -128,4 +155,17 @@ public class LoginPage {
         return mfaInput;
     }
 
+    public void submitButton() {
+        submitButton.click();
+    }
+
+    public void passwordSetToDefault() {
+        passwordSet.type(user.getDefaultPassword());
+    }
+
+    public void setKey() {
+        secretKey.waitFor().displayed();
+        String key = secretKey.get().text();
+        user.setSecretKey(key);
+    }
 }

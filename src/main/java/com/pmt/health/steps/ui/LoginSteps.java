@@ -6,7 +6,6 @@ import com.pmt.health.workflows.LoginPage;
 import com.pmt.health.workflows.UserAdminPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.springframework.context.annotation.Description;
 
 public class LoginSteps {
 
@@ -32,14 +31,17 @@ public class LoginSteps {
         }
     }
 
-    @Description("Logs in with the option of providing an attempt prefix for special login cases.")
-    @When("^I (try to )?login$")
-    public void login(String attempt) {
+    @When("^I login as user$")
+    public void loginAsUser() {
+        this.loginPage.login();
+    }
+
+    @When("^I set login$")
+    public void setLogin() {
         this.loginPage.loadEnvironment();
-        this.loginPage.login(this.user);
-        if (!"try to ".equals(attempt)) {
-            this.userAdminPage.waitForLoginLoad();
-        }
+        this.loginPage.setLogin();
+        this.loginPage.passwordSetToDefault();
+        this.loginPage.submitButton();
     }
 
     @When("^I logout$")

@@ -1,6 +1,9 @@
 package com.pmt.health.objects.user;
 
 import com.pmt.health.exceptions.VibrentJSONException;
+import com.pmt.health.steps.Configuration;
+import com.pmt.health.utilities.Property;
+
 
 import java.io.IOException;
 import java.util.*;
@@ -9,16 +12,36 @@ public class User {
 
     protected String email;
     protected String password; // NOSONAR
+    protected String defaultPassword;
     protected String firstName;
     protected String lastName;
+    protected static String secretKey;
     protected List<Role> roles;
-
     private String xauthToken;
 
     public User() throws IOException, VibrentJSONException {
         firstName = "Automation";
         lastName = "user";
         email = UserUtility.makeRandomUserEmail();
+        password = "";
+        secretKey = "";
+        defaultPassword = Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass");
+    }
+
+    public static String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public String getDefaultPassword() {
+        return defaultPassword;
+    }
+
+    public void setDefaultPassword(String defaultPassword) {
+        this.defaultPassword = defaultPassword;
     }
 
     public String getEmail() {

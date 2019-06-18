@@ -26,6 +26,7 @@ import com.google.gson.JsonSyntaxException;
 import com.pmt.health.exceptions.EndpointException;
 import com.pmt.health.exceptions.VibrentIOException;
 import com.pmt.health.interactions.services.Response.ResponseData;
+import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
 import com.pmt.health.utilities.Property;
@@ -678,6 +679,31 @@ public class HTTP {
      */
     public static String obtainOath2Key() {
         return generateSecretKey();
+    }
+
+    /**
+     * Obtains a secret key from UI through the User object, checks if it is same as previous one(they update every 30 secs) and
+     * returns it
+     *
+     * @return secret key
+     */
+    private static String generateSecretKeyCreatedUser() {
+        String secretKey = User.getSecretKey();
+        if (secretKey == null) {
+            return null;
+        }
+        // new 6 digit code for a current environment
+        return getTOTPCode(secretKey);
+    }
+
+    /**
+     * public method that can be used outside of this class, return the String with a 6 digit code we need for auth
+     * for users
+     *
+     * @return Oath2Key
+     */
+    public static String obtainOath2KeyCreatedUser() {
+        return generateSecretKeyCreatedUser();
     }
 
     /**

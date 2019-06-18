@@ -51,7 +51,7 @@ public class EMailUtility {
         return response;
     }
 
-    public String emailGetValue() throws IOException {
+    public void emailGetValue() throws IOException {
         String action = "Getting into an inbox and retrieve message via API";
         String expected = "Successfully get into an inbox and retrieve message via the API";
         // setup BaseURL
@@ -85,8 +85,8 @@ public class EMailUtility {
             }
             count++;
         } while (password.isEmpty() && count < 5);
-        //return string from index where string become valuable
-        return password.substring(11);
+        //return string from index where string become valuable and setting it into user object
+         user.setPassword(password.substring(11));
     }
 
     private void generateReport(String action, String expected, Response response) {
