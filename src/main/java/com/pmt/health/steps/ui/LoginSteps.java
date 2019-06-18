@@ -40,8 +40,8 @@ public class LoginSteps {
     public void setLogin() {
         this.loginPage.loadEnvironment();
         this.loginPage.setLogin();
-        this.loginPage.passwordSetToDefault();
-        this.loginPage.submitButton();
+        this.loginPage.passwordSet();
+        this.loginPage.clickSubmitButton();
     }
 
     @When("^I logout$")

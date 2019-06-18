@@ -134,7 +134,7 @@ public class LoginPage {
      */
     public void login() {
         enterEmail(user.getEmail());
-        enterPassword(user.getDefaultPassword());
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"));
         getLoginButton().waitFor().displayed();
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
@@ -153,12 +153,12 @@ public class LoginPage {
         return mfaInput;
     }
 
-    public void submitButton() {
+    public void clickSubmitButton() {
         submitButton.click();
     }
 
-    public void passwordSetToDefault() {
-        passwordSet.type(user.getDefaultPassword());
+    public void passwordSet() {
+        passwordSet.type(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"));
     }
 
     public void setKey() {
