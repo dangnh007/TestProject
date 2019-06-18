@@ -27,7 +27,6 @@ import com.pmt.health.exceptions.EndpointException;
 import com.pmt.health.exceptions.VibrentIOException;
 import com.pmt.health.interactions.services.Response.ResponseData;
 import com.pmt.health.objects.user.User;
-import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
 import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
@@ -687,8 +686,7 @@ public class HTTP {
      *
      * @return secret key
      */
-    private static String generateSecretKeyCreatedUser() {
-        String secretKey = User.getSecretKey();
+    private static String generateSecretKeyCreatedUser(String secretKey) {
         if (secretKey == null) {
             return null;
         }
@@ -702,8 +700,8 @@ public class HTTP {
      *
      * @return Oath2Key
      */
-    public static String obtainOath2KeyCreatedUser() {
-        return generateSecretKeyCreatedUser();
+    public static String obtainOath2KeyCreatedUser(String secretKey) {
+        return generateSecretKeyCreatedUser(secretKey);
     }
 
     /**

@@ -15,7 +15,7 @@ public class User {
     protected String defaultPassword;
     protected String firstName;
     protected String lastName;
-    protected static String secretKey;
+    protected String secretKey;
     protected List<Role> roles;
     private String xauthToken;
 
@@ -28,7 +28,7 @@ public class User {
         defaultPassword = Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass");
     }
 
-    public static String getSecretKey() {
+    public String getSecretKey() {
         return secretKey;
     }
 

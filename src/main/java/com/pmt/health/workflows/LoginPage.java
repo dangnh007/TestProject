@@ -63,7 +63,7 @@ public class LoginPage {
         }
         setKey();
         okButton.click();
-        enterMFA(HTTP.obtainOath2KeyCreatedUser());
+        enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
         }
@@ -132,7 +132,6 @@ public class LoginPage {
     /**
      * Activates the login control for the user parameter
      *
-     * @param user A User with an email and password
      */
     public void login() {
         enterEmail(user.getEmail());
@@ -141,7 +140,7 @@ public class LoginPage {
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
         }
-        enterMFA(HTTP.obtainOath2KeyCreatedUser());
+        enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
         }
