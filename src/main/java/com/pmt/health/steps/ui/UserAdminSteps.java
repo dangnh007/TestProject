@@ -40,5 +40,3 @@ public class UserAdminSteps {
         this.userAdminPage.assertCreatedUser();
     }
 }
-
-

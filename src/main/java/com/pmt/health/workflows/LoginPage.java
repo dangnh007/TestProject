@@ -45,11 +45,10 @@ public class LoginPage {
         this.userDropdown = app.newElement(LocatorType.CSS, "button[class='dropdown-toggle btn btn-default']");
         this.logoutButton = app.newElement(LocatorType.XPATH, "//a[text()='Log out']");
         this.okButton = app.newElement(LocatorType.ID, "btnOK");
-        this.secretKey = app.newElement(LocatorType.XPATH, "//div[@class='scan-qr-code-secret']");
-        this.passwordSet = app.newElement(LocatorType.XPATH, "//input[@name='password']");
-        this.submitButton = app.newElement(LocatorType.XPATH, "//input[@class='center-block submit-button btn btn-primary']");
+        this.secretKey = app.newElement(LocatorType.CSS, "div.scan-qr-code-secret");
+        this.passwordSet = app.newElement(LocatorType.CSS, "input[name=password]");
+        this.submitButton = app.newElement(LocatorType.CSS, "input.center-block.submit-button.btn.btn-primary");
     }
-
 
     /**
      * Activates the login flow for just created user

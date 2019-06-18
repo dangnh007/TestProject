@@ -44,7 +44,7 @@ Feature: Login and Logout
       | ROLE_MC_NIH          | 17    |
       | ROLE_MC_SITE_MANAGER | 540   |
 
-  @mc-test @smoke
+  @mc-4607 @smoke
   Scenario Outline: I login with created user
     When I create user with "<role>" and "<group>"
     Then I set login
