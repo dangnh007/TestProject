@@ -17,6 +17,7 @@ import org.testng.log4testng.Logger;
 public class LoginPage {
 
     private static final String SCREEN_SIZE = "screensize";
+    private static final String ADMIN_PASS = ".admin.pass";
     private final App app;
     private final WebbElement emailInput;
     private final WebbElement passwordInput;
@@ -73,7 +74,7 @@ public class LoginPage {
      */
     public void loginAdmin() {
         enterEmail(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.user"));
-        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"));
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
         getLoginButton().waitFor().displayed();
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
@@ -134,7 +135,7 @@ public class LoginPage {
      */
     public void login() {
         enterEmail(user.getEmail());
-        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"));
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
         getLoginButton().waitFor().displayed();
         if (getLoginButton().is().enabled()) {
             getLoginButton().click();
@@ -158,7 +159,7 @@ public class LoginPage {
     }
 
     public void typeNewPassword() {
-        passwordSet.type(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.pass"));
+        passwordSet.type(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
     }
 
     public void setKey() {
