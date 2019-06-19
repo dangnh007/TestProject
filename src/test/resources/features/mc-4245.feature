@@ -33,7 +33,17 @@ Feature: Login and Logout
       | ROLE_MC_NIH          | 17    |
       | ROLE_MC_SITE_MANAGER | 540   |
 
-  @mc-4607 @smoke @api
+  @mc-4607 @smoke
+  Scenario Outline: I login with created user
+    When I create user with "<role>" and "<group>"
+    Then I login for the first time and set up my credentials
+    And I login as user
+    Examples:
+      | role                 | group |
+      | ROLE_MC_NIH          | 17    |
+      | ROLE_MC_SITE_MANAGER | 540   |
+
+  @mc-4718 @smoke @api
   Scenario Outline: Verify email for created user
     When I login as System Administrator via API
     Then I create user with "<role>" and "<group>" via API
