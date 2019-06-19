@@ -77,6 +77,7 @@ public class EMailUtility {
                     response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
                     //Gets password from the html response
                     String resp = response.getMessage();
+                    //Cuts string between two string in the html response
                     password = StringUtils.substringBetween(resp, "Password", "</span>");
                     //generate report
                     generateReport(action, expected, response);
@@ -86,6 +87,7 @@ public class EMailUtility {
             count++;
         } while (password.isEmpty() && count < 5);
         //index where string become valuable and set it into an user object
+        //skips other not valuable characters and spaces until index of needed value
          user.setPassword(password.substring(11));
     }
 
