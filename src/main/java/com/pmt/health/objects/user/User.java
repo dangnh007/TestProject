@@ -12,6 +12,7 @@ public class User {
     protected String firstName;
     protected String lastName;
     protected String secretKey;
+    protected String userId;
     protected List<Role> roles;
     private String xauthToken;
 
@@ -21,6 +22,15 @@ public class User {
         email = UserUtility.makeRandomUserEmail();
         password = "";
         secretKey = "";
+        userId = "";
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getSecretKey() {

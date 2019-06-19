@@ -22,6 +22,7 @@ public class UserUtility {
     public static final String ADMIN_USER = ".admin.user";
     public static final String ADMIN_PASS = ".admin.pass";
 
+    private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
     private static final String VQA3 = "VibQA3+";
     private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
     private static final String REFERER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
@@ -90,11 +91,11 @@ public class UserUtility {
      */
     public Response apiLoginAdmin() throws IOException {
         String action = "Logging in via the API";
-        String expected = "Successfully login in via the API";
+        String expected = "Successfully login in as admin via the API";
         // setup our user credentials
         JsonObject credentials = new JsonObject();
         credentials.addProperty(EMAIL, Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_USER));
-        credentials.addProperty(PASSWORD, Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
+        credentials.addProperty(PASSWORD, PASS);
         RequestData requestData = new RequestData();
         requestData.setJSON(credentials);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
@@ -114,7 +115,7 @@ public class UserUtility {
      */
     public Response apiLoginAdminMFA() throws IOException {
         String action = "Logging in via the API";
-        String expected = "Successfully pass authenticator code via the API";
+        String expected = "Successfully pass authenticator code for admin via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
         mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
@@ -161,5 +162,102 @@ public class UserUtility {
             reporter.warn(action, expected, "User has been not created. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         }
         return response;
+    }
+
+    /**
+     * Logs as user in via the API.
+     * gets secret while login
+     */
+    public void apiGetSecretKey() throws IOException {
+        String action = "Logging in via the API";
+        String expected = "Successfully got a secret Key via the API";
+        // setup our user credentials
+        JsonObject credentials = new JsonObject();
+        credentials.addProperty(EMAIL, user.getEmail());
+        credentials.addProperty(PASSWORD, user.getPassword());
+        RequestData requestData = new RequestData();
+        requestData.setJSON(credentials);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simplePost("/api/login", requestData);
+        if (response.getCode() == 200) {
+            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        } else {
+            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        }
+        //gets secret key from response
+        String secretKey = response.getObjectData().get("data").getAsJsonObject().get("secret").getAsString();
+        user.setSecretKey(secretKey);
+    }
+
+    /**
+     * Logs as user in via the API.
+     */
+    public void apiLoginUser() throws IOException {
+        String action = "Logging in via the API";
+        String expected = "Successfully login in as user via the API";
+        // setup our user credentials
+        JsonObject credentials = new JsonObject();
+        credentials.addProperty(EMAIL, user.getEmail());
+        credentials.addProperty(PASSWORD, PASS);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(credentials);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simplePost("/api/login", requestData);
+        if (response.getCode() == 200) {
+            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        } else {
+            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        }
+    }
+
+    /**
+     * Logs as user in via the API.
+     * Pass authenticator code
+     * sets userId in the User object
+     */
+    public void apiLoginUserMFA() throws IOException {
+        String action = "Logging in via the API";
+        String expected = "Successfully pass authenticator code for user via the API";
+        // setup our user mfa
+        JsonObject mfa = new JsonObject();
+        mfa.addProperty("mfaCode", HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
+        RequestData requestData = new RequestData();
+        requestData.setJSON(mfa);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+        if (response.getCode() == 200) {
+            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        } else {
+            reporter.warn(action, expected, "User not successfully passed authenticator code. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        }
+        //Gets userId value from response
+        String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString();
+        user.setUserId(userId);
+    }
+
+    /**
+     * Logs as user in via the API.
+     * gets secret while login
+     */
+    public void apiSetPassword() throws IOException {
+        String action = "Logging in via the API";
+        String expected = "Successfully set password via the API";
+        // setup our user credentials
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("newPassword", PASS);
+        jsonObject.addProperty("userId", user.getUserId());
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simplePost("/api/changePassword", requestData);
+        if (response.getCode() == 200) {
+            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        } else {
+            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+        }
     }
 }
