@@ -21,6 +21,7 @@ public class UserUtility {
     public static final String EMAIL = "email";
     public static final String ADMIN_USER = ".admin.user";
     public static final String ADMIN_PASS = ".admin.pass";
+    public static final String LOGIN_MESSAGE = "Logging in via the API";
 
     private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
     private static final String VQA3 = "VibQA3+";
@@ -114,7 +115,7 @@ public class UserUtility {
      * Pass authenticator code
      */
     public Response apiLoginAdminMFA() throws IOException {
-        String action = "Logging in via the API";
+        String action = LOGIN_MESSAGE;
         String expected = "Successfully pass authenticator code for admin via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
@@ -133,7 +134,7 @@ public class UserUtility {
     }
 
     public Response apiCreateUser(String role, String group) throws IOException {
-        String action = "create user via the API";
+        String action = "Create user via the API";
         String expected = "Successfully created user via the API";
         //setup our body for creating user
         JsonObject createUser = new JsonObject();
@@ -169,7 +170,7 @@ public class UserUtility {
      * gets secret while login
      */
     public void apiGetSecretKey() throws IOException {
-        String action = "Logging in via the API";
+        String action = LOGIN_MESSAGE;
         String expected = "Successfully got a secret Key via the API";
         // setup our user credentials
         JsonObject credentials = new JsonObject();
@@ -194,7 +195,7 @@ public class UserUtility {
      * Logs as user in via the API.
      */
     public void apiLoginUser() throws IOException {
-        String action = "Logging in via the API";
+        String action = LOGIN_MESSAGE;
         String expected = "Successfully login in as user via the API";
         // setup our user credentials
         JsonObject credentials = new JsonObject();
@@ -218,7 +219,7 @@ public class UserUtility {
      * sets userId in the User object
      */
     public void apiLoginUserMFA() throws IOException {
-        String action = "Logging in via the API";
+        String action = LOGIN_MESSAGE;
         String expected = "Successfully pass authenticator code for user via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
@@ -243,7 +244,7 @@ public class UserUtility {
      * gets secret while login
      */
     public void apiSetPassword() throws IOException {
-        String action = "Logging in via the API";
+        String action = LOGIN_MESSAGE;
         String expected = "Successfully set password via the API";
         // setup our user credentials
         JsonObject jsonObject = new JsonObject();
