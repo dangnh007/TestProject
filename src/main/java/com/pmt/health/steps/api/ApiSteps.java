@@ -58,7 +58,7 @@ public class ApiSteps {
 
     @Then("^I login as user via API$")
     public void loginAsUserViaAPI() throws IOException {
-        userUtility.apiGetSecretKey();
+        userUtility.retrieveAndSetUserSecretKey();
         userUtility.apiLoginUserMFA();
         userUtility.apiSetPassword();
         userUtility.apiLoginUser();

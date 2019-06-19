@@ -107,7 +107,7 @@ public class UserUtility {
         return response;
     }
 
-    private void generateReport(String action, String expected, Response response, String s) {
+    private void generateReport(String action, String expected, Response response, String failMessage) {
         if (response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
@@ -166,7 +166,7 @@ public class UserUtility {
      * Logs as user in via the API.
      * gets secret while login
      */
-    public void apiGetSecretKey() throws IOException {
+    public void retrieveAndSetUserSecretKey() throws IOException {
         String action = LOGIN_MESSAGE;
         String expected = "Successfully got a secret Key via the API";
         // setup our user credentials
