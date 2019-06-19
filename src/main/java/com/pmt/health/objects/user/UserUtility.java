@@ -103,11 +103,11 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost(LOGIN_ENDPOINT, requestData);
-        generateReport(action, expected, response, "Admin not successfully logged in. ");
+        reporterPassFailStep(action, expected, response, "Admin not successfully logged in. ");
         return response;
     }
 
-    private void generateReport(String action, String expected, Response response, String failMessage) {
+    private void reporterPassFailStep(String action, String expected, Response response, String failMessage) {
         if (response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
@@ -130,7 +130,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
-        generateReport(action, expected, response, "Admin not successfully passed authenticator code. ");
+        reporterPassFailStep(action, expected, response, "Admin not successfully passed authenticator code. ");
         return response;
     }
 
@@ -158,7 +158,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/userAdmin/user?roleName=ROLE_MC_SYSTEM_ADMINISTRATOR", requestData);
-        generateReport(action, expected, response, "User has been not created. ");
+        reporterPassFailStep(action, expected, response, "User has been not created. ");
         return response;
     }
 
@@ -178,7 +178,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost(LOGIN_ENDPOINT, requestData);
-        generateReport(action, expected, response, "Failed to find secret key. ");
+        reporterPassFailStep(action, expected, response, "Failed to find secret key. ");
         //gets secret key from response
         String secretKey = response.getObjectData().get("data").getAsJsonObject().get("secret").getAsString();
         user.setSecretKey(secretKey);
@@ -199,7 +199,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost(LOGIN_ENDPOINT, requestData);
-        generateReport(action, expected, response, "User not successfully logged in. ");
+        reporterPassFailStep(action, expected, response, "User not successfully logged in. ");
     }
 
     /**
@@ -218,7 +218,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
-        generateReport(action, expected, response, "User not successfully passed authenticator code. ");
+        reporterPassFailStep(action, expected, response, "User not successfully passed authenticator code. ");
         //Gets userId value from response
         String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString();
         user.setUserId(userId);
@@ -240,6 +240,6 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/changePassword", requestData);
-        generateReport(action, expected, response, "Failed to set new password. ");
+        reporterPassFailStep(action, expected, response, "Failed to set new password. ");
     }
 }
