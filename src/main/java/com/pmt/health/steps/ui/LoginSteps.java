@@ -36,7 +36,7 @@ public class LoginSteps {
         this.loginPage.login();
     }
 
-    @When("^I set login$")
+    @When("^I login for the first time and set up my credentials$")
     public void setLogin() {
         this.loginPage.loadEnvironment();
         this.loginPage.setLogin();

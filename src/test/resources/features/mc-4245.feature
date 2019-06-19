@@ -47,7 +47,7 @@ Feature: Login and Logout
   @mc-4607 @smoke
   Scenario Outline: I login with created user
     When I create user with "<role>" and "<group>"
-    Then I set login
+    Then I login for the first time and set up my credentials
     And I login as user
     Examples:
       | role                 | group |

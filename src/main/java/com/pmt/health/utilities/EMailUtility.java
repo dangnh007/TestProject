@@ -85,7 +85,7 @@ public class EMailUtility {
             }
             count++;
         } while (password.isEmpty() && count < 5);
-        //returns string from index where string become valuable and set it into an user object
+        //index where string become valuable and set it into an user object
          user.setPassword(password.substring(11));
     }
 
