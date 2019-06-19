@@ -92,7 +92,7 @@ public class UserUtility {
      * Pass credentials
      */
     public Response apiLoginAdmin() throws IOException {
-        String action = "Logging in via the API";
+        String action = LOGIN_MESSAGE;
         String expected = "Successfully login in as admin via the API";
         // setup our user credentials
         JsonObject credentials = new JsonObject();
