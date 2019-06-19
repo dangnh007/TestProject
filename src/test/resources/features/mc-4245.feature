@@ -53,3 +53,12 @@ Feature: Login and Logout
       | role                 | group |
       | ROLE_MC_NIH          | 17    |
       | ROLE_MC_SITE_MANAGER | 540   |
+
+  @mc-4723 @smoke @api
+  Scenario Outline: I login with created user via API
+    When I create user with "<role>" and "<group>"
+    Then I login as user via API
+    Examples:
+      | role                 | group |
+      | ROLE_MC_NIH          | 17    |
+      | ROLE_MC_SITE_MANAGER | 540   |

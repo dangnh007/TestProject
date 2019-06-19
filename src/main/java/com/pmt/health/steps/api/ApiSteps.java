@@ -55,4 +55,13 @@ public class ApiSteps {
         eMailUtility.emailInbox();
         eMailUtility.emailGetValue();
     }
+
+    @Then("^I login as user via API$")
+    public void loginAsUserViaAPI() throws IOException {
+        userUtility.retrieveAndSetUserSecretKey();
+        userUtility.apiLoginUserMFA();
+        userUtility.apiSetPassword();
+        userUtility.apiLoginUser();
+        userUtility.apiLoginUserMFA();
+    }
 }
