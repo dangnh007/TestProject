@@ -111,7 +111,7 @@ public class UserUtility {
         if (response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
-            reporter.warn(action, expected, s + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+            reporter.warn(action, expected, failMessage + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         }
     }
 
