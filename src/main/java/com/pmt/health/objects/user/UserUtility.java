@@ -23,6 +23,7 @@ public class UserUtility {
     public static final String ADMIN_PASS = ".admin.pass";
     public static final String LOGIN_MESSAGE = "Logging in via the API";
 
+    private static final String LOGIN_ENDPOINT = "/api/login";
     private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
     private static final String VQA3 = "VibQA3+";
     private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
@@ -101,13 +102,17 @@ public class UserUtility {
         requestData.setJSON(credentials);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
-        Response response = adminHttp.simplePost("/api/login", requestData);
+        Response response = adminHttp.simplePost(LOGIN_ENDPOINT, requestData);
+        generateReport(action, expected, response, "Admin not successfully logged in. ");
+        return response;
+    }
+
+    private void generateReport(String action, String expected, Response response, String s) {
         if (response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
-            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
+            reporter.warn(action, expected, s + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         }
-        return response;
     }
 
     /**
@@ -125,11 +130,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "User not successfully passed authenticator code. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+        generateReport(action, expected, response, "Admin not successfully passed authenticator code. ");
         return response;
     }
 
@@ -157,11 +158,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/userAdmin/user?roleName=ROLE_MC_SYSTEM_ADMINISTRATOR", requestData);
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "User has been not created. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+        generateReport(action, expected, response, "User has been not created. ");
         return response;
     }
 
@@ -180,12 +177,8 @@ public class UserUtility {
         requestData.setJSON(credentials);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
-        Response response = adminHttp.simplePost("/api/login", requestData);
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+        Response response = adminHttp.simplePost(LOGIN_ENDPOINT, requestData);
+        generateReport(action, expected, response, "Failed to find secret key. ");
         //gets secret key from response
         String secretKey = response.getObjectData().get("data").getAsJsonObject().get("secret").getAsString();
         user.setSecretKey(secretKey);
@@ -205,12 +198,8 @@ public class UserUtility {
         requestData.setJSON(credentials);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
-        Response response = adminHttp.simplePost("/api/login", requestData);
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+        Response response = adminHttp.simplePost(LOGIN_ENDPOINT, requestData);
+        generateReport(action, expected, response, "User not successfully logged in. ");
     }
 
     /**
@@ -229,11 +218,7 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "User not successfully passed authenticator code. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+        generateReport(action, expected, response, "User not successfully passed authenticator code. ");
         //Gets userId value from response
         String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString();
         user.setUserId(userId);
@@ -255,10 +240,6 @@ public class UserUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost("/api/changePassword", requestData);
-        if (response.getCode() == 200) {
-            reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        } else {
-            reporter.warn(action, expected, "User not successfully logged in. " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
-        }
+        generateReport(action, expected, response, "Failed to set new password. ");
     }
 }
