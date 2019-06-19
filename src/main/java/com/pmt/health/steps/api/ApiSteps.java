@@ -63,6 +63,5 @@ public class ApiSteps {
         userUtility.apiSetPassword();
         userUtility.apiLoginUser();
         userUtility.apiLoginUserMFA();
-
     }
 }
