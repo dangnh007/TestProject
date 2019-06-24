@@ -48,7 +48,7 @@ public class ApiSteps {
     }
 
     @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void createUserAPI(String role, String group) throws IOException {
+    public void createUserAPI(String role, String group) throws IOException, InterruptedException {
         userUtility.apiLoginAdmin();
         userUtility.apiLoginAdminMFA();
         userUtility.apiCreateUser(role, group);

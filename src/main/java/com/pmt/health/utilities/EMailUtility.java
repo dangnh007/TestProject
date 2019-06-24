@@ -87,13 +87,12 @@ public class EMailUtility {
             count++;
             Thread.sleep(1000);
         } while (password.isEmpty() && count < 5);
-        //return string from index where string become valuable
         if (password.isEmpty()) {
             reporter.fail(action, expected, "Value was not found.");
         }
         //index where string become valuable and set it into an user object
         //skips other not valuable characters and spaces until index of needed value
-         user.setPassword(password.substring(11));
+        user.setPassword(password.substring(11));
     }
 
     private void generateReport(String action, String expected, Response response) {
