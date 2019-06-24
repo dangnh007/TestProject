@@ -32,9 +32,9 @@ public class ApiSteps {
         userUtility.apiLoginAdminMFA();
     }
 
-    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\" via API$" )
+    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\" via API$")
     public void createUser(String role, String group) throws IOException {
-        userUtility.apiCreateUser(role,group);
+        userUtility.apiCreateUser(role, group);
     }
 
     @Then("^I check email inbox$")
@@ -47,4 +47,21 @@ public class ApiSteps {
         eMailUtility.emailGetValue();
     }
 
+    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void createUserAPI(String role, String group) throws IOException {
+        userUtility.apiLoginAdmin();
+        userUtility.apiLoginAdminMFA();
+        userUtility.apiCreateUser(role, group);
+        eMailUtility.emailInbox();
+        eMailUtility.emailGetValue();
+    }
+
+    @Then("^I login as user via API$")
+    public void loginAsUserViaAPI() throws IOException {
+        userUtility.retrieveAndSetUserSecretKey();
+        userUtility.apiLoginUserMFA();
+        userUtility.apiSetPassword();
+        userUtility.apiLoginUser();
+        userUtility.apiLoginUserMFA();
+    }
 }

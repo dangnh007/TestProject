@@ -51,7 +51,7 @@ public class EMailUtility {
         return response;
     }
 
-    public String emailGetValue() throws IOException, InterruptedException {
+    public void emailGetValue() throws IOException, InterruptedException {
         String action = "Getting into an inbox and retrieve message via API";
         String expected = "Successfully get into an inbox and retrieve message via the API";
         // setup BaseURL
@@ -77,6 +77,7 @@ public class EMailUtility {
                     response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
                     //Gets password from the html response
                     String resp = response.getMessage();
+                    //Cuts string between two string in the html response
                     password = StringUtils.substringBetween(resp, "Password", "</span>");
                     //generate report
                     generateReport(action, expected, response);
@@ -90,7 +91,9 @@ public class EMailUtility {
         if (password.isEmpty()) {
             reporter.fail(action, expected, "Value was not found.");
         }
-        return password.substring(11);
+        //index where string become valuable and set it into an user object
+        //skips other not valuable characters and spaces until index of needed value
+         user.setPassword(password.substring(11));
     }
 
     private void generateReport(String action, String expected, Response response) {
