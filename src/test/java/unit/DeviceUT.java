@@ -214,13 +214,6 @@ public class DeviceUT {
     }
 
     @Test
-    public void getDeviceVersionMobileTest() {
-        System.setProperty("device", "android");
-        System.setProperty("deviceDetails", "platformVersion=1.3.4");
-        assertEquals(Device.getDeviceVersion(), "1.3.4");
-    }
-
-    @Test
     public void getDeviceVersionNotMobileTest() {
         System.setProperty("device", "chrome");
         System.setProperty("deviceDetails", "platformVersion=1.3.4");
@@ -234,32 +227,12 @@ public class DeviceUT {
         assertEquals(Device.getDeviceVersion(), "1.3.4");
     }
 
-    @Test
-    public void getDeviceVersionNotBrowserTest() {
-        System.setProperty("device", "android");
-        System.setProperty("deviceDetails", "version=1.3.4");
-        assertEquals(Device.getDeviceVersion(), "");
-    }
-
-    @Test
-    public void getDeviceVersionMobileAndTest() {
-        System.setProperty("device", "android");
-        System.setProperty("deviceDetails", "platform=windows&platformVersion=1.3.4");
-        assertEquals(Device.getDeviceVersion(), "1.3.4");
-    }
 
     @Test
     public void getDeviceVersionBrowserAndTest() {
         System.setProperty("device", "firefox");
         System.setProperty("deviceDetails", "platform=windows&version=1.3.4");
         assertEquals(Device.getDeviceVersion(), "1.3.4");
-    }
-
-    @Test
-    public void getDeviceVersionBothAndMobileTest() {
-        System.setProperty("device", "android");
-        System.setProperty("deviceDetails", "platform=windows&platformVersion=1.3&version=1.3.4");
-        assertEquals(Device.getDeviceVersion(), "1.3");
     }
 
     @Test
@@ -293,23 +266,9 @@ public class DeviceUT {
     }
 
     @Test
-    public void getDeviceInfoNotPlatformTest() {
-        System.setProperty("device", "android");
-        System.setProperty("deviceDetails", "platform=windows");
-        assertEquals(Device.getDeviceInfo(), "Android");
-    }
-
-    @Test
     public void getDeviceInfoNameTest() {
         System.setProperty("deviceDetails", "deviceName=samsungLg");
         assertEquals(Device.getDeviceInfo(), "Chrome");
-    }
-
-    @Test
-    public void getDeviceInfoNotNameTest() {
-        System.setProperty("device", "android");
-        System.setProperty("deviceDetails", "deviceName=samsungLg");
-        assertEquals(Device.getDeviceInfo(), "Android on Samsunglg");
     }
 
     @Test

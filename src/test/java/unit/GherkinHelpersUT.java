@@ -105,13 +105,13 @@ public class GherkinHelpersUT {
     @Test
     public void getTestsTest() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@tests-ac-12345", 1));
+        tagsSet.add(new Tag("@tests-mc-12345", 1));
         tagsSet.add(new Tag("@tests-ad-12345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
         assertEquals(GherkinHelpers.getTestLinks(scenario).size(), 1);
-        assertTrue(GherkinHelpers.getTestLinks(scenario).contains("ac-12345"));
+        assertTrue(GherkinHelpers.getTestLinks(scenario).contains("mc-12345"));
     }
 
     @Test
@@ -140,36 +140,36 @@ public class GherkinHelpersUT {
     @Test
     public void getLabelsRemovesFeatureTest() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@feature-ac-345", 1));
+        tagsSet.add(new Tag("@feature-mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("@feature-ac-345"));
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("feature-ac-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("@feature-mc-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("feature-mc-345"));
     }
 
     @Test
     public void getLabelsRemovesScenarioTest() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@ac-345", 1));
+        tagsSet.add(new Tag("@mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("@ac-345"));
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("ac-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("@mc-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("mc-345"));
     }
 
     @Test
     public void getLabelsRemovesTestsTest() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@tests-ac-345", 1));
+        tagsSet.add(new Tag("@tests-mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("@ac-345"));
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("ac-345"));
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("@tests-ac-345"));
-        assertFalse(GherkinHelpers.getLabels(scenario).contains("tests-ac-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("@mc-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("mc-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("@tests-mc-345"));
+        assertFalse(GherkinHelpers.getLabels(scenario).contains("tests-mc-345"));
     }
 
     @Test
@@ -201,7 +201,7 @@ public class GherkinHelpersUT {
     @Test
     public void getEpicLinkNoEpic2Test() throws MalformedURLException {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@ac-345", 1));
+        tagsSet.add(new Tag("@mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
@@ -212,11 +212,11 @@ public class GherkinHelpersUT {
     @Test
     public void getEpicLinkHasFeatureTest() throws MalformedURLException {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@feature-ac-345", 1));
+        tagsSet.add(new Tag("@feature-mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        URL link = new URL(jiraLink + "ac-345");
+        URL link = new URL(jiraLink + "mc-345");
         assertEquals(GherkinHelpers.getEpicLink(scenario), link);
     }
 
@@ -247,7 +247,7 @@ public class GherkinHelpersUT {
     @Test
     public void getTestKeyNoTest2Test() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@feature-ac-345", 1));
+        tagsSet.add(new Tag("@feature-mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
@@ -257,11 +257,11 @@ public class GherkinHelpersUT {
     @Test
     public void getTestKeyHasFeatureTest() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@ac-345", 1));
+        tagsSet.add(new Tag("@mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        assertEquals(GherkinHelpers.getTestKey(scenario), "ac-345");
+        assertEquals(GherkinHelpers.getTestKey(scenario), "mc-345");
     }
 
     @Test
@@ -293,7 +293,7 @@ public class GherkinHelpersUT {
     @Test
     public void getTestLinkNoTest2Test() throws MalformedURLException {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@feature-ac-345", 1));
+        tagsSet.add(new Tag("@feature-mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
@@ -304,11 +304,11 @@ public class GherkinHelpersUT {
     @Test
     public void getTestLinkHasFeatureTest() throws MalformedURLException {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@ac-345", 1));
+        tagsSet.add(new Tag("@mc-345", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        URL link = new URL(jiraLink + "ac-345");
+        URL link = new URL(jiraLink + "mc-345");
         assertEquals(GherkinHelpers.getTestURL(scenario), link);
     }
 
@@ -388,31 +388,31 @@ public class GherkinHelpersUT {
     public void getFileNameTest() {
         Set<Tag> tagsSet = new HashSet<>();
         tagsSet.add(new Tag("@Tag1", 1));
-        tagsSet.add(new Tag("@ac-1234", 1));
+        tagsSet.add(new Tag("@mc-1234", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, null);
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        assertEquals(GherkinHelpers.getFileName(scenario), "ac-1234.html");
+        assertEquals(GherkinHelpers.getFileName(scenario), "mc-1234.html");
     }
 
     @Test
     public void getFileNameBadOutlineTest() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@ac-1234", 1));
+        tagsSet.add(new Tag("@mc-1234", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0, "some feature");
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        assertEquals(GherkinHelpers.getFileName(scenario), "ac-1234.html");
+        assertEquals(GherkinHelpers.getFileName(scenario), "mc-1234.html");
     }
 
     @Test
     public void getFileNameOutlineTest() {
         Set<Tag> tagsSet = new HashSet<>();
-        tagsSet.add(new Tag("@ac-1234", 1));
+        tagsSet.add(new Tag("@mc-1234", 1));
         gherkin.formatter.model.Scenario gherkinScenario =
                 new gherkin.formatter.model.Scenario(null, null, null, null, null, 0,
                         "some feature;some scenario;some description;4");
         Scenario scenario = new ScenarioImpl(null, tagsSet, gherkinScenario);
-        assertEquals(GherkinHelpers.getFileName(scenario), "ac-1234-3.html");
+        assertEquals(GherkinHelpers.getFileName(scenario), "mc-1234-3.html");
     }
 }

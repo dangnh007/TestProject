@@ -530,7 +530,7 @@ public class GherkinFeatureUT {
     @Test
     public void getFeatureTagsTest() {
         assertEquals(GherkinFeature.getFeatureTags(scenario),
-                Arrays.asList("@feature-ac-25111", "@dashboard", "@educational", "@educational-module", "@pmi",
+                Arrays.asList("@feature-mc-25111", "@dashboard", "@educational", "@educational-module", "@pmi",
                         "@subscriber"));
     }
 
@@ -554,17 +554,17 @@ public class GherkinFeatureUT {
 
     @Test
     public void getFeatureKeyTest() {
-        assertEquals(GherkinFeature.getFeatureKey(scenario), "ac-25111");
+        assertEquals(GherkinFeature.getFeatureKey(scenario), "mc-25111");
     }
 
     @Test
     public void getScenarioKeyTest() {
-        assertEquals(GherkinFeature.getScenarioKey(scenario), "ac-25112");
+        assertEquals(GherkinFeature.getScenarioKey(scenario), "mc-25112");
     }
 
     @Test
     public void getScenarioOutlineKeyTest() {
-        assertEquals(GherkinFeature.getScenarioKey(scenarioOutline), "ac-25787");
+        assertEquals(GherkinFeature.getScenarioKey(scenarioOutline), "mc-25787");
     }
 
     @Test
@@ -581,13 +581,13 @@ public class GherkinFeatureUT {
     @Test
     public void getScenarioTagsTest() {
         assertEquals(GherkinFeature.getScenarioTags(scenario),
-                Arrays.asList("@ac-25112", "@access", "@access-education", "@smoke", "@automates-ac-78567"));
+                Arrays.asList("@mc-25112", "@access", "@access-education", "@smoke", "@automates-mc-78567"));
     }
 
     @Test
     public void getScenarioOutlineTagsTest() {
         assertEquals(GherkinFeature.getScenarioTags(scenarioOutline),
-                Arrays.asList("@ac-25787", "@tests-ac-98764", "@scheduling"));
+                Arrays.asList("@mc-25787", "@tests-mc-98764", "@scheduling"));
     }
 
     @Test
@@ -681,7 +681,7 @@ public class GherkinFeatureUT {
 
     @Test
     public void getTestLinksTest() {
-        assertEquals(GherkinFeature.getTestLinks(scenarioOutline), Arrays.asList("ac-98764"));
+        assertEquals(GherkinFeature.getTestLinks(scenarioOutline), Arrays.asList("mc-98764"));
     }
 
     @Test
@@ -696,7 +696,7 @@ public class GherkinFeatureUT {
 
     @Test
     public void getAutomateLinksNoneTest() {
-        assertEquals(GherkinFeature.getAutomateLinks(scenario), Arrays.asList("ac-78567"));
+        assertEquals(GherkinFeature.getAutomateLinks(scenario), Arrays.asList("mc-78567"));
     }
 
     @Test

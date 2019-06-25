@@ -403,7 +403,6 @@ public class GherkinFeature {
         }
         int exampleRow = getScenarioLine(test);
         return Objects.requireNonNull(getFeatureAt(getFeatureFile(test), exampleRow)).trim();
-
     }
 
     private static String getFeatureAt(File featureFile, int scenarioLine) {

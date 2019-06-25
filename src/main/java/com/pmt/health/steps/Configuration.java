@@ -70,6 +70,9 @@ public class Configuration {
      */
     public static URL getEnvironmentURL(String env) {
         try {
+            if (env.isEmpty()) {
+                env = "mc";
+            }
             String u = Property.getProgramProperty(getEnvironment() + ".url." + env);
             if (u == null) {
                 throw new MalformedURLException(
@@ -91,8 +94,8 @@ public class Configuration {
      *
      * @return url that should be used for specified environment
      */
-    public static URL getSubscriberEnvironmentURL() {
-        return getEnvironmentURL("sub");
+    public static URL getMissionControlEnvironmentURL() {
+        return getEnvironmentURL("mc");
     }
 
 
@@ -130,7 +133,7 @@ public class Configuration {
      */
     @SuppressWarnings("squid:S2259")
     public JsonObject getSystemInfo(Reporter reporter) throws IOException {
-        if (getSubscriberEnvironmentURL() == null) {
+        if (getMissionControlEnvironmentURL() == null) {
             log.error("Issue obtaining subscriber environment, unable to run tests");
             return null;
         }
@@ -168,7 +171,7 @@ public class Configuration {
      * @return url that should be used for specified environment
      */
     public static URL getEnvironmentURL() {
-        return getSubscriberEnvironmentURL();
+        return getMissionControlEnvironmentURL();
     }
 
     /**
