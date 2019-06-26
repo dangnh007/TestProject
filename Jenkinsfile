@@ -253,14 +253,14 @@ podTemplate(
                                                         container  : "${containerName}-default",
                                                         tags       : '@api',
                                                         defaultWait: 15,
-                                                        threads    : 5
+                                                        threads    : 1
                                                 ],
                                                 [
                                                         name       : 'chrome',
                                                         container  : "${containerName}-chrome",
                                                         tags       : '~@api --tags @smoke',
                                                         defaultWait: 15,
-                                                        threads    : 5
+                                                        threads    : 1
 //                                                    ],
 //                                                    [
 //                                                            name       : 'android',
