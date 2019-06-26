@@ -16,7 +16,7 @@ mvn clean verify \
     -Dfail.fast \
     -Dmaven.test.failure.ignore=false \
     -Ddefault.wait=${DEFAULT_WAIT:-15} \
-    ${HUB}
+    ${HUB} \
     ${OTHER}
 
 export RESULT=$?
