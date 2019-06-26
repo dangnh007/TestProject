@@ -49,7 +49,7 @@
                 <directory>${alt.build.dir}</directory>
             </build>
         </profile>
-        
+
         <profile>
             <id>appVersion</id>
             <activation>
