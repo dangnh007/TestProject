@@ -160,7 +160,7 @@ podTemplate(
                                     helmDeploy(
                                             gitBranch: testAgainstRaw,
                                             stackName: "${stackName}",
-                                            mcEnabled: true,
+                                            missionControlEnabled: true,
                                             chartsRepo: "devcharts",
                                             stageFunc: buildStage
                                     )
