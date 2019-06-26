@@ -246,7 +246,7 @@ podTemplate(
                                         registry: VibrentConstants.CIREG_REGISTRY,
                                         buildNumber: env.BUILD_NUMBER,
                                         framework: "PMTAutomationFramework",
-                                        other: "-Dautomation.mc.url=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
+                                        other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
                                         platforms: [
                                                 [
                                                         name       : 'api',
