@@ -244,10 +244,9 @@ podTemplate(
                                 runDockerTests(
                                         testBranch: branch,
                                         registry: VibrentConstants.CIREG_REGISTRY,
-                                        subUrl: "https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
-                                        adminUrl: "https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
                                         buildNumber: env.BUILD_NUMBER,
                                         framework: "PMTAutomationFramework",
+                                        other: "-Dautomation.mc.url=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
                                         platforms: [
                                                 [
                                                         name       : 'api',
