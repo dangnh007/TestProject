@@ -36,6 +36,72 @@
         <jira.password></jira.password>
     </properties>
 
+    <!-- sets nexus repo based on provided environment -->
+    <profiles>
+        <profile>
+            <id>alternateBuildDir</id>
+            <activation>
+                <property>
+                    <name>alt.build.dir</name>
+                </property>
+            </activation>
+            <build>
+                <directory>${alt.build.dir}</directory>
+            </build>
+        </profile>
+        
+        <profile>
+            <id>appVersion</id>
+            <activation>
+                <property>
+                    <name>appVersion</name>
+                </property>
+            </activation>
+            <properties>
+                <mobile.app.version>${appVersion}</mobile.app.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>emptyEnvironment</id>
+            <activation>
+                <property>
+                    <name>!environment</name>
+                </property>
+            </activation>
+            <properties>
+                <mobile.app.artifactId>automation</mobile.app.artifactId>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>automation</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>automation</value>
+                </property>
+            </activation>
+            <properties>
+                <mobile.app.artifactId>automation</mobile.app.artifactId>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>Automation</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>Automation</value>
+                </property>
+            </activation>
+            <properties>
+                <environment>automation</environment>
+                <mobile.app.artifactId>automation</mobile.app.artifactId>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-model -->
         <dependency>
