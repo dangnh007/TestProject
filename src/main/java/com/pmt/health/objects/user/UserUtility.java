@@ -10,9 +10,7 @@ import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class UserUtility {
 
@@ -27,7 +25,7 @@ public class UserUtility {
     private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
     private static final String VQA3 = "VibQA3+";
     private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
-    private static final String REFERER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
+    private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
 
     protected final Reporter reporter;
     private static Random r = new Random();
@@ -38,6 +36,12 @@ public class UserUtility {
         this.user = user;
         this.reporter = reporter;
         this.adminHttp = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);
+    }
+
+    public UserUtility(Reporter reporter, User user, HTTP http) {
+        this.user = user;
+        this.reporter = reporter;
+        this.adminHttp = http;
     }
 
     /**
@@ -151,7 +155,7 @@ public class UserUtility {
         createUser.add("groups", groups);
         //Set headers and body
         Map<String, String> referer = new HashMap<>();
-        referer.put("Referer", REFERER);
+        referer.put("Referer", REFERER_CREATE_USER);
         RequestData requestData = new RequestData();
         adminHttp.addHeaders(referer);
         requestData.setJSON(createUser);

@@ -31,8 +31,14 @@ public class LoginSteps {
         }
     }
 
+    @When("^I login$")
+    public void login() {
+        this.loginPage.login();
+    }
+
     @When("^I login as user$")
     public void loginAsUser() {
+        this.loginPage.loadEnvironment();
         this.loginPage.login();
     }
 
