@@ -14,11 +14,12 @@ Feature: Login and Logout
     When I login as System Administrator
     Then I am logged in
     When I create user with "<role>"
+    And I set awardee level "<org>"
     Then I see created user
     Examples:
-      | role         |
-      | NIH          |
-      | Site manager |
+      | role         | org                                    |
+      | NIH          | PMI                                    |
+      | Site manager | Site/hpo-site-wimadisonschoolofnursing |
 
   @mc-4448 @smoke @api
   Scenario: Admin login via API
@@ -31,7 +32,7 @@ Feature: Login and Logout
     Examples:
       | role                 | group |
       | ROLE_MC_NIH          | 17    |
-      | ROLE_MC_SITE_MANAGER | 545   |
+      | ROLE_MC_SITE_MANAGER | 509   |
 
   @mc-4607 @smoke
   Scenario Outline: Login with created user
@@ -41,7 +42,7 @@ Feature: Login and Logout
     Examples:
       | role                 | group |
       | ROLE_MC_NIH          | 17    |
-      | ROLE_MC_SITE_MANAGER | 545   |
+      | ROLE_MC_SITE_MANAGER | 509   |
 
   @mc-4718 @smoke @api
   Scenario Outline: Verify email for created user
@@ -52,7 +53,7 @@ Feature: Login and Logout
     Examples:
       | role                 | group |
       | ROLE_MC_NIH          | 17    |
-      | ROLE_MC_SITE_MANAGER | 545   |
+      | ROLE_MC_SITE_MANAGER | 509   |
 
   @mc-4723 @smoke @api
   Scenario Outline: Login with created user via API
@@ -61,5 +62,5 @@ Feature: Login and Logout
     Examples:
       | role                 | group |
       | ROLE_MC_NIH          | 17    |
-      | ROLE_MC_SITE_MANAGER | 545   |
+      | ROLE_MC_SITE_MANAGER | 509   |
 

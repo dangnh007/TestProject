@@ -55,7 +55,7 @@ public class APIUtility {
      * Lands as user on Settings via the API.
      * toggle On/Off accepting appointments
      */
-    public Response toggleOnOffViaApi(Boolean toggle) throws IOException {
+    public Response  toggleOnOffViaApi(Boolean toggle) throws IOException {
         String action = "I toggle accepting appointments via API";
         String expected = "Successfully toggled accepting appointments via the API";
         // setup toggle member as ON or OFF

@@ -35,13 +35,9 @@ public class SiteSettingsSteps {
         siteSettingsPage.toggleOnOff();
     }
 
-    @Then("^I hit edit button$")
-    public void hitEditButton() {
-        siteSettingsPage.editPage();
-    }
-
     @Then("^I set target to \"([^\"]*)\"$")
     public void setTargetTo(String target) {
+        siteSettingsPage.editPage();
         siteSettingsPage.setTarget(target);
     }
 

@@ -98,13 +98,13 @@ public class SiteSettingsPage {
 
     public void customHoursOfOperation() {
         hoursOfOperation.click();
-        WebbElement customHrSelection = app.newElement(LocatorType.XPATH, "//span[@class='glyphicon glyphicon-plus']");
+        WebbElement customHrSelection = app.newElement(LocatorType.CSS, "span.glyphicon.glyphicon-plus");
         customHrSelection.click();
     }
 
     public void customHoursOfOperationDelete() {
         hoursOfOperation.click();
-        WebbElement customHrSelection = app.newElement(LocatorType.XPATH, "//div[@title='Custom']");
+        WebbElement customHrSelection = app.newElement(LocatorType.CSS, "div[title=Custom]");
         customHrSelection.click();
         deleteCustomHours();
     }

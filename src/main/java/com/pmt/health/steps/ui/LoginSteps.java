@@ -10,7 +10,6 @@ import cucumber.api.java.en.When;
 public class LoginSteps {
 
     private final User user;
-
     private final DeviceController deviceController;
     private final LoginPage loginPage;
     private final UserAdminPage userAdminPage;

@@ -6,12 +6,11 @@ Feature: PMT Site Settings
   @mc-4851 @smoke
   Scenario Outline: I login as Site manager and set up Site Settings
     Given I create user with "<role>" and "<group>"
-    And I set up my credentials via API
+    When I set up my credentials via API
     And I login as user
     And I go to Settings Page
-    Then I landed on Settings Page
+    And I landed on Settings Page
     And I toggle "<toggle on>" accepting appointments
-    And I hit edit button
     And I set target to "<new target>"
     And I set appointment notice "<new days>"
     And I set custom hrs of operations
@@ -20,17 +19,16 @@ Feature: PMT Site Settings
     And I logout
     And I login
     And I go to Settings Page
-    Then I landed on Settings Page
+    And I landed on Settings Page
     And I toggle "<toggle off>" accepting appointments
-    And I hit edit button
     And I set target to "<default target>"
     And I set appointment notice "<default days>"
     And I delete custom hrs of operations
     And I save changes
-    Then I see successful message
+    And I see successful message
     Examples:
       | role                 | group | toggle on | toggle off | new target | default target | new days | default days |
-      | ROLE_MC_SITE_MANAGER | 545   | true      | false      | 15         | 0              | + 1 Day  | + 3 Days     |
+      | ROLE_MC_SITE_MANAGER | 509   | true      | false      | 15         | 0              | + 1 Day  | + 3 Days     |
 
   @mc-4852 @smoke @api
   Scenario Outline: Set up Site Settings via API
@@ -46,4 +44,4 @@ Feature: PMT Site Settings
     Then I set default hours of operations via API
     Examples:
       | role                 | group | toggle on | toggle off | new target | default target | new goal | default goal | new days | default days |
-      | ROLE_MC_SITE_MANAGER | 545   | true      | false      | 15         | 0              | 5        | 0            | 1        | 3            |
+      | ROLE_MC_SITE_MANAGER | 509   | true      | false      | 15         | 0              | 5        | 0            | 1        | 3            |
