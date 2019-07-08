@@ -17,6 +17,8 @@ import java.util.Map;
 public class APIUtility {
 
     private static final String ID = "id";
+    private static final String TIME_ZONE = "timeZone";
+    private static final String AMERICA_CHICAGO = "America/Chicago";
     private static final String SITE_ID = "siteId";
     private static final String REFERER = "Referer";
     private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
@@ -141,7 +143,7 @@ public class APIUtility {
         hoursOfOperations.addProperty(ID, "");
         hoursOfOperations.addProperty("name", "Custom");
         hoursOfOperations.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
-        hoursOfOperations.addProperty("timeZone", "America/Chicago");
+        hoursOfOperations.addProperty(TIME_ZONE, AMERICA_CHICAGO);
         hoursOfOperations.addProperty("isDefault", false);
         hoursOfOperations.add("status", null);
         //Create calendar object to provide date
@@ -185,7 +187,7 @@ public class APIUtility {
         defWorkingTimeObj.addProperty("templateName", "");
         defWorkingTimeObj.addProperty("dayOfWeek", day);
         defWorkingTimeObj.add("date", null);
-        defWorkingTimeObj.addProperty("timeZone", "America/Chicago");
+        defWorkingTimeObj.addProperty(TIME_ZONE, AMERICA_CHICAGO);
         defWorkingTimeObj.add("maxAppt", null);
         defWorkingTimeObj.addProperty("isClosed", true);
         //timeBlocks
@@ -197,7 +199,7 @@ public class APIUtility {
         timeBlocks.addProperty("name", "Update");
         timeBlocks.addProperty("selected", false);
         timeBlocks.addProperty("startTime", 1561640400);
-        timeBlocks.addProperty("timeZone", "America/Chicago");
+        timeBlocks.addProperty(TIME_ZONE, AMERICA_CHICAGO);
         timeBlocksArr.add(timeBlocks);
         defWorkingTimeObj.add("timeBlocks", timeBlocksArr);
         defWorkingTimeObj.addProperty("availableSlots", false);

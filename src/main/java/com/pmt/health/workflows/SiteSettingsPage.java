@@ -76,6 +76,7 @@ public class SiteSettingsPage {
     }
 
     public void checkDay() {
+        String pContains = "//p[contains(text(), ";
         List<String> days = new ArrayList<>();
         days.add("Monday");
         days.add("Tuesday");
@@ -83,13 +84,13 @@ public class SiteSettingsPage {
         days.add("Thursday");
         days.add("Friday");
         for (String day : days) {
-            WebbElement dayCheck = app.newElement(LocatorType.XPATH, "//p[contains(text(), \"" + day + "\")]/../../../../..//span");
+            WebbElement dayCheck = app.newElement(LocatorType.XPATH, pContains + "\"" + day + "\")]/../../../../..//span");
             dayCheck.click();
-            WebbElement addBlockButton = app.newElement(LocatorType.XPATH, "//p[contains(text(), \"" + day + "\")]/following::button[contains(text(), 'Add Block')][1]");
+            WebbElement addBlockButton = app.newElement(LocatorType.XPATH, pContains + "\"" + day + "\")]/following::button[contains(text(), 'Add Block')][1]");
             addBlockButton.click();
-            WebbElement blockLabel = app.newElement(LocatorType.XPATH, "//p[contains(text(), \"" + day + "\")]/following::input[@placeholder='Block Label']");
+            WebbElement blockLabel = app.newElement(LocatorType.XPATH, pContains + "\"" + day + "\")]/following::input[@placeholder='Block Label']");
             blockLabel.type("Update");
-            WebbElement concurrentAp = app.newElement(LocatorType.XPATH, "//p[contains(text(), \"" + day + "\")]/following::input[@class='concurrent-input form-control']");
+            WebbElement concurrentAp = app.newElement(LocatorType.XPATH, pContains + "\"" + day + "\")]/following::input[@class='concurrent-input form-control']");
             concurrentAp.type("3");
             setCustomTime();
             hoBlockUpdate.click();

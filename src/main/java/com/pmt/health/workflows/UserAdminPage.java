@@ -41,7 +41,6 @@ public class UserAdminPage {
         userSettingsButton.click();
     }
 
-
     /**
      * Clicks on the "Add User" button
      */
