@@ -7,7 +7,6 @@ import com.pmt.health.utilities.LocatorType;
 
 public class UserAdminPage {
 
-    private final App app;
     private final WebbElement addUserButton;
     private final WebbElement loggedInHeadingAdmin;
     private final WebbElement loggedInHeadingSiteManagerUser;
@@ -20,7 +19,6 @@ public class UserAdminPage {
     private User user;
 
     public UserAdminPage(App app, User user) {
-        this.app = app;
         this.user = user;
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
