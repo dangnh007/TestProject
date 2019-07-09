@@ -38,7 +38,7 @@ Feature: Login and Logout
   Scenario Outline: Login with created user
     When I create user with "<role>" and "<group>"
     Then I login for the first time and set up my credentials
-    And I login
+    And I login as user
     Examples:
       | role                 | group |
       | ROLE_MC_NIH          | 17    |

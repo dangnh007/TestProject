@@ -23,10 +23,6 @@ public class SiteSettingsSteps {
     @Then("^I go to Settings Page$")
     public void goToSettingsPage() {
         userAdminPage.userSettings();
-    }
-
-    @Then("^I landed on Settings Page$")
-    public void verifySettingsPage() {
         siteSettingsPage.assertTitle();
     }
 
@@ -49,10 +45,6 @@ public class SiteSettingsSteps {
     @Then("^I save changes$")
     public void saveChanges() {
         siteSettingsPage.saveChanges();
-    }
-
-    @Then("^I see successful message$")
-    public void saveChangesMessage() {
         siteSettingsPage.assertMessage();
     }
 

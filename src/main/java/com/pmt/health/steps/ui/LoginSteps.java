@@ -30,11 +30,6 @@ public class LoginSteps {
         }
     }
 
-    @When("^I login$")
-    public void login() {
-        this.loginPage.login();
-    }
-
     @When("^I login as user$")
     public void loginAsUser() {
         this.loginPage.loadEnvironment();
@@ -56,6 +51,6 @@ public class LoginSteps {
 
     @Then("^I am logged in$")
     public void assertLoggedIn() {
-        this.userAdminPage.assertLoggedIn();
+       this.userAdminPage.assertLoggedIn();
     }
 }
