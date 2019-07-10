@@ -81,7 +81,7 @@ public class ApiSteps {
     }
 
     @Then("^I toggle \"([^\"]*)\" accepting appointments via API$")
-    public void toggleAcceptingAppointmentsViaAPI(Boolean toggle) throws IOException {
+    public void toggleAcceptingAppointmentsViaAPI(String toggle) throws IOException {
         apiUtility.toggleOnOffViaApi(toggle);
     }
 

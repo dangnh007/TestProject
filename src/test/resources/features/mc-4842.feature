@@ -42,4 +42,4 @@ Feature: PMT Site Settings
 
     Examples:
       | role                 | group | toggle on | toggle off | new target | default target | new goal | default goal | new days | default days |
-      | ROLE_MC_SITE_MANAGER | 509   | true      | false      | 15         | 0              | 5        | 0            | 1        | 3            |
+      | ROLE_MC_SITE_MANAGER | 509   | on        | off        | 15         | 0              | 5        | 0            | 1        | 3            |

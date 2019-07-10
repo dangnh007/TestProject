@@ -57,14 +57,18 @@ public class APIUtility {
      * Lands as user on Settings via the API.
      * toggle On/Off accepting appointments
      */
-    public Response  toggleOnOffViaApi(Boolean toggle) throws IOException {
+    public Response toggleOnOffViaApi(String toggle) throws IOException {
         String action = "I toggle accepting appointments via API";
         String expected = "Successfully toggled accepting appointments via the API";
         // setup toggle member as ON or OFF
         Map<String, String> parameters = new HashMap<>();
         parameters.put(SITE_ID, "Site%2Fhpo-site-wimadisonschoolofnursing");
         JsonObject toggleOnOff = new JsonObject();
-        toggleOnOff.addProperty("acceptingAppointments", toggle);
+        if (toggle.equalsIgnoreCase("on")) {
+            toggleOnOff.addProperty("acceptingAppointments", true);
+        } else {
+            toggleOnOff.addProperty("acceptingAppointments", false);
+        }
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         //set request
