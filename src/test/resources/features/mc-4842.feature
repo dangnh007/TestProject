@@ -22,6 +22,7 @@ Feature: PMT Site Settings
     And I set appointment notice "<default days>"
     And I delete custom hrs of operations
     And I save changes
+    
     Examples:
       | role                 | group | toggle on | toggle off | new target | default target | new days | default days |
       | ROLE_MC_SITE_MANAGER | 509   | true      | false      | 15         | 0              | + 1 Day  | + 3 Days     |
@@ -38,6 +39,7 @@ Feature: PMT Site Settings
     Then I set daily "<default target>" and "<default goal>" via API
     Then I set "<default days>" of minimum appointment notice via API
     Then I set default hours of operations via API
+
     Examples:
       | role                 | group | toggle on | toggle off | new target | default target | new goal | default goal | new days | default days |
       | ROLE_MC_SITE_MANAGER | 509   | true      | false      | 15         | 0              | 5        | 0            | 1        | 3            |

@@ -28,7 +28,7 @@ public class AddUserPage {
     }
 
     public void checkAwardee(String org) {
-        WebbElement awardee = app.newElement(LocatorType.ID,org);
+        WebbElement awardee = app.newElement(LocatorType.ID, org);
         awardee.click();
     }
 
