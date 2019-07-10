@@ -66,9 +66,8 @@ public class APIUtility {
         JsonObject toggleOnOff = new JsonObject();
         if ("on".equalsIgnoreCase(toggle)) {
             toggleOnOff.addProperty("acceptingAppointments", true);
-        } else {
-            toggleOnOff.addProperty("acceptingAppointments", false);
         }
+            toggleOnOff.addProperty("acceptingAppointments", false);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         //set request
