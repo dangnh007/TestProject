@@ -130,7 +130,6 @@ public class SiteSettingsPage {
     }
 
     public void saveChanges() {
-        saveButton.waitFor().displayed();
         saveButton.click();
     }
 

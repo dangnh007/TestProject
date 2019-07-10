@@ -22,10 +22,10 @@ Feature: PMT Site Settings
     And I set appointment notice "<default days>"
     And I delete custom hrs of operations
     And I save changes
-    
+
     Examples:
       | role                 | group | toggle on | toggle off | new target | default target | new days | default days |
-      | ROLE_MC_SITE_MANAGER | 509   | true      | false      | 15         | 0              | + 1 Day  | + 3 Days     |
+      | ROLE_MC_SITE_MANAGER | 509   | on        | off        | 15         | 0              | + 1 Day  | + 3 Days     |
 
   @mc-4852 @smoke @api
   Scenario Outline: Set up Site Settings via API
