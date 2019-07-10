@@ -64,7 +64,7 @@ public class APIUtility {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(SITE_ID, "Site%2Fhpo-site-wimadisonschoolofnursing");
         JsonObject toggleOnOff = new JsonObject();
-        if (toggle.equalsIgnoreCase("on")) {
+        if ("on".equalsIgnoreCase(toggle)) {
             toggleOnOff.addProperty("acceptingAppointments", true);
         } else {
             toggleOnOff.addProperty("acceptingAppointments", false);
