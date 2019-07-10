@@ -64,7 +64,7 @@ public class APIUtility {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(SITE_ID, "Site%2Fhpo-site-wimadisonschoolofnursing");
         JsonObject toggleOnOff = new JsonObject();
-        toggleOnOff(toggle, toggleOnOff);
+        toggleOnOff.addProperty("acceptingAppointments", "on".equalsIgnoreCase(toggle));
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         //set request
@@ -78,14 +78,6 @@ public class APIUtility {
         //generate report
         reporterPassFailStep(action, expected, response, "Not successfully set a toggle. ");
         return response;
-    }
-
-    private void toggleOnOff(String toggle, JsonObject toggleOnOff) {
-        if ("on".equalsIgnoreCase(toggle))
-        {
-            toggleOnOff.addProperty("acceptingAppointments", true);
-        }
-        toggleOnOff.addProperty("acceptingAppointments", false);
     }
 
     /**
