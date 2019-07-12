@@ -7,30 +7,36 @@ import com.pmt.health.utilities.LocatorType;
 
 public class UserAdminPage {
 
-    private final App app;
     private final WebbElement addUserButton;
     private final WebbElement loggedInHeadingAdmin;
+    private final WebbElement loggedInHeadingSiteManagerUser;
     private final WebbElement createdUser;
     private final WebbElement userAdminButton;
+    private final WebbElement userSettingsButton;
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
 
     private User user;
 
     public UserAdminPage(App app, User user) {
-        this.app = app;
         this.user = user;
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
+        this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
         this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
         this.userAdminButton = app.newElement(LocatorType.CSS, "ul li:nth-of-type(4) a");
+        this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
     }
 
     public void userAdmin() {
         userAdminButton.click();
         addUserButton.hover();
+    }
+
+    public void userSettings() {
+        userSettingsButton.click();
     }
 
     /**
@@ -48,11 +54,19 @@ public class UserAdminPage {
         loggedInHeadingAdmin.waitFor().displayed();
     }
 
+    public void waitForLoginLoadSiteManager() {
+        loggedInHeadingSiteManagerUser.waitFor().displayed();
+    }
+
     /**
      * Asserts that the current user is logged out by making sure the login page is displayed.
      */
     public void assertLoggedIn() {
         loggedInHeadingAdmin.assertState().displayed();
+    }
+
+    public void assertLoggedInSiteManager() {
+        loggedInHeadingSiteManagerUser.assertState().displayed();
     }
 
     /**

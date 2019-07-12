@@ -31,7 +31,11 @@ public class UserAdminSteps {
         this.addUserPage.enterLastName(user.getLastName());
         this.addUserPage.enterEmail(user.getEmail());
         this.addUserPage.selectRole(role);
-        this.addUserPage.checkAwardee();
+    }
+
+    @When("^I set awardee level \"([^\"]*)\"$")
+    public void setAwardeeLevel(String org) {
+        this.addUserPage.checkAwardee(org);
         this.addUserPage.saveUser();
     }
 

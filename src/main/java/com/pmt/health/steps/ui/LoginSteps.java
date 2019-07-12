@@ -10,7 +10,6 @@ import cucumber.api.java.en.When;
 public class LoginSteps {
 
     private final User user;
-
     private final DeviceController deviceController;
     private final LoginPage loginPage;
     private final UserAdminPage userAdminPage;
@@ -33,6 +32,7 @@ public class LoginSteps {
 
     @When("^I login as user$")
     public void loginAsUser() {
+        this.loginPage.loadEnvironment();
         this.loginPage.login();
     }
 
@@ -51,6 +51,6 @@ public class LoginSteps {
 
     @Then("^I am logged in$")
     public void assertLoggedIn() {
-        this.userAdminPage.assertLoggedIn();
+       this.userAdminPage.assertLoggedIn();
     }
 }

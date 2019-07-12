@@ -26,7 +26,6 @@ import com.google.gson.JsonSyntaxException;
 import com.pmt.health.exceptions.EndpointException;
 import com.pmt.health.exceptions.VibrentIOException;
 import com.pmt.health.interactions.services.Response.ResponseData;
-import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.Configuration;
 import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;

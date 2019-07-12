@@ -68,7 +68,7 @@ public class EMailUtility {
         do {
             // make the actual call
             Response response = emailAPI.get(MESSAGES_ENDPOINT, requestData);
-            //Initialize ArrayData rom response
+            //Initialize ArrayData from response
             int size = response.getArrayData().size();
             JsonArray arrayData = response.getArrayData();
             //Loop through to get a new response for a valid message

@@ -14,8 +14,6 @@ public class AddUserPage {
     private final WebbElement emailInput;
     private final WebbElement rolesInput;
     private final WebbElement saveButton;
-    private final WebbElement smCheckbox;
-    private final WebbElement nhiCheckbox;
 
     private User user;
 
@@ -27,16 +25,11 @@ public class AddUserPage {
         this.emailInput = app.newElement(LocatorType.NAME, "email");
         this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
         this.saveButton = app.newElement(LocatorType.ID, "save");
-        this.smCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='17']");
-        this.nhiCheckbox = app.newElement(LocatorType.XPATH, "//input[@value='540']");
     }
 
-    public void checkAwardee() {
-        if (smCheckbox.is().present()) {
-            smCheckbox.click();
-        } else {
-            nhiCheckbox.click();
-        }
+    public void checkAwardee(String org) {
+        WebbElement awardee = app.newElement(LocatorType.ID, org);
+        awardee.click();
     }
 
     public void saveUser() {
