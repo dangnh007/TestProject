@@ -471,6 +471,7 @@ public class HTTP {
             buff.close();
             VibrentIOException vioe = new VibrentIOException(ioe.getMessage(), connection.getResponseCode(), sb.toString());
             vioe.setRequestData(requestData);
+            System.out.println(requestData.getHeaders());
             throw vioe;
         }
     }

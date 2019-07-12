@@ -85,7 +85,7 @@ public class VibrentIOException extends IOException {
         for (Object name: requestData.getHeaders().keySet()){
             String key = name.toString();
             String value = requestData.getHeaders().get(name).toString();
-            builder.append(key + " : " + value);
+            builder.append(key).append(" : ").append(value);
         }
         builder.append(" ");
         builder.append("  JSON Data: ").append(json);
