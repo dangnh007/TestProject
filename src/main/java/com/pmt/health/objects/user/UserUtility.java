@@ -24,7 +24,7 @@ public class UserUtility {
     private static final String LOGIN_ENDPOINT = "/api/login";
     private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
     private static final String VQA3 = "VibQA3+";
-    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
+    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.mc");
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
 
     protected final Reporter reporter;
@@ -127,9 +127,13 @@ public class UserUtility {
         String action = LOGIN_MESSAGE;
         String expected = "Successfully pass authenticator code for admin via the API";
         // setup our user mfa
+        //Set headers and body
+        Map<String, String> referer = new HashMap<>();
+        referer.put("Referer", REFERER_CREATE_USER);
+        RequestData requestData = new RequestData();
+        adminHttp.addHeaders(referer);
         JsonObject mfa = new JsonObject();
         mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
-        RequestData requestData = new RequestData();
         requestData.setJSON(mfa);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
