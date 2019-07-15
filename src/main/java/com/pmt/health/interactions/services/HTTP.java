@@ -417,7 +417,6 @@ public class HTTP {
     private Response getResponse(HttpURLConnection connection, String call, String service, RequestData
             requestData, ResponseData expectedResponseData, String filePrefix) throws IOException {
         int status = connection.getResponseCode();
-        System.out.println(connection.getHeaderFields());
         if (connection.getHeaderFields().containsKey("Set-Cookie")) {
             String setCookie = connection.getHeaderFields().get("Set-Cookie").get(0);
             if (setCookie.contains("SESSION")) {
