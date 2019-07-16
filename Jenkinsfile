@@ -241,7 +241,6 @@ podTemplate(
                     },
                     deploy: {},
                     test: { failableStage ->
-                        parallel(
                                 runDockerTests(
                                         testBranch: branch,
                                         registry: VibrentConstants.CIREG_REGISTRY,
@@ -281,7 +280,6 @@ podTemplate(
                                                 ]
                                         ],
                                         stageFunc: failableStage
-                                )
                         )
                     },
                     publish: { failableStage ->
