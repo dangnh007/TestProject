@@ -241,6 +241,7 @@ podTemplate(
                     },
                     deploy: {},
                     test: { failableStage ->
+                        parallel(
                                 runDockerTests(
                                         testBranch: branch,
                                         registry: VibrentConstants.CIREG_REGISTRY,
@@ -255,13 +256,6 @@ podTemplate(
                                                         defaultWait: 15,
                                                         threads    : 1
                                                 ],
-                                                [
-                                                        name       : 'chrome',
-                                                        container  : "${containerName}-chrome",
-                                                        tags       : '~@api --tags @smoke',
-                                                        defaultWait: 15,
-                                                        threads    : 1
-//                                                    ],
 //                                                    [
 //                                                            name       : 'android',
 //                                                            tags       : '~@api --tags @smoke',
@@ -277,9 +271,43 @@ podTemplate(
 //                                                            threads    : 2,
 //                                                            hub        : true,
 //                                                            app        : "${stackName}.zip"
-                                                ]
                                         ],
                                         stageFunc: failableStage
+                                )
+                        )
+                        parallel(
+                                runDockerTests(
+                                        testBranch: branch,
+                                        registry: VibrentConstants.CIREG_REGISTRY,
+                                        buildNumber: env.BUILD_NUMBER,
+                                        framework: "PMTAutomationFramework",
+                                        other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
+                                        platforms: [
+                                                [
+                                                        name       : 'chrome',
+                                                        container  : "${containerName}-chrome",
+                                                        tags       : '~@api --tags @smoke',
+                                                        defaultWait: 15,
+                                                        threads    : 1
+                                                ],
+//                                                    [
+//                                                            name       : 'android',
+//                                                            tags       : '~@api --tags @smoke',
+//                                                            defaultWait: 30,
+//                                                            threads    : 2,
+//                                                            hub        : true,
+//                                                            app        : "${stackName}.apk"
+//                                                    ],
+//                                                    [
+//                                                            name       : 'iphone',
+//                                                            tags       : '~@api --tags @smoke',
+//                                                            defaultWait: 30,
+//                                                            threads    : 2,
+//                                                            hub        : true,
+//                                                            app        : "${stackName}.zip"
+                                        ],
+                                        stageFunc: failableStage
+                                )
                         )
                     },
                     publish: { failableStage ->
