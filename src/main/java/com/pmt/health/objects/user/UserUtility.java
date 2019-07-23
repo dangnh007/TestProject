@@ -220,11 +220,13 @@ public class UserUtility {
         String expected = "Successfully pass authenticator code for user via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
+        System.out.println(reporter.getFile().getName() + " gen: " + System.currentTimeMillis());
         mfa.addProperty("mfaCode", HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
         RequestData requestData = new RequestData();
         requestData.setJSON(mfa);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
+        System.out.println(reporter.getFile().getName() + " pre: " + System.currentTimeMillis());
         Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
         reporterPassFailStep(action, expected, response, "User not successfully passed authenticator code. ");
         //Gets userId value from response

@@ -21,7 +21,7 @@ public class APIUtility {
     private static final String AMERICA_CHICAGO = "America/Chicago";
     private static final String SITE_ID = "siteId";
     private static final String REFERER = "Referer";
-    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
+    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.mc");
     private static final String ENDPOINT_SITE = "/api/schedule/siteDetail";
     private static final String ENDPOINT_TARGET_AND_GOAL = "/api/capacity/saveTargetAndGoal";
     private static final String SITE_ID_SCHOOL_OF_NURSING = "Site/hpo-site-wimadisonschoolofnursing";
