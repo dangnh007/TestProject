@@ -92,7 +92,7 @@ public class Configuration {
      * @return url that should be used for specified environment
      */
     private static URL getSubscriberEnvironmentURL() {
-        return getEnvironmentURL("sub");
+        return getEnvironmentURL("mc");
     }
 
 

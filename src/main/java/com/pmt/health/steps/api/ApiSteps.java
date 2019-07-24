@@ -22,7 +22,7 @@ public class ApiSteps {
     // used to share context of responses and requests between step declarations and workflow
     protected RequestData requestData;
     private final User user;
-    private HTTP http ;
+    private HTTP http;
 
 
     public ApiSteps(DeviceController deviceController, RequestData requestData, User user) {
@@ -40,9 +40,10 @@ public class ApiSteps {
         userUtility.apiLoginAdminMFA();
     }
 
-    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\" via API$")
-    public void createUser(String role, String group) throws IOException {
-        userUtility.apiCreateUser(role, group);
+    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" via API$")
+    public void createUser(String role, String program, String awardee, String org, String site) throws IOException {
+        apiUtility.getSiteGroupValue(role, program, awardee, org, site);
+        userUtility.apiCreateUser(role);
     }
 
     @Then("^I check email inbox$")
@@ -51,15 +52,16 @@ public class ApiSteps {
     }
 
     @And("^I verify email and get its id$")
-    public void getEmailId() throws IOException {
+    public void getEmailId() throws IOException, InterruptedException {
         eMailUtility.emailGetValue();
     }
 
-    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void createUserAPI(String role, String group) throws IOException {
+    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+    public void createUserAPI(String role, String program, String awardee, String org, String site) throws IOException, InterruptedException {
         userUtility.apiLoginAdmin();
         userUtility.apiLoginAdminMFA();
-        userUtility.apiCreateUser(role, group);
+        apiUtility.getSiteGroupValue(role, program, awardee, org, site);
+        userUtility.apiCreateUser(role);
         eMailUtility.emailInbox();
         eMailUtility.emailGetValue();
     }
@@ -103,5 +105,10 @@ public class ApiSteps {
     @Then("^I set default hours of operations via API$")
     public void getFormId() throws IOException {
         apiUtility.deleteCustomForm();
+    }
+
+    @Then("^I create new appointment for prospect via API$")
+    public void createNewAppointmentForProspectViaAPI() throws IOException {
+        apiUtility.scheduleProspectAppointment();
     }
 }

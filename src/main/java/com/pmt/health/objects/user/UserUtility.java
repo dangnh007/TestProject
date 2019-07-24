@@ -6,6 +6,7 @@ import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.interactions.services.Response;
 import com.pmt.health.steps.Configuration;
+import com.pmt.health.utilities.APIUtility;
 import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
 
@@ -21,16 +22,18 @@ public class UserUtility {
     public static final String ADMIN_PASS = ".admin.pass";
     public static final String LOGIN_MESSAGE = "Logging in via the API";
 
+    private static final String REFERER = "Referer";
     private static final String LOGIN_ENDPOINT = "/api/login";
     private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
     private static final String VQA3 = "VibQA3+";
-    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
+    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.mc");
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
 
     protected final Reporter reporter;
     private static Random r = new Random();
     private HTTP adminHttp;
     private User user;
+    private APIUtility apiUtility;
 
     public UserUtility(Reporter reporter, User user) {
         this.user = user;
@@ -123,7 +126,7 @@ public class UserUtility {
      * Logs as System admin user in via the API.
      * Pass authenticator code
      */
-    public Response apiLoginAdminMFA() throws IOException {
+    public Response  apiLoginAdminMFA() throws IOException {
         String action = LOGIN_MESSAGE;
         String expected = "Successfully pass authenticator code for admin via the API";
         // setup our user mfa
@@ -138,7 +141,7 @@ public class UserUtility {
         return response;
     }
 
-    public Response apiCreateUser(String role, String group) throws IOException {
+    public Response apiCreateUser(String role) throws IOException {
         String action = "Create user via the API";
         String expected = "Successfully created user via the API";
         //setup our body for creating user
@@ -150,12 +153,12 @@ public class UserUtility {
         JsonArray roles = new JsonArray();
         roles.add(role);
         JsonArray groups = new JsonArray();
-        groups.add(group);
+        groups.add(user.groupValue);
         createUser.add("roles", roles);
         createUser.add("groups", groups);
         //Set headers and body
         Map<String, String> referer = new HashMap<>();
-        referer.put("Referer", REFERER_CREATE_USER);
+        referer.put(REFERER, REFERER_CREATE_USER);
         RequestData requestData = new RequestData();
         adminHttp.addHeaders(referer);
         requestData.setJSON(createUser);

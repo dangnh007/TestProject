@@ -1,8 +1,5 @@
 package com.pmt.health.objects.user;
 
-import com.pmt.health.exceptions.VibrentJSONException;
-
-import java.io.IOException;
 import java.util.*;
 
 public class User {
@@ -13,16 +10,67 @@ public class User {
     protected String lastName;
     protected String secretKey;
     protected String userId;
+    protected String participantEmail;
+    protected String participantPhone;
+    protected String participantDateOfBirth;
+    protected String groupValue;
     protected List<Role> roles;
     private String xauthToken;
 
-    public User() throws IOException, VibrentJSONException {
+    public User() {
         firstName = "Automation";
         lastName = "user";
         email = UserUtility.makeRandomUserEmail();
         password = "";
         secretKey = "";
         userId = "";
+        participantEmail = UserUtility.makeRandomUserEmail();
+        participantPhone = "";
+        participantDateOfBirth = dob();
+        groupValue = "";
+    }
+
+    public static int getRandomInteger(int maximum, int minimum){
+        return ((int) (Math.random()*(maximum - minimum))) + minimum;
+    }
+
+    public String dob() {
+        String day = "0" + getRandomInteger(9,1);
+        String month = "0" + getRandomInteger(9,1);
+        String year = "199" + getRandomInteger(9,0);
+        return day+month+year;
+    }
+
+    public String getGroupValue() {
+        return groupValue;
+    }
+
+    public void setGroupValue(String groupValue) {
+        this.groupValue = groupValue;
+    }
+
+    public String getParticipantDateOfBirth() {
+        return participantDateOfBirth;
+    }
+
+    public void setParticipantDateOfBirth(String participantDateOfBirth) {
+        this.participantDateOfBirth = participantDateOfBirth;
+    }
+
+    public String getParticipantPhone() {
+        return participantPhone;
+    }
+
+    public void setParticipantPhone(String participantPhone) {
+        this.participantPhone = participantPhone;
+    }
+
+    public String getParticipantEmail() {
+        return participantEmail;
+    }
+
+    public void setParticipantEmail(String participantEmail) {
+        this.participantEmail = participantEmail;
     }
 
     public String getUserId() {

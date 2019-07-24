@@ -9,10 +9,7 @@ import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.Configuration;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class APIUtility {
 
@@ -21,7 +18,7 @@ public class APIUtility {
     private static final String AMERICA_CHICAGO = "America/Chicago";
     private static final String SITE_ID = "siteId";
     private static final String REFERER = "Referer";
-    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub");
+    private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.mc");
     private static final String ENDPOINT_SITE = "/api/schedule/siteDetail";
     private static final String ENDPOINT_TARGET_AND_GOAL = "/api/capacity/saveTargetAndGoal";
     private static final String SITE_ID_SCHOOL_OF_NURSING = "Site/hpo-site-wimadisonschoolofnursing";
@@ -29,6 +26,11 @@ public class APIUtility {
     private static final String REFERER_SCHEDULE = MAIN_URL + "/settings/scheduling?role=ROLE_MC_SITE_MANAGER";
     private static final String ENDPOINT_HRS_OF_OPERATIONS = "/api/schedule/weeklyHoursOfOperation";
     private static final String ENDPOINT_CALENDARS = "/api/schedule/calendars";
+    private static final String REFERER_SCHEDULE_APPOINTMENT = MAIN_URL + "/scheduling/calendar/scheduler?role=ROLE_MC_SITE_MANAGER";
+    private static final String ENDPOINT_SCHEDULE_APPOINTMENT = "/api/schedule/scheduleMCAppointment";
+    private static final String GROUPS_ENDPOINT = "/api/userAdmin/getGroups";
+    private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
+
     protected Reporter reporter;
     private HTTP http;
     private User user;
@@ -260,4 +262,106 @@ public class APIUtility {
         return response;
     }
 
+    /**
+     * Schedule appointment for prospect as Site Manager
+     */
+    public Response scheduleProspectAppointment() throws IOException {
+        String action = "I schedule appointment for prospect via API";
+        String expected = "Successfully schedule appointment for prospect via API";
+        //add headers and parameters
+        JsonObject jsonObject = new JsonObject();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, 0);
+        jsonObject.addProperty("time", calendar.getTimeInMillis() / 1000);
+        jsonObject.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
+        jsonObject.add("prospectId", null);
+        jsonObject.add("participantId", null);
+        jsonObject.addProperty("lastName", user.getLastName() + " API");
+        jsonObject.addProperty("firstName", user.getFirstName() + " API");
+        jsonObject.addProperty("emailAddress", user.getParticipantEmail());
+        jsonObject.add("dob", null);
+        jsonObject.addProperty("language", "en");
+        jsonObject.addProperty("emailCommunication", false);
+        jsonObject.add("phoneNumber", null);
+        jsonObject.addProperty("userId", "");
+        jsonObject.addProperty("duration", 90);
+        jsonObject.addProperty("appointmentTypeName", "Full Enrollment");
+        jsonObject.addProperty("notes", "test automation via API");
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_SCHEDULE_APPOINTMENT);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+        requestData.setHeaders(referer);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simplePost(ENDPOINT_SCHEDULE_APPOINTMENT, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully schedule appointment for prospect via API. ");
+        return response;
+    }
+
+    /**
+     * Gets groupValue member out of the group endpoint
+     */
+    public void getSiteGroupValue(String role, String program, String awardee, String org, String site) throws IOException {
+        String action = "I get a group value via API";
+        String expected = "Successfully get a group value via API";
+        //Add headers
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_CREATE_USER);
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put("roleName", "ROLE_MC_SYSTEM_ADMINISTRATOR");
+        RequestData requestData = new RequestData();
+        requestData.setParams(parameter);
+        http.addHeaders(referer);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.get(GROUPS_ENDPOINT, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully get a group value via API. ");
+        String pmiId = "";
+        String siteId = "";
+        //Commented values are going to be used when scenarios will have bigger scope
+        //String awardeeId = "";
+        //String orgId = "";
+        //Empty jsonArrays to go through the json respond
+        JsonArray jsonArray = response.getArrayData();
+        JsonArray nodesAwardee = new JsonArray();
+        JsonArray nodesOrg = new JsonArray();
+        JsonArray nodesSite = new JsonArray();
+        //initialize jsonBody as array and sets its size
+        int size = response.getArrayData().size();
+        //for loops to go through the json body, since every level has multiple arrays inside of it
+        //nodes it's a member which contains more arrays inside of it
+        for (int i = 0; i < size; i++) {
+            if (jsonArray.get(i).toString().contains(program)) {
+                pmiId = jsonArray.get(i).getAsJsonObject().get(ID).getAsString();
+                nodesAwardee = jsonArray.get(i).getAsJsonObject().get("nodes").getAsJsonArray();
+            }
+        }
+        for (int j = 0; j < nodesAwardee.size() && !awardee.isEmpty(); j++) {
+            if (nodesAwardee.get(j).toString().contains(awardee)) {
+                //awardeeId = nodesAwardee.get(j).getAsJsonObject().get(ID).getAsString();
+                nodesOrg = nodesAwardee.get(j).getAsJsonObject().get("nodes").getAsJsonArray();
+            }
+        }
+        for (int k = 0; k < nodesOrg.size() && !org.isEmpty(); k++) {
+            if (nodesOrg.get(k).toString().contains(org)) {
+                //orgId = nodesOrg.get(k).getAsJsonObject().get(ID).getAsString();
+                nodesSite = nodesOrg.get(k).getAsJsonObject().get("nodes").getAsJsonArray();
+            }
+        }
+        for (int b = 0; b < nodesSite.size() && !site.isEmpty(); b++) {
+            if (nodesSite.get(b).toString().contains(site)) {
+                siteId = nodesSite.get(b).getAsJsonObject().get(ID).getAsString();
+            }
+        }
+        //Sets group value depending on the role
+        if (role.equals("ROLE_MC_NIH")) {
+            user.setGroupValue(pmiId);
+        }
+        if (role.equals("ROLE_MC_SITE_MANAGER")) {
+            user.setGroupValue(siteId);
+        }
+    }
 }
