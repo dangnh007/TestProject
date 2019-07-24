@@ -3,19 +3,19 @@ package com.pmt.health.workflows;
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
-import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.utilities.LocatorType;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.log4testng.Logger;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class SiteSettingsPage {
+
     private final App app;
+
+    private final String DATA_VALUE = "data-value";
+
     private final WebbElement siteSettingsHeading;
     private final WebbElement toggleOnOff;
     private final WebbElement pencilButton;
@@ -84,7 +84,7 @@ public class SiteSettingsPage {
         this.appointmentNotes = app.newElement(LocatorType.CSS, "textarea[name='notes']");
         this.todayDate = app.newElement(LocatorType.XPATH, "//tr/td/div[@class='rdtDay rdtToday']");
         this.time8am = app.newElement(LocatorType.XPATH, "//div[contains(text(),'08:00 AM')]");
-        this.scheduleButton = app.newElement(LocatorType.CSS,"button[class='btn btn-default btn-schedule pull-right btn btn-default']");
+        this.scheduleButton = app.newElement(LocatorType.CSS, "button[class='btn btn-default btn-schedule pull-right btn btn-default']");
         this.messageOfSuccessAppointment = app.newElement(LocatorType.XPATH, "//div[contains(text(), 'Appointment successfully created.')]");
     }
 
@@ -243,12 +243,12 @@ public class SiteSettingsPage {
     }
 
     public void toggleOnOff(String toggle) {
-       WebbElement onOff = app.newElement(LocatorType.CSS, "input[data-value]");
-       onOff.waitFor().present();
-        if(toggle.equalsIgnoreCase("on") && onOff.get().attribute("data-value").equalsIgnoreCase("false") ) {
+        WebbElement onOff = app.newElement(LocatorType.CSS, "input[" + DATA_VALUE + "]");
+        onOff.waitFor().present();
+        if ("on".equalsIgnoreCase(toggle) && "false".equalsIgnoreCase(onOff.get().attribute(DATA_VALUE))) {
             toggleOnOff.click();
         }
-        if(toggle.equalsIgnoreCase("off") && onOff.get().attribute("data-value").equalsIgnoreCase("true") ) {
+        if ("off".equalsIgnoreCase(toggle) && "true".equalsIgnoreCase(onOff.get().attribute(DATA_VALUE))) {
             toggleOnOff.click();
         }
     }

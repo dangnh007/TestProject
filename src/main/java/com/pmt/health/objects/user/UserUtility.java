@@ -6,7 +6,6 @@ import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.interactions.services.Response;
 import com.pmt.health.steps.Configuration;
-import com.pmt.health.utilities.APIUtility;
 import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
 
@@ -33,7 +32,6 @@ public class UserUtility {
     private static Random r = new Random();
     private HTTP adminHttp;
     private User user;
-    private APIUtility apiUtility;
 
     public UserUtility(Reporter reporter, User user) {
         this.user = user;

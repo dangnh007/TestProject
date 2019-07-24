@@ -24,7 +24,6 @@ public class ApiSteps {
     private final User user;
     private HTTP http;
 
-
     public ApiSteps(DeviceController deviceController, RequestData requestData, User user) {
         this.http = new HTTP(Configuration.getEnvironmentURL().toString());
         this.user = user;

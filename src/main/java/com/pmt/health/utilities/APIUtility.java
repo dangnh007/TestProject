@@ -14,6 +14,7 @@ import java.util.*;
 public class APIUtility {
 
     private static final String ID = "id";
+    private static final String NODE_MEMBER = "nodes";
     private static final String TIME_ZONE = "timeZone";
     private static final String AMERICA_CHICAGO = "America/Chicago";
     private static final String SITE_ID = "siteId";
@@ -319,11 +320,8 @@ public class APIUtility {
         // make the actual call
         Response response = http.get(GROUPS_ENDPOINT, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully get a group value via API. ");
-        String pmiId = "";
+        String programId = "";
         String siteId = "";
-        //Commented values are going to be used when scenarios will have bigger scope
-        //String awardeeId = "";
-        //String orgId = "";
         //Empty jsonArrays to go through the json respond
         JsonArray jsonArray = response.getArrayData();
         JsonArray nodesAwardee = new JsonArray();
@@ -331,24 +329,24 @@ public class APIUtility {
         JsonArray nodesSite = new JsonArray();
         //initialize jsonBody as array and sets its size
         int size = response.getArrayData().size();
-        //for loops to go through the json body, since every level has multiple arrays inside of it
-        //nodes it's a member which contains more arrays inside of it
+        /*
+         * for-loops to go through the json body, since every level has multiple arrays inside of it
+         * nodes it's a member which contains more arrays inside of it
+         */
         for (int i = 0; i < size; i++) {
             if (jsonArray.get(i).toString().contains(program)) {
-                pmiId = jsonArray.get(i).getAsJsonObject().get(ID).getAsString();
-                nodesAwardee = jsonArray.get(i).getAsJsonObject().get("nodes").getAsJsonArray();
+                programId = jsonArray.get(i).getAsJsonObject().get(ID).getAsString();
+                nodesAwardee = jsonArray.get(i).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
         for (int j = 0; j < nodesAwardee.size() && !awardee.isEmpty(); j++) {
             if (nodesAwardee.get(j).toString().contains(awardee)) {
-                //awardeeId = nodesAwardee.get(j).getAsJsonObject().get(ID).getAsString();
-                nodesOrg = nodesAwardee.get(j).getAsJsonObject().get("nodes").getAsJsonArray();
+                nodesOrg = nodesAwardee.get(j).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
         for (int k = 0; k < nodesOrg.size() && !org.isEmpty(); k++) {
             if (nodesOrg.get(k).toString().contains(org)) {
-                //orgId = nodesOrg.get(k).getAsJsonObject().get(ID).getAsString();
-                nodesSite = nodesOrg.get(k).getAsJsonObject().get("nodes").getAsJsonArray();
+                nodesSite = nodesOrg.get(k).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
         for (int b = 0; b < nodesSite.size() && !site.isEmpty(); b++) {
@@ -357,10 +355,10 @@ public class APIUtility {
             }
         }
         //Sets group value depending on the role
-        if (role.equals("ROLE_MC_NIH")) {
-            user.setGroupValue(pmiId);
+        if ("ROLE_MC_NIH".equals(role)) {
+            user.setGroupValue(programId);
         }
-        if (role.equals("ROLE_MC_SITE_MANAGER")) {
+        if ("ROLE_MC_SITE_MANAGER".equals(role)) {
             user.setGroupValue(siteId);
         }
     }

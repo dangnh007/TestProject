@@ -17,12 +17,7 @@ public class UserAdminPage {
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
 
-    private User user;
-    private App app;
-
     public UserAdminPage(App app, User user) {
-        this.app = app;
-        this.user = user;
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
         this.loggedInHeadingUserAdministration = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
