@@ -14,7 +14,7 @@ public class SiteSettingsPage {
 
     private final App app;
 
-    private final String DATA_VALUE = "data-value";
+    private final static String DATA_VALUE = "data-value";
 
     private final WebbElement siteSettingsHeading;
     private final WebbElement toggleOnOff;

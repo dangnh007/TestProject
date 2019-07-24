@@ -11,6 +11,7 @@ import com.pmt.health.utilities.EMailUtility;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.springframework.context.annotation.Description;
 
 import java.io.IOException;
 
@@ -55,6 +56,7 @@ public class ApiSteps {
         eMailUtility.emailGetValue();
     }
 
+    @Description("Does login via API, creates new user based on parameters and gets values using emailUtility")
     @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void createUserAPI(String role, String program, String awardee, String org, String site) throws IOException, InterruptedException {
         userUtility.apiLoginAdmin();
@@ -106,6 +108,7 @@ public class ApiSteps {
         apiUtility.deleteCustomForm();
     }
 
+    @Description("Sends get request to the /schedule/ endpoint and sets particular value")
     @Then("^I create new appointment for prospect via API$")
     public void createNewAppointmentForProspectViaAPI() throws IOException {
         apiUtility.scheduleProspectAppointment();
