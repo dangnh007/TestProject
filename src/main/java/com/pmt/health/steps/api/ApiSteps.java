@@ -25,6 +25,12 @@ public class ApiSteps {
     private final User user;
     private HTTP http;
 
+    /**
+     * lalala
+     * @param deviceController
+     * @param requestData
+     * @param user
+     */
     public ApiSteps(DeviceController deviceController, RequestData requestData, User user) {
         this.http = new HTTP(Configuration.getEnvironmentURL().toString());
         this.user = user;
@@ -108,7 +114,9 @@ public class ApiSteps {
         apiUtility.deleteCustomForm();
     }
 
-    @Description("Sends get request to the /schedule/ endpoint and sets particular value")
+    /**
+     * Sends get request to the /schedule/ endpoint and sets particular value
+     */
     @Then("^I create new appointment for prospect via API$")
     public void createNewAppointmentForProspectViaAPI() throws IOException {
         apiUtility.scheduleProspectAppointment();
