@@ -14,13 +14,11 @@ import java.util.*;
 
 public class UserUtility {
 
-    @SuppressWarnings("squid:S2068")
-    public static final String PASSWORD = "password";
-    public static final String EMAIL = "email";
-    public static final String ADMIN_USER = ".admin.user";
-    public static final String ADMIN_PASS = ".admin.pass";
-    public static final String LOGIN_MESSAGE = "Logging in via the API";
-
+    private static final String PASSWORD = "password";
+    private static final String EMAIL = "email";
+    private static final String ADMIN_USER = ".admin.user";
+    private static final String ADMIN_PASS = ".admin.pass";
+    private static final String LOGIN_MESSAGE = "Logging in via the API";
     private static final String REFERER = "Referer";
     private static final String LOGIN_ENDPOINT = "/api/login";
     private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);

@@ -183,7 +183,7 @@ public class APIUtility {
      * Reusable method to work with dynamic values in Working Time object.
      * set needed values
      */
-    private JsonObject getWorkingTimeObj(String day, String idValue) {
+    public JsonObject getWorkingTimeObj(String day, String idValue) {
         JsonObject defWorkingTimeObj = new JsonObject();
         defWorkingTimeObj.addProperty(ID, idValue);
         defWorkingTimeObj.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);

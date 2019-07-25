@@ -5,7 +5,7 @@ import java.util.*;
 public class User {
 
     protected String email;
-    protected String password; // NOSONAR
+    protected String password;
     protected String firstName;
     protected String lastName;
     protected String secretKey;
