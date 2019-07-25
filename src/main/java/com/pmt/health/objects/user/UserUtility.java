@@ -14,7 +14,7 @@ import java.util.*;
 
 public class UserUtility {
 
-    private static final String PASSWORD = "password";
+    private static final String PASSWORD = "password";//NOSONAR
     private static final String EMAIL = "email";
     private static final String ADMIN_USER = ".admin.user";
     private static final String ADMIN_PASS = ".admin.pass";

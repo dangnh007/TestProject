@@ -3,7 +3,7 @@ Feature: PMT Site Settings
   As a user
   I want to modify Site Settings
 
-  @mc-4851 @smoke
+  @mc-4851 @smoke @unsafe
   Scenario Outline: I login as Site manager and set up Site Settings
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     When I set up my credentials via API

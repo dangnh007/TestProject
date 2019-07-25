@@ -14,6 +14,9 @@ import cucumber.api.java.en.When;
 
 import java.io.IOException;
 
+/**
+ * Step definition class for API calls.
+ */
 public class ApiSteps {
 
     private final UserUtility userUtility;
