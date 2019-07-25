@@ -60,6 +60,7 @@ public class SiteSettingsSteps {
 
     @Then("^I delete custom hrs of operations$")
     public void deleteCustomHrsOfOperations() {
+        siteSettingsPage.editPage();
         siteSettingsPage.customHoursOfOperationDelete();
     }
 
