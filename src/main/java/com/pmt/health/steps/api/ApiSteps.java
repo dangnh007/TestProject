@@ -54,6 +54,12 @@ public class ApiSteps {
     /**
      * Creates new user based on parameters.
      * Get and Post method are chained for this implementation.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @param role - sets the role for user/roleName endpoint.
+     * @param program - sets program for user/groupName endpoint.
+     * @param awardee - sets awardee for user/groupName endpoint.
+     * @param org - sets organization for user/groupName endpoint.
+     * @param site - sets site for user/groupName endpoint.
      */
     @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" via API$")
     public void createUser(String role, String program, String awardee, String org, String site) throws IOException {
@@ -168,7 +174,7 @@ public class ApiSteps {
     }
 
     /**
-     * Sets default hours of operations via API
+     * Sets default hours of operations via API.
      * Sends Put request to the weeklyHours endpoint.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
@@ -178,7 +184,8 @@ public class ApiSteps {
     }
 
     /**
-     * Sends POST request to the user/schedule endpoint and sets particular values
+     * Sends POST request to the user/schedule endpoint and sets particular values.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I create new appointment for prospect via API$")
     public void createNewAppointmentForProspectViaAPI() throws IOException {

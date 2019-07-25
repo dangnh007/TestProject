@@ -14,7 +14,7 @@ public class SiteSettingsPage {
 
     private final App app;
 
-    private final static String DATA_VALUE = "data-value";
+    private static final String DATA_VALUE = "data-value";
 
     private final WebbElement siteSettingsHeading;
     private final WebbElement toggleOnOff;
@@ -31,8 +31,6 @@ public class SiteSettingsPage {
     private final WebbElement hoFormUpdate;
     private final WebbElement deleteButton;
     private final WebbElement deleteConfirm;
-
-    //locators for a new test
     private final WebbElement newAppointmentButton;
     private final WebbElement firstNameInput;
     private final WebbElement lastNameInput;
@@ -43,12 +41,10 @@ public class SiteSettingsPage {
     private final WebbElement backButton;
     private final WebbElement languagesDropDown;
     private final WebbElement appointmentNotes;
-
     private final WebbElement todayDate;
     private final WebbElement time8am;
     private final WebbElement scheduleButton;
     private final WebbElement messageOfSuccessAppointment;
-
 
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -71,7 +67,6 @@ public class SiteSettingsPage {
         this.hoFormUpdate = app.newElement(LocatorType.XPATH, "//strong[contains(text(),'Update')]");
         this.deleteButton = app.newElement(LocatorType.XPATH, "//strong[contains(text(), 'Delete')]");
         this.deleteConfirm = app.newElement(LocatorType.XPATH, "//button[contains(text(), 'Yes, Delete Hours')]");
-        //locators for a new test
         this.newAppointmentButton = app.newElement(LocatorType.CSS, "button[class='button button-default new-appointment-btn btn btn-default']");
         this.firstNameInput = app.newElement(LocatorType.CSS, "input[label='First Name']");
         this.lastNameInput = app.newElement(LocatorType.CSS, "input[label='Last Name']");
