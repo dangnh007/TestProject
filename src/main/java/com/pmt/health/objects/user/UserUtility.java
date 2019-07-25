@@ -10,6 +10,7 @@ import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.*;
 
 public class UserUtility {
@@ -27,7 +28,7 @@ public class UserUtility {
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
 
     protected final Reporter reporter;
-    private static Random r = new Random();
+    private static SecureRandom r = new SecureRandom();
     private HTTP adminHttp;
     private User user;
 

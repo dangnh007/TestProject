@@ -128,7 +128,6 @@ public class Configuration {
      *
      * @return
      */
-    @SuppressWarnings("squid:S2259")
     public JsonObject getSystemInfo(Reporter reporter) throws IOException {
         if (getSubscriberEnvironmentURL() == null) {
             log.error("Issue obtaining subscriber environment, unable to run tests");
@@ -139,17 +138,6 @@ public class Configuration {
         Response response = http.get("/api/systemInfo");
         objectData = response.getObjectData();
         return objectData;
-    }
-
-    /**
-     * Extracts the JenkinsBuild number from the json system information
-     *
-     * @param sysInfo a json object of the system information
-     * @return
-     */
-    public String getBuild(JsonObject sysInfo) {
-        return "";
-//        return sysInfo.get("buildName").getAsString() + " - Build #" + sysInfo.get("buildNumber").getAsString();
     }
 
     /**
