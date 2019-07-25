@@ -432,9 +432,6 @@ public class Reporter {
             out.write("     Run Time:\tRUNTIME \n");
             out.write("    </td>\n ");
             out.write(swapRow);
-            out.write("    <th>Build Tested</th>\n");
-            out.write(START_CELL + configuration.getBuild(systemInfo) + END_CELL);
-            out.write(swapRow);
             out.write("    <th>Version Tested</th>\n");
             out.write(START_CELL + configuration.getVersion(systemInfo) + END_CELL);
             out.write(swapRow);

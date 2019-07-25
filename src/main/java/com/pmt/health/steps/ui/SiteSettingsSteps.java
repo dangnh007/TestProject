@@ -5,6 +5,7 @@ import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.SiteSettingsPage;
 import com.pmt.health.workflows.UserAdminPage;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 public class SiteSettingsSteps {
 
@@ -28,7 +29,7 @@ public class SiteSettingsSteps {
 
     @Then("^I toggle \"([^\"]*)\" accepting appointments$")
     public void toggleOnAcceptingAppointments(String toggle) {
-        siteSettingsPage.toggleOnOff();
+        siteSettingsPage.toggleOnOff(toggle);
     }
 
     @Then("^I set target to \"([^\"]*)\"$")
@@ -61,4 +62,38 @@ public class SiteSettingsSteps {
     public void deleteCustomHrsOfOperations() {
         siteSettingsPage.customHoursOfOperationDelete();
     }
+
+    @When("^I create new appointment for prospect$")
+    public void createNewAppointment() {
+        siteSettingsPage.addNewAppointment();
+    }
+
+    @When("^I provide participant information$")
+    public void provideParticipantInformation() {
+        siteSettingsPage.enterFirstName(user.getFirstName());
+        siteSettingsPage.enterLastName(user.getLastName());
+        siteSettingsPage.enterDateOfBirth(user.getParticipantDateOfBirth());
+        siteSettingsPage.enterPhoneNumber(user.getParticipantPhone());
+        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.selectLanguage();
+        siteSettingsPage.completeParticipantInfo();
+    }
+
+    @When("^I provide appointment details$")
+    public void provideAppointmentDetails() {
+        siteSettingsPage.addAppointmentNotes();
+        siteSettingsPage.completeAppointmentDetails();
+        siteSettingsPage.selectDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.completeAppointmentDetails();
+    }
+
+    @When("^I schedule an appointment$")
+    public void scheduleAnAppointment() {
+        siteSettingsPage.selectDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.scheduleAppointment();
+        siteSettingsPage.assertSuccessAppointmentMessage();
+    }
+
 }

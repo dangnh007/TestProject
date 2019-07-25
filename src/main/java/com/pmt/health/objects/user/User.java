@@ -1,28 +1,80 @@
 package com.pmt.health.objects.user;
 
-import com.pmt.health.exceptions.VibrentJSONException;
-
-import java.io.IOException;
+import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class User {
 
     protected String email;
-    protected String password; // NOSONAR
+    protected String password;
     protected String firstName;
     protected String lastName;
     protected String secretKey;
     protected String userId;
+    protected String participantEmail;
+    protected String participantPhone;
+    protected String participantDateOfBirth;
+    protected String groupValue;
     protected List<Role> roles;
     private String xauthToken;
+    public static final int YEARS_OLD = 20;
 
-    public User() throws IOException, VibrentJSONException {
+
+    public User() {
         firstName = "Automation";
         lastName = "user";
         email = UserUtility.makeRandomUserEmail();
         password = "";
         secretKey = "";
         userId = "";
+        participantEmail = UserUtility.makeRandomUserEmail();
+        participantPhone = "";
+        participantDateOfBirth = getDefaultDOB().toString();
+        groupValue = "";
+    }
+
+    public Date getDOB(int yearsOld) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        LocalDate date = LocalDate.now().minusYears(yearsOld);
+        return Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    public Date getDefaultDOB() {
+        return getDOB(YEARS_OLD);
+    }
+
+    public String getGroupValue() {
+        return groupValue;
+    }
+
+    public void setGroupValue(String groupValue) {
+        this.groupValue = groupValue;
+    }
+
+    public String getParticipantDateOfBirth() {
+        return participantDateOfBirth;
+    }
+
+    public void setParticipantDateOfBirth(String participantDateOfBirth) {
+        this.participantDateOfBirth = participantDateOfBirth;
+    }
+
+    public String getParticipantPhone() {
+        return participantPhone;
+    }
+
+    public void setParticipantPhone(String participantPhone) {
+        this.participantPhone = participantPhone;
+    }
+
+    public String getParticipantEmail() {
+        return participantEmail;
+    }
+
+    public void setParticipantEmail(String participantEmail) {
+        this.participantEmail = participantEmail;
     }
 
     public String getUserId() {

@@ -41,12 +41,6 @@ public class ConfigurationTest {
         System.clearProperty("environment");
     }
 
-    @Test
-    public void getBuildTest() {
-        System.setProperty("environment", "cot");
-        Assert.assertTrue(configuration.getBuild(mockedSysInfo).matches("Build Version: .*"));
-    }
-
     private void testURLConnection(URL environmentURL) throws IOException {
         HTTP http = new HTTP(environmentURL.toString());
         http.get("");

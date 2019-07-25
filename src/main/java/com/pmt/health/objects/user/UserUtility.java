@@ -10,17 +10,17 @@ import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.*;
 
 public class UserUtility {
 
-    @SuppressWarnings("squid:S2068")
-    public static final String PASSWORD = "password";
-    public static final String EMAIL = "email";
-    public static final String ADMIN_USER = ".admin.user";
-    public static final String ADMIN_PASS = ".admin.pass";
-    public static final String LOGIN_MESSAGE = "Logging in via the API";
-
+    private static final String PASSWORD = "password";//NOSONAR
+    private static final String EMAIL = "email";
+    private static final String ADMIN_USER = ".admin.user";
+    private static final String ADMIN_PASS = ".admin.pass";
+    private static final String LOGIN_MESSAGE = "Logging in via the API";
+    private static final String REFERER = "Referer";
     private static final String LOGIN_ENDPOINT = "/api/login";
     private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
     private static final String VQA3 = "VibQA3+";
@@ -28,7 +28,7 @@ public class UserUtility {
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
 
     protected final Reporter reporter;
-    private static Random r = new Random();
+    private static SecureRandom r = new SecureRandom();
     private HTTP adminHttp;
     private User user;
 
@@ -137,12 +137,29 @@ public class UserUtility {
         requestData.setJSON(mfa);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
-        Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+        Response response = null;
+        int count = 0;
+        while (count < 5) {
+            try {
+                response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+                break;
+            } catch (Exception e) {
+                count++;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
         reporterPassFailStep(action, expected, response, "Admin not successfully passed authenticator code. ");
         return response;
     }
 
-    public Response apiCreateUser(String role, String group) throws IOException {
+    /**
+     * Creates user with reusable parameters
+     */
+    public Response apiCreateUser(String role) throws IOException {
         String action = "Create user via the API";
         String expected = "Successfully created user via the API";
         //setup our body for creating user
@@ -154,12 +171,12 @@ public class UserUtility {
         JsonArray roles = new JsonArray();
         roles.add(role);
         JsonArray groups = new JsonArray();
-        groups.add(group);
+        groups.add(user.groupValue);
         createUser.add("roles", roles);
         createUser.add("groups", groups);
         //Set headers and body
         Map<String, String> referer = new HashMap<>();
-        referer.put("Referer", REFERER_CREATE_USER);
+        referer.put(REFERER, REFERER_CREATE_USER);
         RequestData requestData = new RequestData();
         adminHttp.addHeaders(referer);
         requestData.setJSON(createUser);
@@ -220,14 +237,26 @@ public class UserUtility {
         String expected = "Successfully pass authenticator code for user via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
-        System.out.println(reporter.getFile().getName() + " gen: " + System.currentTimeMillis());
         mfa.addProperty("mfaCode", HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
         RequestData requestData = new RequestData();
         requestData.setJSON(mfa);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
-        System.out.println(reporter.getFile().getName() + " pre: " + System.currentTimeMillis());
-        Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+        Response response = null;
+        int count = 0;
+        while (count < 5) {
+            try {
+                response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+                break;
+            } catch (Exception e) {
+                count++;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
         reporterPassFailStep(action, expected, response, "User not successfully passed authenticator code. ");
         //Gets userId value from response
         String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString();
