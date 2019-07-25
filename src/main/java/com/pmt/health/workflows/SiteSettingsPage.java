@@ -101,9 +101,9 @@ public class SiteSettingsPage {
     }
 
     public void selectDate() {
-        String today = todayDate.get().attribute("data-value");
+        String today = todayDate.get().attribute(DATA_VALUE);
         int tomorrow = Integer.parseInt(today) + 1;
-        WebbElement tomorrowDate = app.newElement(LocatorType.XPATH, "//tr/td[@data-value='" + tomorrow + "']");
+        WebbElement tomorrowDate = app.newElement(LocatorType.XPATH, "//tr/td[@" + DATA_VALUE + "='" + tomorrow + "']");
         tomorrowDate.click();
     }
 

@@ -11,7 +11,6 @@ import com.pmt.health.utilities.EMailUtility;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.springframework.context.annotation.Description;
 
 import java.io.IOException;
 
@@ -26,10 +25,10 @@ public class ApiSteps {
     private HTTP http;
 
     /**
-     * lalala
-     * @param deviceController
-     * @param requestData
-     * @param user
+     * Constructor of ApiSteps class.
+     * @param deviceController - object of the class which controls an application.
+     * @param requestData - object of the class which holds data needed to provide to the HTTP calls.
+     * @param user - object of the user class where we store user related values and methods.
      */
     public ApiSteps(DeviceController deviceController, RequestData requestData, User user) {
         this.http = new HTTP(Configuration.getEnvironmentURL().toString());
@@ -40,29 +39,57 @@ public class ApiSteps {
         this.apiUtility = new APIUtility(deviceController.getReporter(), user, http);
     }
 
+    /**
+     * Logs in as System Administrator via API.
+     * Provides methods with user info such as email and pass.
+     * Generates 6 digit mfa code.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @When("^I login as System Administrator via API$")
     public void loginAsSystemAdminViaAPI() throws IOException {
         userUtility.apiLoginAdmin();
         userUtility.apiLoginAdminMFA();
     }
 
+    /**
+     * Creates new user based on parameters.
+     * Get and Post method are chained for this implementation.
+     */
     @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" via API$")
     public void createUser(String role, String program, String awardee, String org, String site) throws IOException {
         apiUtility.getSiteGroupValue(role, program, awardee, org, site);
         userUtility.apiCreateUser(role);
     }
 
+    /**
+     * Uses api Get call to go into an inbox of mailTrap.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I check email inbox$")
     public void emailInbox() throws IOException {
         eMailUtility.emailInbox();
     }
 
+    /**
+     * Uses api Get call to retrieve value from the messages of mailTrap.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied.
+     */
     @And("^I verify email and get its id$")
     public void getEmailId() throws IOException, InterruptedException {
         eMailUtility.emailGetValue();
     }
 
-    @Description("Does login via API, creates new user based on parameters and gets values using emailUtility")
+    /**
+     * Does login via API, creates new user based on parameters and gets values using emailUtility.
+     * @param role - sets the role for user/roleName endpoint.
+     * @param program - sets program for user/groupName endpoint.
+     * @param awardee - sets awardee for user/groupName endpoint.
+     * @param org - sets organization for user/groupName endpoint.
+     * @param site - sets site for user/groupName endpoint.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied.
+     */
     @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
     public void createUserAPI(String role, String program, String awardee, String org, String site) throws IOException, InterruptedException {
         userUtility.apiLoginAdmin();
@@ -73,6 +100,11 @@ public class ApiSteps {
         eMailUtility.emailGetValue();
     }
 
+    /**
+     * Logs in as newly created user via API
+     * Several methods were chained together for this implementation.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I login as user via API$")
     public void loginAsUserViaAPI() throws IOException {
         userUtility.retrieveAndSetUserSecretKey();
@@ -82,6 +114,10 @@ public class ApiSteps {
         userUtility.apiLoginUserMFA();
     }
 
+    /**
+     * Sets new password and stores authorization token.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I set up my credentials via API$")
     public void setUpMyCredentialsViaAPI() throws IOException {
         userUtility.retrieveAndSetUserSecretKey();
@@ -89,33 +125,60 @@ public class ApiSteps {
         userUtility.apiSetPassword();
     }
 
+    /**
+     * Send PUT request to set accepting appointments for the site settings.
+     * @param toggle sets accepting appointment toggle On or Off.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I toggle \"([^\"]*)\" accepting appointments via API$")
     public void toggleAcceptingAppointmentsViaAPI(String toggle) throws IOException {
         apiUtility.toggleOnOffViaApi(toggle);
     }
 
+    /**
+     * Sends PUT request to set goal and target values for the siteSettings endpoint.
+     * @param target sets the target value for the site settings.
+     * @param goal sets the goal value for the site setting.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I set daily \"([^\"]*)\" and \"([^\"]*)\" via API$")
     public void setDailyGoalAndTargetViaAPI(int target, int goal) throws IOException {
         apiUtility.setDailyTargetAndGoalViaApi(target, goal);
     }
 
+    /**
+     * Sets minimum appointment notice via API.
+     * Sends PUT request to the minimumAppointment endpoint.
+     * @param days sets a minimum appointment value.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I set \"([^\"]*)\" of minimum appointment notice via API$")
     public void setMinimumAppointmentNotice(int days) throws IOException {
         apiUtility.setMinimumAppointmentNoticeViaApi(days);
     }
 
+    /**
+     * Sets custom hours of operations via API.
+     * Sends PUT request to the weeklyHours endpoint.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I set custom hours of operations via API$")
     public void setCustomHoursOfOperationsViaAPI() throws IOException {
         apiUtility.createCustomHoursOfOperationS();
     }
 
+    /**
+     * Sets default hours of operations via API
+     * Sends Put request to the weeklyHours endpoint.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
     @Then("^I set default hours of operations via API$")
     public void getFormId() throws IOException {
         apiUtility.deleteCustomForm();
     }
 
     /**
-     * Sends get request to the /schedule/ endpoint and sets particular value
+     * Sends POST request to the user/schedule endpoint and sets particular values
      */
     @Then("^I create new appointment for prospect via API$")
     public void createNewAppointmentForProspectViaAPI() throws IOException {

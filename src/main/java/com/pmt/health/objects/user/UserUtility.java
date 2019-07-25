@@ -124,7 +124,7 @@ public class UserUtility {
      * Logs as System admin user in via the API.
      * Pass authenticator code
      */
-    public Response  apiLoginAdminMFA() throws IOException {
+    public Response apiLoginAdminMFA() throws IOException {
         String action = LOGIN_MESSAGE;
         String expected = "Successfully pass authenticator code for admin via the API";
         // setup our user mfa
@@ -139,6 +139,9 @@ public class UserUtility {
         return response;
     }
 
+    /**
+     * Creates user with reusable parameters
+     */
     public Response apiCreateUser(String role) throws IOException {
         String action = "Create user via the API";
         String expected = "Successfully created user via the API";
