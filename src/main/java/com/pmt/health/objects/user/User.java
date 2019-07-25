@@ -1,5 +1,6 @@
 package com.pmt.health.objects.user;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 public class User {
@@ -31,13 +32,15 @@ public class User {
     }
 
     public static int getRandomInteger(int maximum, int minimum){
-        return ((int) (Math.random()*(maximum - minimum))) + minimum;
+        SecureRandom r = new SecureRandom();
+        return r.nextInt((maximum - minimum) + 1) + minimum;
+
     }
 
     public String dob() {
-        String day = "0" + getRandomInteger(9,1);
-        String month = "0" + getRandomInteger(9,1);
-        String year = "199" + getRandomInteger(9,0);
+        String day = "0" + getRandomInteger(1,9);
+        String month = "0" + getRandomInteger(1,9);
+        String year = "199" + getRandomInteger(0,9);
         return day+month+year;
     }
 
