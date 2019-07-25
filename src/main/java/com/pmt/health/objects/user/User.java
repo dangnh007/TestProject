@@ -31,17 +31,12 @@ public class User {
         groupValue = "";
     }
 
-    public static int getRandomInteger(int maximum, int minimum){
-        SecureRandom r = new SecureRandom();
-        return r.nextInt((maximum - minimum) + 1) + minimum;
-
-    }
-
     public String dob() {
-        String day = "0" + getRandomInteger(1,9);
-        String month = "0" + getRandomInteger(1,9);
-        String year = "199" + getRandomInteger(0,9);
-        return day+month+year;
+        SecureRandom r = new SecureRandom();
+        String day = "0" + (r.nextInt(8) + 1);
+        String month = "0" + (r.nextInt(8) + 1);
+        String year = "199" + (r.nextInt(8) + 1);
+        return day + month + year;
     }
 
     public String getGroupValue() {

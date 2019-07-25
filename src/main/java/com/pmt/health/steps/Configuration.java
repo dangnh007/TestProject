@@ -23,6 +23,7 @@ import static org.testng.Reporter.getCurrentTestResult;
 
 public class Configuration {
 
+    public static final String EMPTY = "";
     public static final String PROGRAM_PROP = "program";
     public static final String ENVIRONMENT_PROP = "environment";
     public static final String SCENARIO = "Scenario";
@@ -138,6 +139,16 @@ public class Configuration {
         Response response = http.get("/api/systemInfo");
         objectData = response.getObjectData();
         return objectData;
+    }
+
+    /**
+     * Extracts the JenkinsBuild number from the json system information
+     *
+     * @param sysInfo a json object of the system information
+     * @return
+     */
+    public String getBuild(JsonObject sysInfo) {
+        return EMPTY;
     }
 
     /**
