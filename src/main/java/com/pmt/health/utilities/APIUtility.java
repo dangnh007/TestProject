@@ -14,6 +14,7 @@ import java.util.*;
 public class APIUtility {
 
     private static final String ID = "id";
+    private static final String CUSTOM = "Custom";
     private static final String SCHOOL_OF_NURSING_SITE = "Site%2Fhpo-site-wimadisonschoolofnursing";
     private static final String NODE_MEMBER = "nodes";
     private static final String TIME_ZONE = "timeZone";
@@ -145,7 +146,7 @@ public class APIUtility {
         // create hours of operations
         JsonObject hoursOfOperations = new JsonObject();
         hoursOfOperations.addProperty(ID, "");
-        hoursOfOperations.addProperty("name", "Custom");
+        hoursOfOperations.addProperty("name", CUSTOM);
         hoursOfOperations.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
         hoursOfOperations.addProperty(TIME_ZONE, AMERICA_CHICAGO);
         hoursOfOperations.addProperty("isDefault", false);
@@ -182,7 +183,7 @@ public class APIUtility {
 
     /**
      * Reusable method to work with dynamic values in Working Time object.
-     * set needed values
+     * sets needed values
      */
     public JsonObject getWorkingTimeObj(String day, String idValue) {
         JsonObject defWorkingTimeObj = new JsonObject();
@@ -219,7 +220,7 @@ public class APIUtility {
         String expected = "Successfully get calendar form id via API";
         //Add headers and parameters
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, "Site%2Fhpo-site-wimadisonschoolofnursing");
+        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         RequestData requestData = new RequestData();
@@ -233,7 +234,7 @@ public class APIUtility {
         JsonArray jsonArray = response.getArrayData();
         int size = response.getArrayData().size();
         for (int i = 0; i < size; i++) {
-            if (jsonArray.get(i).toString().contains("Custom")) {
+            if (jsonArray.get(i).toString().contains(CUSTOM)) {
                 calendarFormId = jsonArray.get(i).getAsJsonObject().get(ID).getAsString();
             }
         }
@@ -388,7 +389,7 @@ public class APIUtility {
         int size = response.getArrayData().size();
 
         for (int i = 0; i < size; i++) {
-            if (jsonArray.get(i).toString().contains("Custom")) {
+            if (jsonArray.get(i).toString().contains(CUSTOM)) {
                 formName = jsonArray.get(i).getAsJsonObject().get("name").getAsString();
             }
         }
