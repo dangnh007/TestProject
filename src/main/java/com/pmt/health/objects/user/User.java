@@ -1,6 +1,5 @@
 package com.pmt.health.objects.user;
 
-import java.security.SecureRandom;
 import java.util.*;
 
 public class User {
@@ -28,17 +27,9 @@ public class User {
         userId = "";
         participantEmail = UserUtility.makeRandomUserEmail();
         participantPhone = "";
-        participantDateOfBirth = dob();
+        participantDateOfBirth = null;
         groupValue = "";
         hoursOfoperarion = "";
-    }
-
-    public String dob() {
-        SecureRandom r = new SecureRandom();
-        String day = "0" + (r.nextInt(8) + 1);
-        String month = "0" + (r.nextInt(8) + 1);
-        String year = "199" + (r.nextInt(8) + 1);
-        return day + month + year;
     }
 
     public String getHoursOfoperarion() {
