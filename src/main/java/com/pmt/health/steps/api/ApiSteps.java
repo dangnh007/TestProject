@@ -29,9 +29,10 @@ public class ApiSteps {
 
     /**
      * Constructor of ApiSteps class.
+     *
      * @param deviceController - object of the class which controls an application.
-     * @param requestData - object of the class which holds data needed to provide to the HTTP calls.
-     * @param user - object of the user class where we store user related values and methods.
+     * @param requestData      - object of the class which holds data needed to provide to the HTTP calls.
+     * @param user             - object of the user class where we store user related values and methods.
      */
     public ApiSteps(DeviceController deviceController, RequestData requestData, User user) {
         this.http = new HTTP(Configuration.getEnvironmentURL().toString());
@@ -46,6 +47,7 @@ public class ApiSteps {
      * Logs in as System Administrator via API.
      * Provides methods with user info such as email and pass.
      * Generates 6 digit mfa code.
+     *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @When("^I login as System Administrator via API$")
@@ -57,12 +59,13 @@ public class ApiSteps {
     /**
      * Creates new user based on parameters.
      * Get and Post method are chained for this implementation.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
-     * @param role - sets the role for user/roleName endpoint.
+     *
+     * @param role    - sets the role for user/roleName endpoint.
      * @param program - sets program for user/groupName endpoint.
      * @param awardee - sets awardee for user/groupName endpoint.
-     * @param org - sets organization for user/groupName endpoint.
-     * @param site - sets site for user/groupName endpoint.
+     * @param org     - sets organization for user/groupName endpoint.
+     * @param site    - sets site for user/groupName endpoint.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" via API$")
     public void createUser(String role, String program, String awardee, String org, String site) throws IOException {
@@ -72,6 +75,7 @@ public class ApiSteps {
 
     /**
      * Uses api Get call to go into an inbox of mailTrap.
+     *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I check email inbox$")
@@ -81,7 +85,8 @@ public class ApiSteps {
 
     /**
      * Uses api Get call to retrieve value from the messages of mailTrap.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
+     *
+     * @throws IOException          signals that an I/O exception of some sort has occurred.
      * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied.
      */
     @And("^I verify email and get its id$")
@@ -91,12 +96,13 @@ public class ApiSteps {
 
     /**
      * Does login via API, creates new user based on parameters and gets values using emailUtility.
-     * @param role - sets the role for user/roleName endpoint.
+     *
+     * @param role    - sets the role for user/roleName endpoint.
      * @param program - sets program for user/groupName endpoint.
      * @param awardee - sets awardee for user/groupName endpoint.
-     * @param org - sets organization for user/groupName endpoint.
-     * @param site - sets site for user/groupName endpoint.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @param org     - sets organization for user/groupName endpoint.
+     * @param site    - sets site for user/groupName endpoint.
+     * @throws IOException          signals that an I/O exception of some sort has occurred.
      * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied.
      */
     @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
@@ -112,6 +118,7 @@ public class ApiSteps {
     /**
      * Logs in as newly created user via API
      * Several methods were chained together for this implementation.
+     *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I login as user via API$")
@@ -125,6 +132,7 @@ public class ApiSteps {
 
     /**
      * Sets new password and stores authorization token.
+     *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I set up my credentials via API$")
@@ -136,6 +144,7 @@ public class ApiSteps {
 
     /**
      * Send PUT request to set accepting appointments for the site settings.
+     *
      * @param toggle sets accepting appointment toggle On or Off.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
@@ -146,8 +155,9 @@ public class ApiSteps {
 
     /**
      * Sends PUT request to set goal and target values for the siteSettings endpoint.
+     *
      * @param target sets the target value for the site settings.
-     * @param goal sets the goal value for the site setting.
+     * @param goal   sets the goal value for the site setting.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I set daily \"([^\"]*)\" and \"([^\"]*)\" via API$")
@@ -158,6 +168,7 @@ public class ApiSteps {
     /**
      * Sets minimum appointment notice via API.
      * Sends PUT request to the minimumAppointment endpoint.
+     *
      * @param days sets a minimum appointment value.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
@@ -169,16 +180,21 @@ public class ApiSteps {
     /**
      * Sets custom hours of operations via API.
      * Sends PUT request to the weeklyHours endpoint.
+     *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I set custom hours of operations via API$")
     public void setCustomHoursOfOperationsViaAPI() throws IOException {
-        apiUtility.createCustomHoursOfOperationS();
+        apiUtility.getNameCustomHoursOfOperations();
+        if (user.getHoursOfoperarion().isEmpty()) {
+            apiUtility.createCustomHoursOfOperationS();
+        }
     }
 
     /**
      * Sets default hours of operations via API.
      * Sends Put request to the weeklyHours endpoint.
+     *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I set default hours of operations via API$")
@@ -188,6 +204,7 @@ public class ApiSteps {
 
     /**
      * Sends POST request to the user/schedule endpoint and sets particular values.
+     *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I create new appointment for prospect via API$")

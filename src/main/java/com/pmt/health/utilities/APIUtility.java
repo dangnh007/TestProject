@@ -14,6 +14,7 @@ import java.util.*;
 public class APIUtility {
 
     private static final String ID = "id";
+    private static final String SCHOOL_OF_NURSING_SITE = "Site%2Fhpo-site-wimadisonschoolofnursing";
     private static final String NODE_MEMBER = "nodes";
     private static final String TIME_ZONE = "timeZone";
     private static final String AMERICA_CHICAGO = "America/Chicago";
@@ -65,7 +66,7 @@ public class APIUtility {
         String expected = "Successfully toggled accepting appointments via the API";
         // setup toggle member as ON or OFF
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, "Site%2Fhpo-site-wimadisonschoolofnursing");
+        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
         JsonObject toggleOnOff = new JsonObject();
         toggleOnOff.addProperty("acceptingAppointments", "on".equalsIgnoreCase(toggle));
         Map<String, String> referer = new HashMap<>();
@@ -361,5 +362,38 @@ public class APIUtility {
         if ("ROLE_MC_SITE_MANAGER".equals(role)) {
             user.setGroupValue(siteId);
         }
+    }
+
+    /**
+     * Gets name member out of the weeklyHours endpoint
+     */
+    public void getNameCustomHoursOfOperations() throws IOException {
+        String action = "I get name member of custom hours via API";
+        String expected = "Successfully get name member of custom hours via API";
+        //add headers and parameters
+        JsonObject emptyBody = new JsonObject();
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_SCHEDULE);
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
+        http.addHeaders(referer);
+        RequestData requestData = new RequestData();
+        requestData.setParams(parameters);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simpleGet(ENDPOINT_CALENDARS, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully get name member of custom hours via API. ");
+        String formName = "";
+//        System.out.println(response.getArrayData());
+        JsonArray jsonArray = response.getArrayData();
+        //initialize jsonBody as array and sets its size
+        int size = response.getArrayData().size();
+
+        for (int i = 0; i < size; i++) {
+            if (jsonArray.get(i).toString().contains("Custom")) {
+                formName = jsonArray.get(i).getAsJsonObject().get("name").getAsString();
+            }
+        }
+        user.setHoursOfoperarion(formName);
     }
 }

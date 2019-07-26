@@ -15,6 +15,7 @@ public class User {
     protected String participantPhone;
     protected String participantDateOfBirth;
     protected String groupValue;
+    protected String hoursOfoperarion;
     protected List<Role> roles;
     private String xauthToken;
 
@@ -29,6 +30,7 @@ public class User {
         participantPhone = "";
         participantDateOfBirth = dob();
         groupValue = "";
+        hoursOfoperarion = "";
     }
 
     public String dob() {
@@ -37,6 +39,14 @@ public class User {
         String month = "0" + (r.nextInt(8) + 1);
         String year = "199" + (r.nextInt(8) + 1);
         return day + month + year;
+    }
+
+    public String getHoursOfoperarion() {
+        return hoursOfoperarion;
+    }
+
+    public void setHoursOfoperarion(String hoursOfoperarion) {
+        this.hoursOfoperarion = hoursOfoperarion;
     }
 
     public String getGroupValue() {
