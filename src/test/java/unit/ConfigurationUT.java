@@ -96,15 +96,8 @@ public class ConfigurationUT {
 
     @Test
     public void getEnvironmentURLSubAutomationTest() throws MalformedURLException {
-        System.setProperty("environment", "minikube");
+        System.setProperty("environment", "qa");
         configuration = new Configuration(null);
-        assertEquals(Configuration.getMissionControlEnvironmentURL(), new URL("http://missioncontrol.minikube"));
-    }
-
-    @Test
-    public void getEnvironmentURLDefaultAutomationTest() throws MalformedURLException {
-        System.setProperty("environment", "minikube");
-        assertEquals(Configuration.getEnvironmentURL(""),
-                new URL("http://missioncontrol.minikube"));
+        assertEquals(Configuration.getMissionControlEnvironmentURL(), new URL("https://pmtqa.joinallofus.org"));
     }
 }
