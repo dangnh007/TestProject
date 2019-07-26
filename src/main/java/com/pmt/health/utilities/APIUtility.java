@@ -371,7 +371,6 @@ public class APIUtility {
         String action = "I get name member of custom hours via API";
         String expected = "Successfully get name member of custom hours via API";
         //add headers and parameters
-        JsonObject emptyBody = new JsonObject();
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         Map<String, String> parameters = new HashMap<>();
@@ -384,7 +383,6 @@ public class APIUtility {
         Response response = http.simpleGet(ENDPOINT_CALENDARS, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully get name member of custom hours via API. ");
         String formName = "";
-//        System.out.println(response.getArrayData());
         JsonArray jsonArray = response.getArrayData();
         //initialize jsonBody as array and sets its size
         int size = response.getArrayData().size();
