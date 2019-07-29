@@ -11,8 +11,6 @@ public class User {
     protected String secretKey;
     protected String userId;
     protected String participantEmail;
-    protected String participantPhone;
-    protected String participantDateOfBirth;
     protected String groupValue;
     protected String hoursOfoperarion;
     protected List<Role> roles;
@@ -44,22 +42,6 @@ public class User {
 
     public void setGroupValue(String groupValue) {
         this.groupValue = groupValue;
-    }
-
-    public String getParticipantDateOfBirth() {
-        return participantDateOfBirth;
-    }
-
-    public void setParticipantDateOfBirth(String participantDateOfBirth) {
-        this.participantDateOfBirth = participantDateOfBirth;
-    }
-
-    public String getParticipantPhone() {
-        return participantPhone;
-    }
-
-    public void setParticipantPhone(String participantPhone) {
-        this.participantPhone = participantPhone;
     }
 
     public String getParticipantEmail() {
