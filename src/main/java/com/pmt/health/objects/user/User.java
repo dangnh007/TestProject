@@ -1,28 +1,55 @@
 package com.pmt.health.objects.user;
 
-import com.pmt.health.exceptions.VibrentJSONException;
-
-import java.io.IOException;
 import java.util.*;
 
 public class User {
 
     protected String email;
-    protected String password; // NOSONAR
+    protected String password;
     protected String firstName;
     protected String lastName;
     protected String secretKey;
     protected String userId;
+    protected String participantEmail;
+    protected String groupValue;
+    protected String hoursOfoperarion;
     protected List<Role> roles;
     private String xauthToken;
 
-    public User() throws IOException, VibrentJSONException {
+    public User() {
         firstName = "Automation";
         lastName = "user";
         email = UserUtility.makeRandomUserEmail();
         password = "";
         secretKey = "";
         userId = "";
+        participantEmail = UserUtility.makeRandomUserEmail();
+        groupValue = "";
+        hoursOfoperarion = "";
+    }
+
+    public String getHoursOfoperarion() {
+        return hoursOfoperarion;
+    }
+
+    public void setHoursOfoperarion(String hoursOfoperarion) {
+        this.hoursOfoperarion = hoursOfoperarion;
+    }
+
+    public String getGroupValue() {
+        return groupValue;
+    }
+
+    public void setGroupValue(String groupValue) {
+        this.groupValue = groupValue;
+    }
+
+    public String getParticipantEmail() {
+        return participantEmail;
+    }
+
+    public void setParticipantEmail(String participantEmail) {
+        this.participantEmail = participantEmail;
     }
 
     public String getUserId() {

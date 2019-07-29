@@ -23,6 +23,7 @@ import static org.testng.Reporter.getCurrentTestResult;
 
 public class Configuration {
 
+    public static final String EMPTY = "";
     public static final String PROGRAM_PROP = "program";
     public static final String ENVIRONMENT_PROP = "environment";
     public static final String SCENARIO = "Scenario";
@@ -92,7 +93,7 @@ public class Configuration {
      * @return url that should be used for specified environment
      */
     private static URL getSubscriberEnvironmentURL() {
-        return getEnvironmentURL("sub");
+        return getEnvironmentURL("mc");
     }
 
 
@@ -128,7 +129,6 @@ public class Configuration {
      *
      * @return
      */
-    @SuppressWarnings("squid:S2259")
     public JsonObject getSystemInfo(Reporter reporter) throws IOException {
         if (getSubscriberEnvironmentURL() == null) {
             log.error("Issue obtaining subscriber environment, unable to run tests");
@@ -148,8 +148,7 @@ public class Configuration {
      * @return
      */
     public String getBuild(JsonObject sysInfo) {
-        return "";
-//        return sysInfo.get("buildName").getAsString() + " - Build #" + sysInfo.get("buildNumber").getAsString();
+        return EMPTY;
     }
 
     /**

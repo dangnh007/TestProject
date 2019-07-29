@@ -8,6 +8,7 @@ import com.pmt.health.utilities.LocatorType;
 public class UserAdminPage {
 
     private final WebbElement addUserButton;
+    private final WebbElement loggedInHeadingUserAdministration;
     private final WebbElement loggedInHeadingAdmin;
     private final WebbElement loggedInHeadingSiteManagerUser;
     private final WebbElement createdUser;
@@ -16,11 +17,9 @@ public class UserAdminPage {
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
 
-    private User user;
-
     public UserAdminPage(App app, User user) {
-        this.user = user;
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
+        this.loggedInHeadingUserAdministration = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
         this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
         this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
@@ -58,6 +57,9 @@ public class UserAdminPage {
         loggedInHeadingSiteManagerUser.waitFor().displayed();
     }
 
+    public void waitForLoginLoadUserAdministration() {
+        loggedInHeadingUserAdministration.waitFor().displayed();
+    }
     /**
      * Asserts that the current user is logged out by making sure the login page is displayed.
      */
