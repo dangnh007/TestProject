@@ -28,7 +28,7 @@ Feature: PMT Site Settings
       | ROLE_MC_SITE_MANAGER | PMI     | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing | on | off | 15         | 0              | + 1 Day  | + 3 Days     |
 
 
-  @mc-4852 @smoke @api @wip
+  @mc-4852 @smoke @api
   Scenario Outline: Set up Site Settings via API
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     Then I login as user via API
@@ -45,7 +45,7 @@ Feature: PMT Site Settings
       | role                 | program | awardee              | org                              | site                                       | on | off | new target | default target | new goal | default goal | new days | default days |
       | ROLE_MC_SITE_MANAGER | PMI     | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing | on | off | 15         | 0              | 5        | 0            | 1        | 3            |
 
-  @mc-5143 @smoke @wip
+  @mc-5143 @smoke
   Scenario Outline: Create a new appointment for prospect as Site Manager
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     Then I login as user via API
@@ -67,7 +67,7 @@ Feature: PMT Site Settings
       | role                 | program | awardee              | org                              | site                                       | on | off | new target | default target | new goal | default goal | new days | default days |
       | ROLE_MC_SITE_MANAGER | PMI     | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing | on | off | 15         | 0              | 5        | 0            | 1        | 3            |
 
-  @mc-5144 @smoke @api @wip
+  @mc-5144 @smoke @api
   Scenario Outline: Create a new appointment for prospect as Site Manager via API
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     Then I login as user via API
