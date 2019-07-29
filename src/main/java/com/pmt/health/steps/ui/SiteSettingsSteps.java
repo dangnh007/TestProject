@@ -60,6 +60,7 @@ public class SiteSettingsSteps {
 
     @Then("^I delete custom hrs of operations$")
     public void deleteCustomHrsOfOperations() {
+        siteSettingsPage.editPage();
         siteSettingsPage.customHoursOfOperationDelete();
     }
 
@@ -72,8 +73,6 @@ public class SiteSettingsSteps {
     public void provideParticipantInformation() {
         siteSettingsPage.enterFirstName(user.getFirstName());
         siteSettingsPage.enterLastName(user.getLastName());
-        siteSettingsPage.enterDateOfBirth(user.getParticipantDateOfBirth());
-        siteSettingsPage.enterPhoneNumber(user.getParticipantPhone());
         siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
         siteSettingsPage.selectLanguage();
         siteSettingsPage.completeParticipantInfo();

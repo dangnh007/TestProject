@@ -11,8 +11,8 @@ Feature: PMT Site Settings
     And I go to Settings Page
     And I toggle "<on>" accepting appointments
     And I set target to "<new target>"
-    And I set appointment notice "<new days>"
     And I set custom hrs of operations
+    And I set appointment notice "<new days>"
     And I save changes
     And I logout
     And I login as user
@@ -20,8 +20,8 @@ Feature: PMT Site Settings
     And I toggle "<off>" accepting appointments
     And I set target to "<default target>"
     And I set appointment notice "<default days>"
-    And I delete custom hrs of operations
     And I save changes
+    And I delete custom hrs of operations
 
     Examples:
       | role                 | program | awardee              | org                              | site                                       | on | off | new target | default target | new days | default days |

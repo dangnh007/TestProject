@@ -45,6 +45,8 @@ public class SiteSettingsPage {
     private final WebbElement time8am;
     private final WebbElement scheduleButton;
     private final WebbElement messageOfSuccessAppointment;
+    private final WebbElement warning;
+    private final WebbElement ignoreWarning;
 
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -77,11 +79,14 @@ public class SiteSettingsPage {
         this.backButton = app.newElement(LocatorType.CSS, "button[class='btn-back btn btn-default']");
         this.languagesDropDown = app.newElement(LocatorType.CSS, "div[class='language-control']");
         this.appointmentNotes = app.newElement(LocatorType.CSS, "textarea[name='notes']");
-        this.todayDate = app.newElement(LocatorType.XPATH, "//tr/td/div[@class='rdtDay rdtToday']");
+        this.todayDate = app.newElement(LocatorType.CSS, "tr > td > div.rdtDay.rdtToday");
         this.time8am = app.newElement(LocatorType.XPATH, "//div[contains(text(),'08:00 AM')]");
         this.scheduleButton = app.newElement(LocatorType.CSS, "button[class='btn btn-default btn-schedule pull-right btn btn-default']");
         this.messageOfSuccessAppointment = app.newElement(LocatorType.XPATH, "//div[contains(text(), 'Appointment successfully created.')]");
+        this.warning = app.newElement(LocatorType.CSS, "p[class='warning-text']");
+        this.ignoreWarning = app.newElement(LocatorType.CSS, "button[class='btn-ghost btn-ghost-primary btn btn-default']");
     }
+
 
     public void assertSuccessAppointmentMessage() {
         messageOfSuccessAppointment.waitFor().displayed();
@@ -175,6 +180,9 @@ public class SiteSettingsPage {
 
     public void hoFormUpdate() {
         hoFormUpdate.click();
+        if(warning.is().present() && warning.waitFor().displayed()) {
+            ignoreWarning.click();
+        }
     }
 
     public void setCustomTime() {

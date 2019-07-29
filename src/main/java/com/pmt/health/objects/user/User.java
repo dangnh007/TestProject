@@ -1,7 +1,5 @@
 package com.pmt.health.objects.user;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 public class User {
@@ -13,9 +11,8 @@ public class User {
     protected String secretKey;
     protected String userId;
     protected String participantEmail;
-    protected String participantPhone;
-    protected String participantDateOfBirth;
     protected String groupValue;
+    protected String hoursOfoperarion;
     protected List<Role> roles;
     private String xauthToken;
     public static final int YEARS_OLD = 20;
@@ -29,19 +26,16 @@ public class User {
         secretKey = "";
         userId = "";
         participantEmail = UserUtility.makeRandomUserEmail();
-        participantPhone = "";
-        participantDateOfBirth = getDefaultDOB().toString();
         groupValue = "";
+        hoursOfoperarion = "";
     }
 
-    public Date getDOB(int yearsOld) {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        LocalDate date = LocalDate.now().minusYears(yearsOld);
-        return Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    public String getHoursOfoperarion() {
+        return hoursOfoperarion;
     }
 
-    public Date getDefaultDOB() {
-        return getDOB(YEARS_OLD);
+    public void setHoursOfoperarion(String hoursOfoperarion) {
+        this.hoursOfoperarion = hoursOfoperarion;
     }
 
     public String getGroupValue() {
@@ -50,22 +44,6 @@ public class User {
 
     public void setGroupValue(String groupValue) {
         this.groupValue = groupValue;
-    }
-
-    public String getParticipantDateOfBirth() {
-        return participantDateOfBirth;
-    }
-
-    public void setParticipantDateOfBirth(String participantDateOfBirth) {
-        this.participantDateOfBirth = participantDateOfBirth;
-    }
-
-    public String getParticipantPhone() {
-        return participantPhone;
-    }
-
-    public void setParticipantPhone(String participantPhone) {
-        this.participantPhone = participantPhone;
     }
 
     public String getParticipantEmail() {
