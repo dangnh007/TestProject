@@ -180,7 +180,7 @@ public class SiteSettingsPage {
 
     public void hoFormUpdate() {
         hoFormUpdate.click();
-        if(warning.waitFor().displayed() && warning.is().present()) {
+        if(warning.is().present() && warning.waitFor().displayed()) {
             ignoreWarning.click();
         }
     }

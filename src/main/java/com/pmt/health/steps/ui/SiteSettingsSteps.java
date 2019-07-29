@@ -73,7 +73,6 @@ public class SiteSettingsSteps {
     public void provideParticipantInformation() {
         siteSettingsPage.enterFirstName(user.getFirstName());
         siteSettingsPage.enterLastName(user.getLastName());
-        siteSettingsPage.enterPhoneNumber(user.getParticipantPhone());
         siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
         siteSettingsPage.selectLanguage();
         siteSettingsPage.completeParticipantInfo();
