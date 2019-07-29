@@ -26,8 +26,6 @@ public class User {
         secretKey = "";
         userId = "";
         participantEmail = UserUtility.makeRandomUserEmail();
-        participantPhone = "";
-        participantDateOfBirth = null;
         groupValue = "";
         hoursOfoperarion = "";
     }
