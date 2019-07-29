@@ -1,6 +1,5 @@
 package com.pmt.health.objects.user;
 
-import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
