@@ -14,7 +14,6 @@ def commitSha
 def testAgainst = "develop"
 def testAgainstRaw = testAgainst
 def containerName = "vibrent/automation-framework"
-def uuid = UUID.randomUUID().toString()
 def podName = "${project}-${env.BRANCH_NAME.replaceAll(/\//, '-')}-${env.BUILD_NUMBER}"
 def podLabel = podName
 def pullSecrets = ['reg.vibrenthealth.com', 'dockergroup.vibrenthealth.com']
@@ -62,14 +61,6 @@ podTemplate(
                     [
                             "name"            : "${containerName}-chrome",
                             "pathToDockerfile": "src/main/resources/docker/chrome/Dockerfile"
-//                    ],
-//                    [
-//                            "name"            : "${containerName}-android",
-//                            "pathToDockerfile": "src/main/resources/docker/android/Dockerfile"
-//                    ],
-//                    [
-//                            "name"            : "${containerName}-iphone",
-//                            "pathToDockerfile": "src/main/resources/docker/iphone/Dockerfile"
                     ]
             ]
             def artifacts = [
@@ -169,22 +160,6 @@ podTemplate(
                                         sh "kubectl annotate pods -n ${stackName} --all cluster-autoscaler.kubernetes.io/safe-to-evict=false"
                                     }
                                 },
-//                                "Build Android Application": {
-//                                        buildMobileApplication.android(
-//                                                stackName: stackName,
-//                                                appBranch: testAgainst,
-//                                                buildNumber: "1.0.${env.BUILD_NUMBER}",
-//                                                sauce: true
-//                                        )
-//                                    },
-//                                "Build iOS Application": {
-//                                    buildMobileApplication.iOS(
-//                                            stackName: stackName,
-//                                            appVersion: testAgainst,
-//                                            buildNumber: "1.0.${env.BUILD_NUMBER}",
-//                                            sauce: true
-//                                    )
-//                                },
                                 "Quick Run Of Sonar": {
                                     if (branch != 'develop' && branch != 'master' && branchType != 'release' && branchType != 'config') {
                                         container('maven') {
@@ -256,21 +231,6 @@ podTemplate(
                                                         defaultWait: 15,
                                                         threads    : 1
                                                 ],
-//                                                    [
-//                                                            name       : 'android',
-//                                                            tags       : '~@api --tags @smoke',
-//                                                            defaultWait: 30,
-//                                                            threads    : 2,
-//                                                            hub        : true,
-//                                                            app        : "${stackName}.apk"
-//                                                    ],
-//                                                    [
-//                                                            name       : 'iphone',
-//                                                            tags       : '~@api --tags @smoke',
-//                                                            defaultWait: 30,
-//                                                            threads    : 2,
-//                                                            hub        : true,
-//                                                            app        : "${stackName}.zip"
                                         ],
                                         stageFunc: failableStage
                                 )
@@ -290,21 +250,6 @@ podTemplate(
                                                         defaultWait: 15,
                                                         threads    : 1
                                                 ],
-//                                                    [
-//                                                            name       : 'android',
-//                                                            tags       : '~@api --tags @smoke',
-//                                                            defaultWait: 30,
-//                                                            threads    : 2,
-//                                                            hub        : true,
-//                                                            app        : "${stackName}.apk"
-//                                                    ],
-//                                                    [
-//                                                            name       : 'iphone',
-//                                                            tags       : '~@api --tags @smoke',
-//                                                            defaultWait: 30,
-//                                                            threads    : 2,
-//                                                            hub        : true,
-//                                                            app        : "${stackName}.zip"
                                         ],
                                         stageFunc: failableStage
                                 )

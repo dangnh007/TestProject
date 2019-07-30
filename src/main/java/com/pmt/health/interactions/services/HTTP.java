@@ -648,9 +648,16 @@ public class HTTP {
         Base32 base32 = new Base32();
         byte[] bytes = base32.decode(normalizadBase32Key);
         String hexKey = Hex.encodeHexString(bytes);
+        if ((System.currentTimeMillis() / 1000) % 30 < 2) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                log.error(e);
+            }
+        }
         long time = (System.currentTimeMillis() / 1000) / 30;
         String hexTime = Long.toHexString(time);
-
+        System.out.println((System.currentTimeMillis() / 1000));
         return TOTP.generateTOTP(hexKey, hexTime, "6");
     }
 
