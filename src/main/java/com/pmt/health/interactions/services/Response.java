@@ -169,7 +169,7 @@ public class Response {
         if ((responseData == ResponseData.JSON) && ((JsonElement) data).isJsonObject()) {
             return ((JsonObject) data).getAsJsonObject();
         }
-        Assert.fail("Reporter not available. Expected JsonObject. Received: " + responseData.toString());
+        Assert.fail("Reporter not available. Expected JsonObject. Received: " + this.getMessage());
         return null; // Statement is never reached
     }
 
@@ -177,7 +177,7 @@ public class Response {
         if (responseData == ResponseData.JSON && ((JsonElement) data).isJsonArray()) {
             return ((JsonArray) data).getAsJsonArray();
         }
-        Assert.fail("Reporter not available. Expected JsonArrayData. Received: " + responseData.toString());
+        Assert.fail("Reporter not available. Expected JsonArrayData. Received: " + this.getMessage());
         return null; // Statement is never reached
     }
 
@@ -185,7 +185,7 @@ public class Response {
         if (responseData == ResponseData.JSON && ((JsonElement) data).isJsonArray()) {
             return ((JsonArray) data).getAsJsonArray();
         }
-        Assert.fail("Reporter not available. Expected JsonData. Received: " + responseData.toString());
+        Assert.fail("Reporter not available. Expected JsonData. Received: " + this.getMessage());
         return null; // Statement is never reached
     }
 
@@ -193,7 +193,7 @@ public class Response {
         if (responseData == ResponseData.FILE) {
             return new File(data.toString());
         }
-        Assert.fail("Reporter not available. Expected File. Received: " + responseData.toString());
+        Assert.fail("Reporter not available. Expected File. Received: " + this.getMessage());
         return null; // Statement is never reached
     }
 
