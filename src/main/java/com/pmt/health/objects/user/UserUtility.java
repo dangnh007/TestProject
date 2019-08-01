@@ -115,7 +115,7 @@ public class UserUtility {
     }
 
     private void reporterPassFailStep(String action, String expected, Response response, String failMessage) {
-        if (response.getCode() == 200) {
+        if (response != null && response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
             reporter.warn(action, expected, failMessage + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
@@ -148,7 +148,8 @@ public class UserUtility {
                 break;
             } catch (VibrentIOException vioe) {
                 count++;
-                log.info("Failed MFA for logging in");
+                log.error("Failed MFA for logging in");
+                log.error(requestData.getJSON());
                 mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
                 requestData.setJSON(mfa);
                 action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));

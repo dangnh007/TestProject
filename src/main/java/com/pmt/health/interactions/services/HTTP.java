@@ -272,7 +272,7 @@ public class HTTP {
 
     private void setSESSIONToken(HttpURLConnection connection, boolean isSESSIONNotNull, String session) {
         if (isSESSIONNotNull) {
-            connection.addRequestProperty("Cookie", "JSESSIONID=" + session);
+            connection.addRequestProperty("Cookie", "SESSION=" + session);
         }
     }
 
@@ -657,7 +657,6 @@ public class HTTP {
         }
         long time = (System.currentTimeMillis() / 1000) / 30;
         String hexTime = Long.toHexString(time);
-        System.out.println((System.currentTimeMillis() / 1000));
         return TOTP.generateTOTP(hexKey, hexTime, "6");
     }
 
