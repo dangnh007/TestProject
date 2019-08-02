@@ -15,7 +15,7 @@ Feature: Campaign Management
       | role                                      | program   | awardee | org | site |
       | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      |
 
-  @mc-test @smoke
+  @mc-5391 @smoke
   Scenario Outline: As user I want to verify values of Audience Segmentation tab
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     When I set up my credentials via API
@@ -27,7 +27,7 @@ Feature: Campaign Management
       | role                                      | program   | awardee | org | site |
       | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      |
 
-  @mc-test2 @smoke
+  @mc-5392 @smoke
   Scenario Outline: As a user I want to verify New Filter section, its groups and categories
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     When I set up my credentials via API
