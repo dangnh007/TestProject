@@ -29,11 +29,17 @@ public class UserAdminPage {
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
     }
 
+    /**
+     * Clicks on the "User Admin" button
+     */
     public void userAdmin() {
         userAdminButton.click();
         addUserButton.hover();
     }
 
+    /**
+     * Clicks on the "User Settings " button
+     */
     public void userSettings() {
         userSettingsButton.click();
     }
@@ -53,13 +59,20 @@ public class UserAdminPage {
         loggedInHeadingAdmin.waitFor().displayed();
     }
 
+    /**
+     * Waits for the header to be displayed.
+     */
     public void waitForLoginLoadSiteManager() {
         loggedInHeadingSiteManagerUser.waitFor().displayed();
     }
 
+    /**
+     * Waits for the header to be displayed.
+     */
     public void waitForLoginLoadUserAdministration() {
         loggedInHeadingUserAdministration.waitFor().displayed();
     }
+
     /**
      * Asserts that the current user is logged out by making sure the login page is displayed.
      */
@@ -67,6 +80,9 @@ public class UserAdminPage {
         loggedInHeadingAdmin.assertState().displayed();
     }
 
+    /**
+     * Waits for the header to be displayed.
+     */
     public void assertLoggedInSiteManager() {
         loggedInHeadingSiteManagerUser.assertState().displayed();
     }
