@@ -16,7 +16,6 @@ public class CapacityManagementPage {
     private User user;
     Logger log = Logger.getLogger(CapacityManagementPage.class);
 
-    private final WebbElement capacityManagementSidebarButton;
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
     private final WebbElement tabAudienceSegmentation;
@@ -116,7 +115,6 @@ public class CapacityManagementPage {
     public CapacityManagementPage(App app, User user) {
         this.app = app;
         this.user = user;
-        this.capacityManagementSidebarButton = app.newElement(LocatorType.CSS, "a > svg[data-icon=\"chart-pie\"]");
         this.communicationsButton = app.newElement(LocatorType.CSS, "svg[class='src-components-common-icon-styles__communications-icon--3P03Etk6']");
         this.headingCommunications = app.newElement(LocatorType.XPATH, "//h1[text()='Communications']");
         this.tabAudienceSegmentation = app.newElement(LocatorType.XPATH, "//a[text()='Audience Segmentation']");
@@ -199,7 +197,6 @@ public class CapacityManagementPage {
         raceList = Arrays.asList(americanIndian, asian, africanAmerican, hispanic, middleEastern, nativeHawaiin, white, noneOfTheseRace, preferNotToAnswerRace);
         this.age18 = app.newElement(LocatorType.ARIALABEL, "18-24");
         this.age25 = app.newElement(LocatorType.ARIALABEL, "25-34");
-        //TODO file a bug about this locator text
         this.age35 = app.newElement(LocatorType.ARIALABEL, "35-24");
         this.age45 = app.newElement(LocatorType.ARIALABEL, "45-54");
         this.age55 = app.newElement(LocatorType.ARIALABEL, "55-64");

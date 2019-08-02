@@ -3,7 +3,6 @@ package com.pmt.health.steps.ui;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.CapacityManagementPage;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CapacityManagementSteps {
