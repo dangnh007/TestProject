@@ -79,6 +79,15 @@ public class VibrentIOException extends IOException {
         JsonElement json = requestData.getJSON();
         Map<String, String> params = requestData.getParams();
         StringBuilder builder = new StringBuilder();
+        if(requestData.getHeaders().size() > 0) {
+            builder.append(" Headers: ");
+        }
+        for (Object name: requestData.getHeaders().keySet()){
+            String key = name.toString();
+            String value = requestData.getHeaders().get(name).toString();
+            builder.append(key).append(" : ").append(value);
+        }
+        builder.append(" ");
         builder.append("  JSON Data: ").append(json);
         if (params != null) {
             for (Map.Entry<String, String> param : params.entrySet()) {

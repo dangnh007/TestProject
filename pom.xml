@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>coveros</groupId>
+    <groupId>com.pmt.health</groupId>
     <artifactId>PMT-Automation-Framework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -13,12 +13,94 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gtags>~@ignore</gtags>
+        <cucumber.options>--tags ~@wip --tags ~@unsafe --tags ${gtags} --tags ~@drc</cucumber.options>
         <threads>5</threads>
+
+        <!-- SonarQube Properties -->
+        <sonar.exclusions>src/main/java/com/pmt/health/interactions/services/SSLUtilities.java</sonar.exclusions>
+        <sonar.host.url>https://sonar.vibrenthealth.com</sonar.host.url>
+        <sonar.sources>pom.xml,src/main/java,src/main/resources,src/test/resources/features</sonar.sources>
+        <sonar.test>src/test/java</sonar.test>
+        <sonar.junit.reportPaths>target/surefire-reports,target/failsafe-reports</sonar.junit.reportPaths>
+        <sonar.jacoco.reportPath>target/coverage-reports/jacoco-ut.exec</sonar.jacoco.reportPath>
+        <sonar.jacoco.itReportPath>target/coverage-reports/jacoco-it.exec</sonar.jacoco.itReportPath>
 
         <!-- Plugin Versions -->
         <selenium.version>3.13.0</selenium.version>
         <appium.version>6.1.0</appium.version>
+
+        <surefire.includes>**/*UT.java</surefire.includes>
+
+        <!-- JIRA Properties -->
+        <jira.username></jira.username>
+        <jira.password></jira.password>
     </properties>
+
+    <!-- sets nexus repo based on provided environment -->
+    <profiles>
+        <profile>
+            <id>alternateBuildDir</id>
+            <activation>
+                <property>
+                    <name>alt.build.dir</name>
+                </property>
+            </activation>
+            <build>
+                <directory>${alt.build.dir}</directory>
+            </build>
+        </profile>
+
+        <profile>
+            <id>appVersion</id>
+            <activation>
+                <property>
+                    <name>appVersion</name>
+                </property>
+            </activation>
+            <properties>
+                <mobile.app.version>${appVersion}</mobile.app.version>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>emptyEnvironment</id>
+            <activation>
+                <property>
+                    <name>!environment</name>
+                </property>
+            </activation>
+            <properties>
+                <mobile.app.artifactId>automation</mobile.app.artifactId>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>automation</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>automation</value>
+                </property>
+            </activation>
+            <properties>
+                <mobile.app.artifactId>automation</mobile.app.artifactId>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>Automation</id>
+            <activation>
+                <property>
+                    <name>environment</name>
+                    <value>Automation</value>
+                </property>
+            </activation>
+            <properties>
+                <environment>automation</environment>
+                <mobile.app.artifactId>automation</mobile.app.artifactId>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-model -->
@@ -179,6 +261,72 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <showDeprecation>true</showDeprecation>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.9</version>
+                <executions>
+                    <execution>
+                        <id>pre-unit-test</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>pre-integration-test</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/coverage-reports/jacoco-it.exec</destFile>
+                            <propertyName>failsafeArgLine</propertyName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>post-integration-test</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <dataFile>${project.build.directory}/coverage-reports/jacoco-it.exec</dataFile>
+                            <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
                 <groupId>com.github.temyers</groupId>
                 <artifactId>cucumber-jvm-parallel-plugin</artifactId>
                 <version>4.2.0</version>
@@ -212,6 +360,34 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <argLine>${surefireArgLine}</argLine>
+                    <skipTests>${skip.unit.tests}</skipTests>
+                    <includes>
+                        <include>${surefire.includes}</include>
+                    </includes>
+                    <properties>
+                        <property>
+                            <name>surefire.testng.verbose</name>
+                            <value>3</value>
+                        </property>
+                    </properties>
+                    <systemPropertyVariables>
+                        <jira.username>${jira.username}</jira.username>
+                        <jira.password>${jira.password}</jira.password>
+                        <s3access>${s3access}</s3access>
+                        <s3secret>${s3secret}</s3secret>
+                        <s3bucket>${s3bucket}</s3bucket>
+                        <email.username>${email.username}</email.username>
+                        <email.password>${email.password}</email.password>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
 
             <plugin>

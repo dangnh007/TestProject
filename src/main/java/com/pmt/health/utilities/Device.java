@@ -138,6 +138,9 @@ public enum Device {
         if (!getDeviceVersion().isEmpty()) {
             device.append(" ").append(getDeviceVersion());
         }
+        if (!getDevicePlatform().isEmpty()) {
+            device.append(" on ").append(capitalizeFirstLetter(getDevicePlatform()));
+        }
         return device.toString();
     }
 

@@ -14,7 +14,6 @@ def commitSha
 def testAgainst = "develop"
 def testAgainstRaw = testAgainst
 def containerName = "vibrent/automation-framework"
-def uuid = UUID.randomUUID().toString()
 def podName = "${project}-${env.BRANCH_NAME.replaceAll(/\//, '-')}-${env.BUILD_NUMBER}"
 def podLabel = podName
 def pullSecrets = ['reg.vibrenthealth.com', 'dockergroup.vibrenthealth.com']
@@ -62,14 +61,6 @@ podTemplate(
                     [
                             "name"            : "${containerName}-chrome",
                             "pathToDockerfile": "src/main/resources/docker/chrome/Dockerfile"
-//                    ],
-//                    [
-//                            "name"            : "${containerName}-android",
-//                            "pathToDockerfile": "src/main/resources/docker/android/Dockerfile"
-//                    ],
-//                    [
-//                            "name"            : "${containerName}-iphone",
-//                            "pathToDockerfile": "src/main/resources/docker/iphone/Dockerfile"
                     ]
             ]
             def artifacts = [
@@ -160,6 +151,7 @@ podTemplate(
                                     helmDeploy(
                                             gitBranch: testAgainstRaw,
                                             stackName: "${stackName}",
+                                            missionControlEnabled: true,
                                             chartsRepo: "devcharts",
                                             stageFunc: buildStage
                                     )
@@ -168,22 +160,6 @@ podTemplate(
                                         sh "kubectl annotate pods -n ${stackName} --all cluster-autoscaler.kubernetes.io/safe-to-evict=false"
                                     }
                                 },
-//                                "Build Android Application": {
-//                                        buildMobileApplication.android(
-//                                                stackName: stackName,
-//                                                appBranch: testAgainst,
-//                                                buildNumber: "1.0.${env.BUILD_NUMBER}",
-//                                                sauce: true
-//                                        )
-//                                    },
-//                                "Build iOS Application": {
-//                                    buildMobileApplication.iOS(
-//                                            stackName: stackName,
-//                                            appVersion: testAgainst,
-//                                            buildNumber: "1.0.${env.BUILD_NUMBER}",
-//                                            sauce: true
-//                                    )
-//                                },
                                 "Quick Run Of Sonar": {
                                     if (branch != 'develop' && branch != 'master' && branchType != 'release' && branchType != 'config') {
                                         container('maven') {
@@ -244,40 +220,36 @@ podTemplate(
                                 runDockerTests(
                                         testBranch: branch,
                                         registry: VibrentConstants.CIREG_REGISTRY,
-                                        subUrl: "https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
                                         buildNumber: env.BUILD_NUMBER,
                                         framework: "PMTAutomationFramework",
+                                        other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
                                         platforms: [
                                                 [
                                                         name       : 'api',
                                                         container  : "${containerName}-default",
                                                         tags       : '@api',
                                                         defaultWait: 15,
-                                                        threads    : 5
+                                                        threads    : 1
                                                 ],
+                                        ],
+                                        stageFunc: failableStage
+                                )
+                        )
+                        parallel(
+                                runDockerTests(
+                                        testBranch: branch,
+                                        registry: VibrentConstants.CIREG_REGISTRY,
+                                        buildNumber: env.BUILD_NUMBER,
+                                        framework: "PMTAutomationFramework",
+                                        other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
+                                        platforms: [
                                                 [
                                                         name       : 'chrome',
                                                         container  : "${containerName}-chrome",
                                                         tags       : '~@api --tags @smoke',
                                                         defaultWait: 15,
-                                                        threads    : 5
-//                                                    ],
-//                                                    [
-//                                                            name       : 'android',
-//                                                            tags       : '~@api --tags @smoke',
-//                                                            defaultWait: 30,
-//                                                            threads    : 2,
-//                                                            hub        : true,
-//                                                            app        : "${stackName}.apk"
-//                                                    ],
-//                                                    [
-//                                                            name       : 'iphone',
-//                                                            tags       : '~@api --tags @smoke',
-//                                                            defaultWait: 30,
-//                                                            threads    : 2,
-//                                                            hub        : true,
-//                                                            app        : "${stackName}.zip"
-                                                ]
+                                                        threads    : 1
+                                                ],
                                         ],
                                         stageFunc: failableStage
                                 )

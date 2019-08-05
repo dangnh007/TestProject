@@ -15,7 +15,8 @@ mvn clean verify \
     -Dfail.fast \
     -Dmaven.test.failure.ignore=false \
     -Ddefault.wait=${DEFAULT_WAIT:-30} \
-    ${HUB}
+    ${HUB} \
+    ${OTHER}
 
 export RESULT=$?
 cp -r target/ test-output/

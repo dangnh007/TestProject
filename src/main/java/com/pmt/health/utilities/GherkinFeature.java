@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,6 +107,25 @@ public class GherkinFeature {
         File featureFile = new File(scenarioInfo.split(":\\d+")[0]);
         if (featureFile.exists()) {
             return featureFile;
+        }
+        return null;
+    }
+
+    /**
+     * Using the tags, determines which JIRA key is correlated with this test case
+     *
+     * @param test the TestNG test being executed
+     * @return
+     */
+    public static String getFeatureKey(ITestResult test) {
+        String project = Property.getJiraProperty(PROJECT);
+        for (String tag : getFeatureTags(test)) {
+            if (tag.startsWith("@")) {
+                tag = tag.substring(1);
+            }
+            if (tag.startsWith("feature-" + project + "-")) {
+                return tag.substring(8);
+            }
         }
         return null;
     }
@@ -369,6 +389,43 @@ public class GherkinFeature {
             }
         }
         return steps;
+    }
+
+    /**
+     * What is the scenario outline example under test. i.e. the data from the table row
+     *
+     * @param test the TestNG test being executed
+     * @return
+     */
+    public static String getScenarioOutlineExampleRow(ITestResult test) {
+        if (!isScenarioOutline(test)) {
+            return null;
+        }
+        int exampleRow = getScenarioLine(test);
+        return Objects.requireNonNull(getFeatureAt(getFeatureFile(test), exampleRow)).trim();
+    }
+
+    private static String getFeatureAt(File featureFile, int scenarioLine) {
+        if (featureFile == null) {
+            return null;
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(featureFile))) {
+            int lines = 0;
+            String currLine;
+            while ((currLine = br.readLine()) != null) {
+                lines++;
+                if (lines == scenarioLine) {
+                    return currLine;
+                }
+            }
+        } catch (FileNotFoundException e) {
+            log.error(LOCATE + featureFile.getAbsolutePath() + ". " + e);
+            return null;
+        } catch (IOException e) {
+            log.error(READ + featureFile.getAbsolutePath() + ". " + e);
+            return null;
+        }
+        return null;
     }
 
     /**

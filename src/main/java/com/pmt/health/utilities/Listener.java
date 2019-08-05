@@ -167,7 +167,7 @@ public class Listener extends TestListenerAdapter {
             try {
                 zephyr.updateCycle(cycle, null,
                         "Automated testing run on version " + configuration.getVersion(systemInfo) + " of " + configuration.getProgram(),
-                        configuration.getBuild(systemInfo), Configuration.getEnvironment());
+                        "", Configuration.getEnvironment());
             } catch (IOException e) {
                 log.error("Update Cycle", e);
             }

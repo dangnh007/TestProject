@@ -2,12 +2,14 @@ package com.pmt.health.objects.user;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.pmt.health.exceptions.VibrentIOException;
 import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.interactions.services.Response;
 import com.pmt.health.steps.Configuration;
 import com.pmt.health.utilities.Property;
 import com.pmt.health.utilities.Reporter;
+import org.testng.log4testng.Logger;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -31,6 +33,7 @@ public class UserUtility {
     private static SecureRandom r = new SecureRandom();
     private HTTP adminHttp;
     private User user;
+    private static final Logger log = Logger.getLogger(UserUtility.class);
 
     public UserUtility(Reporter reporter, User user) {
         this.user = user;
@@ -112,7 +115,7 @@ public class UserUtility {
     }
 
     private void reporterPassFailStep(String action, String expected, Response response, String failMessage) {
-        if (response.getCode() == 200) {
+        if (response != null && response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
         } else {
             reporter.warn(action, expected, failMessage + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
@@ -124,17 +127,40 @@ public class UserUtility {
      * Pass authenticator code
      */
     public Response apiLoginAdminMFA() throws IOException {
-        String action = LOGIN_MESSAGE;
+        StringBuilder action = new StringBuilder(LOGIN_MESSAGE);
         String expected = "Successfully pass authenticator code for admin via the API";
         // setup our user mfa
+        //Set headers and body
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_CREATE_USER);
+        RequestData requestData = new RequestData();
+        adminHttp.addHeaders(referer);
         JsonObject mfa = new JsonObject();
         mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
-        RequestData requestData = new RequestData();
         requestData.setJSON(mfa);
-        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
         // make the actual call
-        Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
-        reporterPassFailStep(action, expected, response, "Admin not successfully passed authenticator code. ");
+        Response response = null;
+        int count = 0;
+        while (count < 5) {
+            try {
+                response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+                break;
+            } catch (VibrentIOException vioe) {
+                count++;
+                log.error("Failed MFA for logging in");
+                log.error(requestData.getJSON());
+                mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
+                requestData.setJSON(mfa);
+                action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    log.error(ex);
+                }
+            }
+        }
+        reporterPassFailStep(action.toString(), expected, response, "Admin not successfully passed authenticator code. ");
         return response;
     }
 
@@ -215,17 +241,35 @@ public class UserUtility {
      * sets userId in the User object
      */
     public void apiLoginUserMFA() throws IOException {
-        String action = LOGIN_MESSAGE;
+        StringBuilder action = new StringBuilder(LOGIN_MESSAGE);
         String expected = "Successfully pass authenticator code for user via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
         mfa.addProperty("mfaCode", HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
         RequestData requestData = new RequestData();
         requestData.setJSON(mfa);
-        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
         // make the actual call
-        Response response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
-        reporterPassFailStep(action, expected, response, "User not successfully passed authenticator code. ");
+        Response response = null;
+        int count = 0;
+        while (count < 5) {
+            try {
+                response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
+                break;
+            } catch (VibrentIOException vioe) {
+                count++;
+                log.info("Failed MFA for logging in");
+                mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
+                requestData.setJSON(mfa);
+                action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    log.error(ex);
+                }
+            }
+        }
+        reporterPassFailStep(action.toString(), expected, response, "User not successfully passed authenticator code. ");
         //Gets userId value from response
         String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString();
         user.setUserId(userId);

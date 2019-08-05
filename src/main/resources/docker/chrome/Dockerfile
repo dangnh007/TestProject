@@ -1,7 +1,7 @@
 FROM maven:3.5.2-jdk-8
 # debian based
 
-ENV HOME="/home/AutomationFramework"
+ENV HOME="/home/PMTAutomationFramework"
 ENV JAVA_OPTS=""
 ENV ENVIRONMENT=""
 ENV TAGS="@pmi"
@@ -36,6 +36,6 @@ ARG TZ=America/Los_Angeles
 ENV TZ=$TZ
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-VOLUME ["/home/AutomationFramework/test-output"]
+VOLUME ["/home/PMTAutomationFramework/test-output"]
 
 CMD ["docker-entrypoint.sh"]

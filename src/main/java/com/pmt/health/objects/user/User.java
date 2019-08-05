@@ -15,6 +15,8 @@ public class User {
     protected String hoursOfoperarion;
     protected List<Role> roles;
     private String xauthToken;
+    public static final int YEARS_OLD = 20;
+
 
     public User() {
         firstName = "Automation";
