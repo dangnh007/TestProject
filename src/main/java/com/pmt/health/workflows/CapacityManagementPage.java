@@ -9,6 +9,7 @@ import org.testng.log4testng.Logger;
 import java.util.Arrays;
 import java.util.List;
 
+//SuppressWarning added to remove highlighted fields by InteliJ, which has been thrown when List<WebbElement> was added.
 @SuppressWarnings("FieldCanBeLocal")
 public class CapacityManagementPage {
 
