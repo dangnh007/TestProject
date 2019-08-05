@@ -18,9 +18,10 @@ Feature: Login and Logout
     Then I see created user
 
     Examples:
-      | role         | org                                    |
-      | NIH          | PMI                                    |
-      | Site manager | Site/hpo-site-wimadisonschoolofnursing |
+      | role                                | org                                    |
+      | NIH                                 | PMI                                    |
+      | Site manager                        | Site/hpo-site-wimadisonschoolofnursing |
+      | Communications & Engagement Manager | PMI                                    |
 
   @mc-4448 @smoke @api
   Scenario: Admin login via API
@@ -32,9 +33,10 @@ Feature: Login and Logout
     Then I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
 
     Examples:
-      | role                 | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH          | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | role                                      | program   | awardee              | org                              | site                                       |
+      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
+      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
 
   @mc-4607 @smoke
   Scenario Outline: Login with created user
@@ -43,9 +45,10 @@ Feature: Login and Logout
     And I login as user
 
     Examples:
-      | role                 | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH          | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | role                                      | program   | awardee              | org                              | site                                       |
+      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
+      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
 
   @mc-4718 @smoke @api
   Scenario Outline: Verify email for created user
@@ -55,9 +58,10 @@ Feature: Login and Logout
     And I verify email and get its id
 
     Examples:
-      | role                 | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH          | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | role                                      | program   | awardee              | org                              | site                                       |
+      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
+      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
 
   @mc-4723 @smoke @api
   Scenario Outline: Login with created user via API
@@ -65,6 +69,7 @@ Feature: Login and Logout
     Then I login as user via API
 
     Examples:
-      | role                 | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH          | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | role                                      | program   | awardee              | org                              | site                                       |
+      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
+      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |

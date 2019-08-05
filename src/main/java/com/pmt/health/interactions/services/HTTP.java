@@ -269,10 +269,9 @@ public class HTTP {
             }
         }
     }
-
-    private void setSESSIONToken(HttpURLConnection connection, boolean isSESSIONNotNull, String session) {
+    private static void setSESSIONToken(HttpURLConnection connection, boolean isSESSIONNotNull, String session) {
         if (isSESSIONNotNull) {
-            connection.addRequestProperty("Cookie", "JSESSIONID=" + session);
+            connection.addRequestProperty("Cookie", "SESSION=" + session);
         }
     }
 
