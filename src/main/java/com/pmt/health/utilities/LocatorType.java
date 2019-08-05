@@ -25,5 +25,5 @@ package com.pmt.health.utilities;
  * are: xpath, id, name, classname, css, paritallinktext, linktext, tagname
  */
 public enum LocatorType {
-    XPATH, ID, NAME, CLASSNAME, CSS, PARTIALLINKTEXT, LINKTEXT, TAGNAME, ACCESSIBILITYID, DATATARGET
+    XPATH, ID, NAME, CLASSNAME, CSS, PARTIALLINKTEXT, LINKTEXT, TAGNAME, ACCESSIBILITYID, DATATARGET, ARIALABEL
 }

@@ -697,6 +697,9 @@ public abstract class Element {
             case DATATARGET:
                 byElement = By.cssSelector("[data-target=\"" + locator + "\"]");
                 break;
+            case ARIALABEL:
+                byElement = By.cssSelector("[aria-label=\"" + locator + "\"]");
+                break;
             default:
                 byElement = By.id(locator);
         }

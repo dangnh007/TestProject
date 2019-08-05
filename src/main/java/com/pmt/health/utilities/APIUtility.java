@@ -363,6 +363,9 @@ public class APIUtility {
         if ("ROLE_MC_SITE_MANAGER".equals(role)) {
             user.setGroupValue(siteId);
         }
+        if ("ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER".equals(role)) {
+            user.setGroupValue(programId);
+        }
     }
 
     /**
