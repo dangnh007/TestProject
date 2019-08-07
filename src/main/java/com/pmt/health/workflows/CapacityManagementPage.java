@@ -17,6 +17,8 @@ public class CapacityManagementPage {
     private User user;
     Logger log = Logger.getLogger(CapacityManagementPage.class);
 
+    private static final String TEST_AUTOMATION = "Test Automation";
+
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
     private final WebbElement tabAudienceSegmentation;
@@ -102,6 +104,26 @@ public class CapacityManagementPage {
     private final WebbElement transgender;
     private final WebbElement noneOfTheseGender;
     private final WebbElement preferNotToAnswerGender;
+    private final WebbElement campaignsTitle;
+    private final WebbElement newCampaignsTitle;
+    private final WebbElement campaignName;
+    private final WebbElement descriptionOptional;
+    private final WebbElement capmaignGoalDropdown;
+    private final WebbElement goal1;
+    private final WebbElement goal2;
+    private final WebbElement smsRadioButton;
+    private final WebbElement emailRadioButton;
+    private final WebbElement nextButton;
+    private final WebbElement cancelButton;
+    private final WebbElement saveAsDraftButton;
+    private final WebbElement backButton;
+    private final WebbElement campaignNameTitle;
+    private final WebbElement firstRadioButton;
+    private final WebbElement selectTemplateTitle;
+    private final WebbElement reviewTitle;
+    private final WebbElement sendButton;
+    private final WebbElement campaignNameStarMark;
+    private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
     private final List<WebbElement> ageList;
     private final List<WebbElement> raceList;
@@ -212,6 +234,126 @@ public class CapacityManagementPage {
         this.noneOfTheseGender = app.newElement(LocatorType.ARIALABEL, "None of these fully describe me");
         this.preferNotToAnswerGender = app.newElement(LocatorType.ARIALABEL, "Prefer not to answer");
         genderList = Arrays.asList(man, woman, nonBinary, transgender, noneOfTheseGender, preferNotToAnswerGender);
+        this.campaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-tittle']");
+        this.newCampaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name'");
+        this.campaignName = app.newElement(LocatorType.CSS, "input[label='Campaign Name']");
+        this.descriptionOptional = app.newElement(LocatorType.CSS, "textarea[label='Description (Optional)']");
+        this.capmaignGoalDropdown = app.newElement(LocatorType.CSS, "div[class='select-custom-wrapper']");
+        this.goal1 = app.newElement(LocatorType.ARIALABEL, "Goal 1");
+        this.goal2 = app.newElement(LocatorType.ARIALABEL, "Goal 2");
+        campaignsGoalList = Arrays.asList(goal1, goal2);
+        this.smsRadioButton = app.newElement(LocatorType.CSS, "input[label='SMS']");
+        this.emailRadioButton = app.newElement(LocatorType.CSS, "input[label='Email']");
+        this.nextButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-next btn btn-default'");
+        this.cancelButton = app.newElement(LocatorType.CSS, "button[class='btn btn-secondary btn-cancel btn btn-default'");
+        this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save btn btn-default'");
+        this.backButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-back btn btn-default'");
+        this.campaignNameTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name']");
+        this.firstRadioButton = app.newElement(LocatorType.XPATH, "(//td[@style='text-align: center;'])[1]");
+        this.selectTemplateTitle = app.newElement(LocatorType.CSS, "div[class='title']");
+        this.reviewTitle = app.newElement(LocatorType.CSS, "div[class=\"default-label medium-label\"]");
+        this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-send btn btn-default']");
+        this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
+    }
+
+    public void saveOrDraft(String button) {
+        if (button.equals("create")) {
+            clickOnSendButton();
+        }
+        else if(button.equals("save as draft")){
+            saveAsDraftButton.waitFor().displayed();
+            saveAsDraftButton.click();
+        }
+    }
+
+    public void clickOnSendButton() {
+        sendButton.waitFor().displayed();
+        sendButton.click();
+    }
+
+    public void assertReviewTitle() {
+        reviewTitle.assertState().displayed();
+    }
+
+    public void assertSelectTemplateTitle() {
+        selectTemplateTitle.assertState().displayed();
+    }
+
+    public void selectFirstRadioButton() {
+        firstRadioButton.click();
+    }
+
+    public void verifyCampaignName() {
+        if (TEST_AUTOMATION.equals(campaignNameTitle.get().text())) {
+            campaignNameTitle.assertState().displayed();
+        }
+    }
+
+    public void saveDraft() {
+        saveAsDraftButton.click();
+    }
+
+    public void clickOnCancelButton() {
+        cancelButton.click();
+    }
+
+    public void clickOnNextButton() {
+        nextButton.waitFor().displayed();
+        nextButton.click();
+    }
+
+    public void selectChannel(String option) {
+        WebbElement radioOption = app.newElement(LocatorType.CSS, "input[label='" + option + "']");
+        WebbElement radioSelect = app.newElement(LocatorType.XPATH, "//span[text()='" + option + "']");
+        if (!radioOption.is().checked()) {
+            radioSelect.click();
+        }
+    }
+
+    public void selectCampaignGoal() {
+        capmaignGoalDropdown.click();
+        for (WebbElement each : campaignsGoalList) {
+            each.assertState().displayed();
+        }
+        goal1.click();
+    }
+
+    public void enterCampaignName() {
+        campaignNameStarMark.assertState().displayed();
+        campaignName.type(TEST_AUTOMATION);
+    }
+
+    public void enterDescriptionOptional() {
+        descriptionOptional.type(TEST_AUTOMATION);
+    }
+
+    public void assertNewCampaignsTitle() {
+        newCampaignsTitle.assertState().displayed();
+    }
+
+    public void assertCampaignsTitle() {
+        campaignsTitle.assertState().displayed();
+    }
+
+    public void selectCampaignsTab() {
+        WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/campaigns']");
+        if (nonActive.is().present()) {
+            tabCampaigns.click();
+        }
+    }
+
+    public void selectTemplatesTab() {
+        WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/templates']");
+        if (nonActive.is().present()) {
+            tabTemplates.click();
+        }
+    }
+
+    public void selectAudianceSegmentationTab() {
+        WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/segmentation']");
+        if (nonActive.is().present()) {
+            tabAudienceSegmentation.click();
+        }
     }
 
     public void verifyAgeList() {
@@ -349,10 +491,8 @@ public class CapacityManagementPage {
     /**
      * Clicks on the create button if all conditions are right.
      */
-    public void createNewSegmentation() {
-        if (activeTab.is().present()) {
-            createButton.click();
-        }
+    public void createNew() {
+        createButton.click();
     }
 
     /**
