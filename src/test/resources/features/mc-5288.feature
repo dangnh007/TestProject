@@ -7,9 +7,9 @@ Feature: Campaign Management
   @mc-5306 @smoke
   Scenario Outline: As user I have permissions to access Communications
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
-    When I set up my credentials via API
-    And I login as user
-    And I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
+    And I set up my credentials via API
+    When I login as user
+    Then I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
 
     Examples:
       | role                                      | program   | awardee | org | site |
@@ -18,10 +18,10 @@ Feature: Campaign Management
   @mc-5391 @smoke
   Scenario Outline: As user I want to verify values of Audience Segmentation tab
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
-    When I set up my credentials via API
-    And I login as user
+    And I set up my credentials via API
+    When I login as user
     And I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
-    And I verify all values in the Audience Segmentation section
+    Then I verify all values in the Audience Segmentation section
 
     Examples:
       | role                                      | program   | awardee | org | site |
@@ -30,13 +30,13 @@ Feature: Campaign Management
   @mc-5392 @smoke
   Scenario Outline: As a user I want to verify New Filter section, its groups and categories
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
-    When I set up my credentials via API
-    And I login as user
+    And I set up my credentials via API
+    When I login as user
     And I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
     And I select "Program Milestones" from Segmentation Group
-    And I verify all values on the Program Milestones category
+    Then I verify all values on the Program Milestones category
     And I select Demographic Segmentation from Segmentation Group
-    And I verify all values on the Demographic Segmentation category
+    Then I verify all values on the Demographic Segmentation category
 
     Examples:
       | role                                      | program   | awardee | org | site |
@@ -45,14 +45,14 @@ Feature: Campaign Management
   @mc-5428 @smoke
   Scenario Outline: As user I want to create new campaign
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
-    When I set up my credentials via API
-    And I login as user
+    And I set up my credentials via API
+    When I login as user
     And I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
-    And I verify Campaign tab and start creating a new campaign
+    Then I verify Campaign tab and start creating a new campaign
     And I setup campaign and select "<channel>" channel
     And I select Audience Segmentation
     And I select Template
-    And I review campaign and hit "<button>"
+    Then I review campaign and hit "<button>"
 
     Examples:
       | role                                      | program   | awardee | org | site | channel | button        |
