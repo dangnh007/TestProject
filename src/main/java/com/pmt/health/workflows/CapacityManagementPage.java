@@ -18,7 +18,6 @@ public class CapacityManagementPage {
     Logger log = Logger.getLogger(CapacityManagementPage.class);
 
     private static final String TEST_AUTOMATION = "Test Automation";
-
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
     private final WebbElement tabAudienceSegmentation;
@@ -29,7 +28,6 @@ public class CapacityManagementPage {
     private final WebbElement organizationLabel;
     private final WebbElement siteLabel;
     private final WebbElement descriptionLabel;
-    private final WebbElement activeTab;
     private final WebbElement createButton;
     private final WebbElement defaultName;
     private final WebbElement defaultCommunicationPreference;
@@ -111,12 +109,9 @@ public class CapacityManagementPage {
     private final WebbElement capmaignGoalDropdown;
     private final WebbElement goal1;
     private final WebbElement goal2;
-    private final WebbElement smsRadioButton;
-    private final WebbElement emailRadioButton;
     private final WebbElement nextButton;
     private final WebbElement cancelButton;
     private final WebbElement saveAsDraftButton;
-    private final WebbElement backButton;
     private final WebbElement campaignNameTitle;
     private final WebbElement firstRadioButton;
     private final WebbElement selectTemplateTitle;
@@ -148,7 +143,6 @@ public class CapacityManagementPage {
         this.organizationLabel = app.newElement(LocatorType.XPATH, "//label[text()='Organization']");
         this.siteLabel = app.newElement(LocatorType.XPATH, "//label[text()='Site']");
         this.descriptionLabel = app.newElement(LocatorType.XPATH, "//label[text()='Description']");
-        this.activeTab = app.newElement(LocatorType.CSS, "li[class='sub-tab active']");
         this.createButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn btn-default']");
         this.defaultName = app.newElement(LocatorType.CSS, "input[placeholder='Segmentation Title']");
         this.defaultCommunicationPreference = app.newElement(LocatorType.XPATH, "//div[text()='Select Channel']");
@@ -242,12 +236,9 @@ public class CapacityManagementPage {
         this.goal1 = app.newElement(LocatorType.ARIALABEL, "Goal 1");
         this.goal2 = app.newElement(LocatorType.ARIALABEL, "Goal 2");
         campaignsGoalList = Arrays.asList(goal1, goal2);
-        this.smsRadioButton = app.newElement(LocatorType.CSS, "input[label='SMS']");
-        this.emailRadioButton = app.newElement(LocatorType.CSS, "input[label='Email']");
         this.nextButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-next btn btn-default'");
         this.cancelButton = app.newElement(LocatorType.CSS, "button[class='btn btn-secondary btn-cancel btn btn-default'");
         this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save btn btn-default'");
-        this.backButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-back btn btn-default'");
         this.campaignNameTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name']");
         this.firstRadioButton = app.newElement(LocatorType.XPATH, "(//td[@style='text-align: center;'])[1]");
         this.selectTemplateTitle = app.newElement(LocatorType.CSS, "div[class='title']");
@@ -257,10 +248,10 @@ public class CapacityManagementPage {
     }
 
     public void saveOrDraft(String button) {
-        if (button.equals("create")) {
+        if (("create").equals(button)) {
             clickOnSendButton();
         }
-        else if(button.equals("save as draft")){
+        else if(("save as draft").equals(button)){
             saveAsDraftButton.waitFor().displayed();
             saveAsDraftButton.click();
         }
@@ -489,7 +480,7 @@ public class CapacityManagementPage {
     }
 
     /**
-     * Clicks on the create button if all conditions are right.
+     * Clicks on the create button
      */
     public void createNew() {
         createButton.click();
