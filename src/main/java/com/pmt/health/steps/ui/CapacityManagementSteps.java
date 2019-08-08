@@ -18,7 +18,7 @@ public class CapacityManagementSteps {
         capacityManagementPage = new CapacityManagementPage(this.deviceController.getApp(), user);
     }
 
-    @When("^I select Communications option and see tabs Audience Segmentation, Campaigns, Templates$")
+    @When("^I see tabs Audience Segmentation, Campaigns, Templates$")
     public void selectCommunicationsOption() {
         capacityManagementPage.selectCommunications();
         capacityManagementPage.assertTitle();

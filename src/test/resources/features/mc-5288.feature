@@ -1,4 +1,4 @@
-@feature-mc-5208 @campaign @pmt
+@feature-mc-5208 @capacity @pmt
 Feature: Campaign Management
   As a user
   I want to be able
@@ -9,7 +9,7 @@ Feature: Campaign Management
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     And I set up my credentials via API
     When I login as user
-    Then I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
+    Then I see tabs Audience Segmentation, Campaigns, Templates
 
     Examples:
       | role                                      | program   | awardee | org | site |
@@ -30,8 +30,7 @@ Feature: Campaign Management
   Scenario Outline: As a user I want to verify New Filter section, its groups and categories
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     And I set up my credentials via API
-    And I login as user
-    When I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
+    When I login as user
     Then I verify "Program Milestones" and Demographic Segmentation
 
     Examples:
