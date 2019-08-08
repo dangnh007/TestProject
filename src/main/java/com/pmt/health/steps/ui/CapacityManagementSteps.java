@@ -92,7 +92,7 @@ public class CapacityManagementSteps {
         capacityManagementPage.clickOnNextButton();
     }
 
-    @Then("^I finished campaign as \"([^\"]*)\"$")
+    @Then("^I saved campaign as \"([^\"]*)\"$")
     public void reviewCampaignAndCreateIt(String button) {
         capacityManagementPage.assertReviewTitle();
         capacityManagementPage.saveOrDraft(button);
