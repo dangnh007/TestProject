@@ -26,8 +26,8 @@ Feature: Campaign Management
   @mc-5428 @smoke
   Scenario Outline: As user I want to create new campaign
     When I login as user
-    And I create a new campaign with "<channel>" channel
-    Then I finished campaign as "<button>"
+    Then I create a new campaign with "<channel>" channel
+    And I finished campaign as "<button>"
 
     Examples:
       | channel | button  |
