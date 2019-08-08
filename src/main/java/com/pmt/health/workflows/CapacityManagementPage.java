@@ -37,7 +37,7 @@ public class CapacityManagementPage {
     private final WebbElement smsPreference;
     private final WebbElement emailPreference;
     private final WebbElement organizationDropDown;
-    private final WebbElement noResultsValue;
+    private final WebbElement bannerHealth;
     private final WebbElement siteDisable;
     private final WebbElement segmentationGroupDropDown;
     private final WebbElement programSegmentation;
@@ -153,7 +153,7 @@ public class CapacityManagementPage {
         this.emailPreference = app.newElement(LocatorType.ARIALABEL, "Email");
         communicationList = Arrays.asList(smsPreference, emailPreference);
         this.organizationDropDown = app.newElement(LocatorType.XPATH, "(//div[@class=' select-custom-wrapper'])[2]");
-        this.noResultsValue = app.newElement(LocatorType.CSS, "div[class='Select-noresults']");
+        this.bannerHealth = app.newElement(LocatorType.ARIALABEL, "Banner Health");
         this.siteDisable = app.newElement(LocatorType.CSS, "div[class='Select is-clearable is-disabled Select--multi']");
         this.segmentationGroupDropDown = app.newElement(LocatorType.ID, "add-category-select");
         this.programSegmentation = app.newElement(LocatorType.ARIALABEL, "Program Milestones");
@@ -214,7 +214,7 @@ public class CapacityManagementPage {
         raceList = Arrays.asList(americanIndian, asian, africanAmerican, hispanic, middleEastern, nativeHawaiin, white, noneOfTheseRace, preferNotToAnswerRace);
         this.age18 = app.newElement(LocatorType.ARIALABEL, "18-24");
         this.age25 = app.newElement(LocatorType.ARIALABEL, "25-34");
-        this.age35 = app.newElement(LocatorType.ARIALABEL, "35-24");
+        this.age35 = app.newElement(LocatorType.ARIALABEL, "35-44");
         this.age45 = app.newElement(LocatorType.ARIALABEL, "45-54");
         this.age55 = app.newElement(LocatorType.ARIALABEL, "55-64");
         this.age65 = app.newElement(LocatorType.ARIALABEL, "65-74");
@@ -248,12 +248,12 @@ public class CapacityManagementPage {
     }
 
     public void saveOrDraft(String button) {
-        if (("create").equals(button)) {
+        if (("created").equals(button)) {
             clickOnSendButton();
         }
-        else if(("save as draft").equals(button)){
+        else if(("draft").equals(button)){
             saveAsDraftButton.waitFor().displayed();
-            saveAsDraftButton.click();
+            saveDraft();
         }
     }
 
@@ -448,7 +448,7 @@ public class CapacityManagementPage {
 
     public void verifyOrganizationValues() {
         organizationDropDown.click();
-        noResultsValue.assertState().displayed();
+        bannerHealth.assertState().displayed();
     }
 
     public void verifyCommunicationPreferenceValues() {

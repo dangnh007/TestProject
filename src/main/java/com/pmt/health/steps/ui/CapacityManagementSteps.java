@@ -25,10 +25,12 @@ public class CapacityManagementSteps {
         capacityManagementPage.assertAudienceSegmentation();
         capacityManagementPage.assertCampaigns();
         capacityManagementPage.assertTemplates();
+
     }
 
     @When("^I verify all values in the Audience Segmentation section$")
     public void verifyAudienceSection() {
+        capacityManagementPage.selectCommunications();
         capacityManagementPage.selectAudianceSegmentationTab();
         capacityManagementPage.createNew();
         capacityManagementPage.verifyAudienceSegmentationLabels();
@@ -39,30 +41,19 @@ public class CapacityManagementSteps {
         capacityManagementPage.verifySegmentationGroup();
     }
 
-    @When("^I select \"([^\"]*)\" from Segmentation Group$")
+    @When("^I verify \"([^\"]*)\" and Demographic Segmentation$")
     public void selectProgramMilestonesFromSegmentationGroup(String group) {
+        capacityManagementPage.selectCommunications();
         capacityManagementPage.selectAudianceSegmentationTab();
         capacityManagementPage.createNew();
         capacityManagementPage.selectProgramSegmentationCategory(group);
-    }
-
-    @When("^I verify all values on the Program Milestones category$")
-    public void verifyAllValuesOnTheProgramMilestonesCategory() {
         capacityManagementPage.verifyConsentDropdown();
         capacityManagementPage.selectConsent("Primary Consent");
         capacityManagementPage.verifyEqualDropdown();
         capacityManagementPage.verifyStatusDropDown();
         capacityManagementPage.verifyDateDropDown();
-    }
-
-    @When("^I select Demographic Segmentation from Segmentation Group$")
-    public void selectDemographicSegmentationFromSegmentationGroup() {
         capacityManagementPage.addNewCategory();
         capacityManagementPage.selectProgramSegmentationCategory("Demographic Segmentation");
-    }
-
-    @When("^I verify all values on the Demographic Segmentation category$")
-    public void verifyAllValuesOnTheDemographicSegmentationCategory() {
         capacityManagementPage.argDropdown();
         capacityManagementPage.verifyAgeRaceGenderDropdown();
         capacityManagementPage.selectAgeRaceGender("Age");
@@ -77,38 +68,31 @@ public class CapacityManagementSteps {
         capacityManagementPage.verifyGenderList();
     }
 
-    @Then("^I verify Campaign tab and start creating a new campaign$")
-    public void verifyCampaignTabAndStartCreatingAnewCampaign() {
+    @Then("^I create a new campaign with \"([^\"]*)\" channel$")
+    public void verifyCampaignTabAndStartCreatingAnewCampaign(String option) {
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.assertTitle();
+        capacityManagementPage.assertAudienceSegmentation();
+        capacityManagementPage.assertCampaigns();
+        capacityManagementPage.assertTemplates();
         capacityManagementPage.selectCampaignsTab();
         capacityManagementPage.assertCampaignsTitle();
         capacityManagementPage.createNew();
-    }
-
-    @Then("^I setup campaign and select \"([^\"]*)\" channel$")
-    public void setupCampaignAndSelectChannel(String option) {
         capacityManagementPage.assertNewCampaignsTitle();
         capacityManagementPage.enterCampaignName();
         capacityManagementPage.enterDescriptionOptional();
         capacityManagementPage.selectCampaignGoal();
         capacityManagementPage.selectChannel(option);
         capacityManagementPage.clickOnNextButton();
-    }
-
-    @Then("^I select Audience Segmentation$")
-    public void selectAudienceSegmentation() {
         capacityManagementPage.verifyCampaignName();
         capacityManagementPage.selectFirstRadioButton();
         capacityManagementPage.clickOnNextButton();
-    }
-
-    @Then("^I select Template$")
-    public void selectTemplate() {
         capacityManagementPage.assertSelectTemplateTitle();
         capacityManagementPage.selectFirstRadioButton();
         capacityManagementPage.clickOnNextButton();
     }
 
-    @Then("^I review campaign and hit \"([^\"]*)\"$")
+    @Then("^I finished campaign as \"([^\"]*)\"$")
     public void reviewCampaignAndCreateIt(String button) {
         capacityManagementPage.assertReviewTitle();
         capacityManagementPage.saveOrDraft(button);

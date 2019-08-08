@@ -20,7 +20,6 @@ Feature: Campaign Management
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     And I set up my credentials via API
     When I login as user
-    And I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
     Then I verify all values in the Audience Segmentation section
 
     Examples:
@@ -31,12 +30,9 @@ Feature: Campaign Management
   Scenario Outline: As a user I want to verify New Filter section, its groups and categories
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     And I set up my credentials via API
-    When I login as user
-    And I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
-    And I select "Program Milestones" from Segmentation Group
-    Then I verify all values on the Program Milestones category
-    And I select Demographic Segmentation from Segmentation Group
-    Then I verify all values on the Demographic Segmentation category
+    And I login as user
+    When I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
+    Then I verify "Program Milestones" and Demographic Segmentation
 
     Examples:
       | role                                      | program   | awardee | org | site |
@@ -46,17 +42,13 @@ Feature: Campaign Management
   Scenario Outline: As user I want to create new campaign
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     And I set up my credentials via API
-    When I login as user
-    And I select Communications option and see tabs Audience Segmentation, Campaigns, Templates
-    Then I verify Campaign tab and start creating a new campaign
-    And I setup campaign and select "<channel>" channel
-    And I select Audience Segmentation
-    And I select Template
-    Then I review campaign and hit "<button>"
+    And I login as user
+    When I create a new campaign with "<channel>" channel
+    Then I finished campaign as "<button>"
 
     Examples:
-      | role                                      | program   | awardee | org | site | channel | button        |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | SMS     | create        |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | SMS     | save as draft |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | Email   | create        |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | Email   | save as draft |
+      | role                                      | program   | awardee | org | site | channel | button  |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | SMS     | created |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | SMS     | draft   |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | Email   | created |
+      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |         |     |      | Email   | draft   |
