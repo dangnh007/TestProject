@@ -3,6 +3,7 @@ package com.pmt.health.workflows;
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
+import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.utilities.LocatorType;
 import org.testng.log4testng.Logger;
 
@@ -18,6 +19,7 @@ public class CapacityManagementPage {
     Logger log = Logger.getLogger(CapacityManagementPage.class);
 
     private static final String TEST_AUTOMATION = "Test Automation";
+    private final String campaignNameRandom = "Test Automation #"  + UserUtility.generateUUID(5);
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
     private final WebbElement tabAudienceSegmentation;
@@ -246,7 +248,7 @@ public class CapacityManagementPage {
         this.reviewTitle = app.newElement(LocatorType.CSS, "div[class=\"default-label medium-label\"]");
         this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-send btn btn-default']");
         this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
-        this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getCampaignName() + "\")]");
+        this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + campaignNameRandom + "\")]");
     }
 
     public void verifyCreatedCampaign() {
@@ -281,7 +283,7 @@ public class CapacityManagementPage {
     }
 
     public void verifyCampaignName() {
-        if (TEST_AUTOMATION.equals(campaignNameTitle.get().text())) {
+        if (campaignNameRandom.equals(campaignNameTitle.get().text())) {
             campaignNameTitle.assertState().displayed();
         }
     }
@@ -317,11 +319,11 @@ public class CapacityManagementPage {
 
     public void enterCampaignName() {
         campaignNameStarMark.assertState().displayed();
-        campaignName.type(user.getCampaignName());
+        campaignName.type(campaignNameRandom);
     }
 
     public void enterDescriptionOptional() {
-        descriptionOptional.type(TEST_AUTOMATION);
+        descriptionOptional.type("Test Automation");
     }
 
     public void assertNewCampaignsTitle() {

@@ -11,7 +11,6 @@ public class User {
     protected String participantEmail;
     protected String groupValue;
     protected String hoursOfoperarion;
-    protected String campaignName;
 
     public User() {
         firstName = "Automation";
@@ -23,7 +22,6 @@ public class User {
         participantEmail = UserUtility.makeRandomUserEmail();
         groupValue = "";
         hoursOfoperarion = "";
-        campaignName = "Test Automation #"  + UserUtility.generateUUID(5);
     }
 
     public String getHoursOfoperarion() {
@@ -96,13 +94,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getCampaignName() {
-        return campaignName;
-    }
-
-    public void setCampaignName(String campaignName) {
-        this.campaignName = campaignName;
     }
 }
