@@ -118,6 +118,7 @@ public class CapacityManagementPage {
     private final WebbElement reviewTitle;
     private final WebbElement sendButton;
     private final WebbElement campaignNameStarMark;
+    private final WebbElement createdCampaign;
     private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
     private final List<WebbElement> ageList;
@@ -245,6 +246,11 @@ public class CapacityManagementPage {
         this.reviewTitle = app.newElement(LocatorType.CSS, "div[class=\"default-label medium-label\"]");
         this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-send btn btn-default']");
         this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
+        this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getCampaignName() + "\")]");
+    }
+
+    public void verifyCreatedCampaign() {
+        createdCampaign.assertState().displayed();
     }
 
     public void saveOrDraft(String button) {
@@ -311,7 +317,7 @@ public class CapacityManagementPage {
 
     public void enterCampaignName() {
         campaignNameStarMark.assertState().displayed();
-        campaignName.type(TEST_AUTOMATION);
+        campaignName.type(user.getCampaignName());
     }
 
     public void enterDescriptionOptional() {

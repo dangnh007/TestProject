@@ -1,7 +1,5 @@
 package com.pmt.health.objects.user;
 
-import java.util.*;
-
 public class User {
 
     protected String email;
@@ -13,10 +11,7 @@ public class User {
     protected String participantEmail;
     protected String groupValue;
     protected String hoursOfoperarion;
-    protected List<Role> roles;
-    private String xauthToken;
-    public static final int YEARS_OLD = 20;
-
+    protected String campaignName;
 
     public User() {
         firstName = "Automation";
@@ -28,6 +23,7 @@ public class User {
         participantEmail = UserUtility.makeRandomUserEmail();
         groupValue = "";
         hoursOfoperarion = "";
+        campaignName = "Test Automation #"  + UserUtility.generateUUID(5);
     }
 
     public String getHoursOfoperarion() {
@@ -102,13 +98,11 @@ public class User {
         this.password = password;
     }
 
-    public String getSESSIONToken() {
-        return xauthToken;
+    public String getCampaignName() {
+        return campaignName;
     }
 
-    public void setSESSIONToken(String authToken) {
-        this.xauthToken = authToken;
+    public void setCampaignName(String campaignName) {
+        this.campaignName = campaignName;
     }
-
-    public enum Role {SITE_MANAGER, NIH}
 }

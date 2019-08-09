@@ -27,7 +27,7 @@ Feature: Campaign Management
   Scenario Outline: As user I want to create new campaign
     And I login as user
     When I create a new campaign with "<channel>" channel
-    Then I saved campaign as "<button>"
+    Then I see created campaign as "<button>"
 
     Examples:
       | channel | button  |
