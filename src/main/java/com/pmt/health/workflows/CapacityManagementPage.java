@@ -17,8 +17,7 @@ public class CapacityManagementPage {
     private final App app;
     private User user;
     Logger log = Logger.getLogger(CapacityManagementPage.class);
-
-    private static final String TEST_AUTOMATION = "Test Automation";
+    
     private final String campaignNameRandom = "Test Automation #"  + UserUtility.generateUUID(5);
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
