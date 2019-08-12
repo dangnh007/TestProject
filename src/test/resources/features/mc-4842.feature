@@ -7,48 +7,32 @@ Feature: PMT Site Settings
     Given I create user with "ROLE_MC_SITE_MANAGER" and "PMI", "Wisconsin Consortium", "University of Wisconsin, Madison", "University of WI Madison School of Nursing"
 
   @mc-4851 @unsafe
-  Scenario Outline: I login as Site manager and set up Site Settings
+  Scenario: I login as Site manager and set up Site Settings
     And I set up my credentials via API
     And I login as user
-    When I set new Site Settings with toggle "<on>", "<new target>", "<new days>"
+    When I set new Site Settings with toggle "on", "15", "5", "1" via API
     And I logout
     And I login as user
-    Then I set default Site Settings with toggle "<off>", "<default target>", "<default days>"
-
-    Examples:
-      | on | off | new target | default target | new days | default days |
-      | on | off | 15         | 0              | + 1 Day  | + 3 Days     |
-
+    Then I set default Site Settings with toggle "off", "0", "0", "3" via API
 
   @mc-4852 @api
-  Scenario Outline: Set up Site Settings via API
+  Scenario: Set up Site Settings via API
     And I login as user via API
-    When I set new Site Settings with toggle "<on>", "<new target>", "<new goal>", "<new days>" via API
-    Then I set default Site Settings with toggle "<off>", "<default target>", "<default goal>", "<default days>" via API
-
-    Examples:
-      | on | off | new target | default target | new goal | default goal | new days | default days |
-      | on | off | 15         | 0              | 5        | 0            | 1        | 3            |
+    When I set new Site Settings with toggle "on", "15", "5", "1" via API
+    Then I set default Site Settings with toggle "off", "0", "0", "3" via API
 
   @mc-5143
-  Scenario Outline: Create a new appointment for prospect as Site Manager
+  Scenario: Create a new appointment for prospect as Site Manager
     And I login as user via API
-    And I set new Site Settings with toggle "<on>", "<new target>", "<new goal>", "<new days>" via API
+    And I set new Site Settings with toggle "on", "15", "5", "1" via API
     And I login as user
     When I create new appointment for prospect
-    Then I set default Site Settings with toggle "<off>", "<default target>", "<default goal>", "<default days>" via API
-
-    Examples:
-      | on | off | new target | default target | new goal | default goal | new days | default days |
-      | on | off | 15         | 0              | 5        | 0            | 1        | 3            |
+    Then I set default Site Settings with toggle "off", "0", "0", "3" via API
 
   @mc-5144 @api
-  Scenario Outline: Create a new appointment for prospect as Site Manager via API
+  Scenario: Create a new appointment for prospect as Site Manager via API
     And I login as user via API
-    And I set new Site Settings with toggle "<on>", "<new target>", "<new goal>", "<new days>" via API
+    And I set new Site Settings with toggle "on", "15", "5", "1" via API
     When I create new appointment for prospect via API
-    Then I set default Site Settings with toggle "<off>", "<default target>", "<default goal>", "<default days>" via API
+    Then I set default Site Settings with toggle "off", "0", "0", "3" via API
 
-    Examples:
-      | on | off | new target | default target | new goal | default goal | new days | default days |
-      | on | off | 15         | 0              | 5        | 0            | 1        | 3            |
