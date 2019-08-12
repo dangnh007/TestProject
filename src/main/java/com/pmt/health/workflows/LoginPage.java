@@ -11,9 +11,6 @@ import com.pmt.health.utilities.Property;
 import org.openqa.selenium.Keys;
 import org.testng.log4testng.Logger;
 
-/**
- * @author jeff
- */
 public class LoginPage {
 
     private static final String SCREEN_SIZE = "screensize";

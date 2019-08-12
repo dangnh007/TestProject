@@ -11,11 +11,10 @@ Feature: Login and Logout
 
   @mc-4309 @smoke
   Scenario Outline: Create a user as a System Administrator
-    When I login as System Administrator
-    Then I am logged in
-    When I create user with "<role>"
-    And I set awardee level "<org>"
-    Then I see created user
+    Given I login as System Administrator
+    And I am logged in
+    When I create user with "<role>" and "<org>" level
+    Then User has been created
 
     Examples:
       | role                                | org                                    |
@@ -40,9 +39,9 @@ Feature: Login and Logout
 
   @mc-4607 @smoke
   Scenario Outline: Login with created user
-    When I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
-    Then I login for the first time and set up my credentials
-    And I login as user
+    Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
+    When I login for the first time and set up my credentials
+    Then I login as user
 
     Examples:
       | role                                      | program   | awardee              | org                              | site                                       |
@@ -52,10 +51,9 @@ Feature: Login and Logout
 
   @mc-4718 @smoke @api
   Scenario Outline: Verify email for created user
-    When I login as System Administrator via API
-    Then I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
-    Then I check email inbox
-    And I verify email and get its id
+    Given I login as System Administrator via API
+    When I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
+    Then I verify email and get its id
 
     Examples:
       | role                                      | program   | awardee              | org                              | site                                       |
