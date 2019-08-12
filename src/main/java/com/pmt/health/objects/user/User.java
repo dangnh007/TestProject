@@ -1,7 +1,5 @@
 package com.pmt.health.objects.user;
 
-import java.util.*;
-
 public class User {
 
     protected String email;
@@ -13,10 +11,6 @@ public class User {
     protected String participantEmail;
     protected String groupValue;
     protected String hoursOfoperarion;
-    protected List<Role> roles;
-    private String xauthToken;
-    public static final int YEARS_OLD = 20;
-
 
     public User() {
         firstName = "Automation";
@@ -101,14 +95,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public String getSESSIONToken() {
-        return xauthToken;
-    }
-
-    public void setSESSIONToken(String authToken) {
-        this.xauthToken = authToken;
-    }
-
-    public enum Role {SITE_MANAGER, NIH}
 }

@@ -3,6 +3,7 @@ package com.pmt.health.steps.ui;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.CapacityManagementPage;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CapacityManagementSteps {
@@ -17,18 +18,21 @@ public class CapacityManagementSteps {
         capacityManagementPage = new CapacityManagementPage(this.deviceController.getApp(), user);
     }
 
-    @When("^I select Communications option and see tabs Audience Segmentation, Campaigns, Templates$")
+    @When("^I see tabs Audience Segmentation, Campaigns, Templates$")
     public void selectCommunicationsOption() {
         capacityManagementPage.selectCommunications();
         capacityManagementPage.assertTitle();
         capacityManagementPage.assertAudienceSegmentation();
         capacityManagementPage.assertCampaigns();
         capacityManagementPage.assertTemplates();
+
     }
 
     @When("^I verify all values in the Audience Segmentation section$")
     public void verifyAudienceSection() {
-        capacityManagementPage.createNewSegmentation();
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.selectAudianceSegmentationTab();
+        capacityManagementPage.createNew();
         capacityManagementPage.verifyAudienceSegmentationLabels();
         capacityManagementPage.verifyDefaultValues();
         capacityManagementPage.verifyCommunicationPreferenceValues();
@@ -37,29 +41,19 @@ public class CapacityManagementSteps {
         capacityManagementPage.verifySegmentationGroup();
     }
 
-    @When("^I select \"([^\"]*)\" from Segmentation Group$")
+    @When("^I verify \"([^\"]*)\" and Demographic Segmentation$")
     public void selectProgramMilestonesFromSegmentationGroup(String group) {
-        capacityManagementPage.createNewSegmentation();
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.selectAudianceSegmentationTab();
+        capacityManagementPage.createNew();
         capacityManagementPage.selectProgramSegmentationCategory(group);
-    }
-
-    @When("^I verify all values on the Program Milestones category$")
-    public void verifyAllValuesOnTheProgramMilestonesCategory() {
         capacityManagementPage.verifyConsentDropdown();
         capacityManagementPage.selectConsent("Primary Consent");
         capacityManagementPage.verifyEqualDropdown();
         capacityManagementPage.verifyStatusDropDown();
         capacityManagementPage.verifyDateDropDown();
-    }
-
-    @When("^I select Demographic Segmentation from Segmentation Group$")
-    public void selectDemographicSegmentationFromSegmentationGroup() {
         capacityManagementPage.addNewCategory();
         capacityManagementPage.selectProgramSegmentationCategory("Demographic Segmentation");
-    }
-
-    @When("^I verify all values on the Demographic Segmentation category$")
-    public void verifyAllValuesOnTheDemographicSegmentationCategory() {
         capacityManagementPage.argDropdown();
         capacityManagementPage.verifyAgeRaceGenderDropdown();
         capacityManagementPage.selectAgeRaceGender("Age");
@@ -72,5 +66,36 @@ public class CapacityManagementSteps {
         capacityManagementPage.selectAgeRaceGender("Gender");
         capacityManagementPage.verifyEqualDropDownSecond();
         capacityManagementPage.verifyGenderList();
+    }
+
+    @Then("^I create a new campaign with \"([^\"]*)\" channel$")
+    public void verifyCampaignTabAndStartCreatingAnewCampaign(String option) {
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.assertTitle();
+        capacityManagementPage.assertAudienceSegmentation();
+        capacityManagementPage.assertCampaigns();
+        capacityManagementPage.assertTemplates();
+        capacityManagementPage.selectCampaignsTab();
+        capacityManagementPage.assertCampaignsTitle();
+        capacityManagementPage.createNew();
+        capacityManagementPage.assertNewCampaignsTitle();
+        capacityManagementPage.enterCampaignName();
+        capacityManagementPage.enterDescriptionOptional();
+        capacityManagementPage.selectCampaignGoal();
+        capacityManagementPage.selectChannel(option);
+        capacityManagementPage.clickOnNextButton();
+        capacityManagementPage.verifyCampaignName();
+        capacityManagementPage.selectFirstRadioButton();
+        capacityManagementPage.clickOnNextButton();
+        capacityManagementPage.assertSelectTemplateTitle();
+        capacityManagementPage.selectFirstRadioButton();
+        capacityManagementPage.clickOnNextButton();
+    }
+
+    @Then("^Campaign is \"([^\"]*)\"$")
+    public void reviewCampaignAndCreateIt(String button) {
+        capacityManagementPage.assertReviewTitle();
+        capacityManagementPage.saveOrDraft(button);
+        capacityManagementPage.verifyCreatedCampaign();
     }
 }

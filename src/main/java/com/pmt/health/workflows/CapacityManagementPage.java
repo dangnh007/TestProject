@@ -3,6 +3,7 @@ package com.pmt.health.workflows;
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
+import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.utilities.LocatorType;
 import org.testng.log4testng.Logger;
 
@@ -16,7 +17,8 @@ public class CapacityManagementPage {
     private final App app;
     private User user;
     Logger log = Logger.getLogger(CapacityManagementPage.class);
-
+    
+    private final String campaignNameRandom = "Test Automation #"  + UserUtility.generateUUID(5);
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
     private final WebbElement tabAudienceSegmentation;
@@ -27,7 +29,6 @@ public class CapacityManagementPage {
     private final WebbElement organizationLabel;
     private final WebbElement siteLabel;
     private final WebbElement descriptionLabel;
-    private final WebbElement activeTab;
     private final WebbElement createButton;
     private final WebbElement defaultName;
     private final WebbElement defaultCommunicationPreference;
@@ -37,7 +38,7 @@ public class CapacityManagementPage {
     private final WebbElement smsPreference;
     private final WebbElement emailPreference;
     private final WebbElement organizationDropDown;
-    private final WebbElement noResultsValue;
+    private final WebbElement bannerHealth;
     private final WebbElement siteDisable;
     private final WebbElement segmentationGroupDropDown;
     private final WebbElement programSegmentation;
@@ -102,6 +103,24 @@ public class CapacityManagementPage {
     private final WebbElement transgender;
     private final WebbElement noneOfTheseGender;
     private final WebbElement preferNotToAnswerGender;
+    private final WebbElement campaignsTitle;
+    private final WebbElement newCampaignsTitle;
+    private final WebbElement campaignName;
+    private final WebbElement descriptionOptional;
+    private final WebbElement capmaignGoalDropdown;
+    private final WebbElement goal1;
+    private final WebbElement goal2;
+    private final WebbElement nextButton;
+    private final WebbElement cancelButton;
+    private final WebbElement saveAsDraftButton;
+    private final WebbElement campaignNameTitle;
+    private final WebbElement firstRadioButton;
+    private final WebbElement selectTemplateTitle;
+    private final WebbElement reviewTitle;
+    private final WebbElement sendButton;
+    private final WebbElement campaignNameStarMark;
+    private final WebbElement createdCampaign;
+    private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
     private final List<WebbElement> ageList;
     private final List<WebbElement> raceList;
@@ -126,7 +145,6 @@ public class CapacityManagementPage {
         this.organizationLabel = app.newElement(LocatorType.XPATH, "//label[text()='Organization']");
         this.siteLabel = app.newElement(LocatorType.XPATH, "//label[text()='Site']");
         this.descriptionLabel = app.newElement(LocatorType.XPATH, "//label[text()='Description']");
-        this.activeTab = app.newElement(LocatorType.CSS, "li[class='sub-tab active']");
         this.createButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn btn-default']");
         this.defaultName = app.newElement(LocatorType.CSS, "input[placeholder='Segmentation Title']");
         this.defaultCommunicationPreference = app.newElement(LocatorType.XPATH, "//div[text()='Select Channel']");
@@ -137,7 +155,7 @@ public class CapacityManagementPage {
         this.emailPreference = app.newElement(LocatorType.ARIALABEL, "Email");
         communicationList = Arrays.asList(smsPreference, emailPreference);
         this.organizationDropDown = app.newElement(LocatorType.XPATH, "(//div[@class=' select-custom-wrapper'])[2]");
-        this.noResultsValue = app.newElement(LocatorType.CSS, "div[class='Select-noresults']");
+        this.bannerHealth = app.newElement(LocatorType.ARIALABEL, "Banner Health");
         this.siteDisable = app.newElement(LocatorType.CSS, "div[class='Select is-clearable is-disabled Select--multi']");
         this.segmentationGroupDropDown = app.newElement(LocatorType.ID, "add-category-select");
         this.programSegmentation = app.newElement(LocatorType.ARIALABEL, "Program Milestones");
@@ -198,7 +216,7 @@ public class CapacityManagementPage {
         raceList = Arrays.asList(americanIndian, asian, africanAmerican, hispanic, middleEastern, nativeHawaiin, white, noneOfTheseRace, preferNotToAnswerRace);
         this.age18 = app.newElement(LocatorType.ARIALABEL, "18-24");
         this.age25 = app.newElement(LocatorType.ARIALABEL, "25-34");
-        this.age35 = app.newElement(LocatorType.ARIALABEL, "35-24");
+        this.age35 = app.newElement(LocatorType.ARIALABEL, "35-44");
         this.age45 = app.newElement(LocatorType.ARIALABEL, "45-54");
         this.age55 = app.newElement(LocatorType.ARIALABEL, "55-64");
         this.age65 = app.newElement(LocatorType.ARIALABEL, "65-74");
@@ -212,6 +230,128 @@ public class CapacityManagementPage {
         this.noneOfTheseGender = app.newElement(LocatorType.ARIALABEL, "None of these fully describe me");
         this.preferNotToAnswerGender = app.newElement(LocatorType.ARIALABEL, "Prefer not to answer");
         genderList = Arrays.asList(man, woman, nonBinary, transgender, noneOfTheseGender, preferNotToAnswerGender);
+        this.campaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-tittle']");
+        this.newCampaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name'");
+        this.campaignName = app.newElement(LocatorType.CSS, "input[label='Campaign Name']");
+        this.descriptionOptional = app.newElement(LocatorType.CSS, "textarea[label='Description (Optional)']");
+        this.capmaignGoalDropdown = app.newElement(LocatorType.CSS, "div[class='select-custom-wrapper']");
+        this.goal1 = app.newElement(LocatorType.ARIALABEL, "Goal 1");
+        this.goal2 = app.newElement(LocatorType.ARIALABEL, "Goal 2");
+        campaignsGoalList = Arrays.asList(goal1, goal2);
+        this.nextButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-next btn btn-default'");
+        this.cancelButton = app.newElement(LocatorType.CSS, "button[class='btn btn-secondary btn-cancel btn btn-default'");
+        this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save btn btn-default'");
+        this.campaignNameTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name']");
+        this.firstRadioButton = app.newElement(LocatorType.XPATH, "(//td[@style='text-align: center;'])[1]");
+        this.selectTemplateTitle = app.newElement(LocatorType.CSS, "div[class='title']");
+        this.reviewTitle = app.newElement(LocatorType.CSS, "div[class=\"default-label medium-label\"]");
+        this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-send btn btn-default']");
+        this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
+        this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + campaignNameRandom + "\")]");
+    }
+
+    public void verifyCreatedCampaign() {
+        createdCampaign.assertState().displayed();
+    }
+
+    public void saveOrDraft(String button) {
+        if (("created").equals(button)) {
+            clickOnSendButton();
+        }
+        else if(("saved as draft").equals(button)){
+            saveAsDraftButton.waitFor().displayed();
+            saveDraft();
+        }
+    }
+
+    public void clickOnSendButton() {
+        sendButton.waitFor().displayed();
+        sendButton.click();
+    }
+
+    public void assertReviewTitle() {
+        reviewTitle.assertState().displayed();
+    }
+
+    public void assertSelectTemplateTitle() {
+        selectTemplateTitle.assertState().displayed();
+    }
+
+    public void selectFirstRadioButton() {
+        firstRadioButton.click();
+    }
+
+    public void verifyCampaignName() {
+        if (campaignNameRandom.equals(campaignNameTitle.get().text())) {
+            campaignNameTitle.assertState().displayed();
+        }
+    }
+
+    public void saveDraft() {
+        saveAsDraftButton.click();
+    }
+
+    public void clickOnCancelButton() {
+        cancelButton.click();
+    }
+
+    public void clickOnNextButton() {
+        nextButton.waitFor().displayed();
+        nextButton.click();
+    }
+
+    public void selectChannel(String option) {
+        WebbElement radioOption = app.newElement(LocatorType.CSS, "input[label='" + option + "']");
+        WebbElement radioSelect = app.newElement(LocatorType.XPATH, "//span[text()='" + option + "']");
+        if (!radioOption.is().checked()) {
+            radioSelect.click();
+        }
+    }
+
+    public void selectCampaignGoal() {
+        capmaignGoalDropdown.click();
+        for (WebbElement each : campaignsGoalList) {
+            each.assertState().displayed();
+        }
+        goal1.click();
+    }
+
+    public void enterCampaignName() {
+        campaignNameStarMark.assertState().displayed();
+        campaignName.type(campaignNameRandom);
+    }
+
+    public void enterDescriptionOptional() {
+        descriptionOptional.type("Test Automation");
+    }
+
+    public void assertNewCampaignsTitle() {
+        newCampaignsTitle.assertState().displayed();
+    }
+
+    public void assertCampaignsTitle() {
+        campaignsTitle.assertState().displayed();
+    }
+
+    public void selectCampaignsTab() {
+        WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/campaigns']");
+        if (nonActive.is().present()) {
+            tabCampaigns.click();
+        }
+    }
+
+    public void selectTemplatesTab() {
+        WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/templates']");
+        if (nonActive.is().present()) {
+            tabTemplates.click();
+        }
+    }
+
+    public void selectAudianceSegmentationTab() {
+        WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/segmentation']");
+        if (nonActive.is().present()) {
+            tabAudienceSegmentation.click();
+        }
     }
 
     public void verifyAgeList() {
@@ -315,7 +455,7 @@ public class CapacityManagementPage {
 
     public void verifyOrganizationValues() {
         organizationDropDown.click();
-        noResultsValue.assertState().displayed();
+        bannerHealth.assertState().displayed();
     }
 
     public void verifyCommunicationPreferenceValues() {
@@ -347,12 +487,10 @@ public class CapacityManagementPage {
     }
 
     /**
-     * Clicks on the create button if all conditions are right.
+     * Clicks on the create button
      */
-    public void createNewSegmentation() {
-        if (activeTab.is().present()) {
-            createButton.click();
-        }
+    public void createNew() {
+        createButton.click();
     }
 
     /**
