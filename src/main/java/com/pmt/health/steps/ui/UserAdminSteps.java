@@ -35,11 +35,6 @@ public class UserAdminSteps {
         this.addUserPage.saveUser();
     }
 
-    @When("^I set awardee level $")
-    public void setAwardeeLevel(String org) {
-
-    }
-
     @Then("^User has been created$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
