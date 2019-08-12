@@ -26,7 +26,6 @@ public class LoginPage {
     private final WebbElement passwordSet;
     private final WebbElement submitButton;
     private final WebbElement secretKey;
-    private final WebbElement loginErrorMessage;
 
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
@@ -47,7 +46,6 @@ public class LoginPage {
         this.secretKey = app.newElement(LocatorType.CSS, "div.scan-qr-code-secret");
         this.passwordSet = app.newElement(LocatorType.CSS, "input[name=password]");
         this.submitButton = app.newElement(LocatorType.CSS, "input.center-block.submit-button.btn.btn-primary");
-        this.loginErrorMessage = app.newElement(LocatorType.CSS, "div[class=\"login-error-message\"]");
     }
 
     /**
@@ -145,10 +143,6 @@ public class LoginPage {
 
     private void enterMFA(String obtainOath2Key) {
         getMFA().type(obtainOath2Key);
-    }
-
-    private void clearMFA() {
-        getMFA().clear();
     }
 
     private Element getMFA() {

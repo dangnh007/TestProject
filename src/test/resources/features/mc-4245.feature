@@ -1,15 +1,15 @@
-@feature-mc-4245 @login @pmt
+@feature-mc-4245 @login @pmt @smoke
 Feature: Login and Logout
   As a user
   I want to be login
   So that I can access the site
 
-  @mc-4246 @acceptance @smoke
+  @mc-4246 @acceptance
   Scenario: Admin login
     When I login as System Administrator
     Then I am logged in
 
-  @mc-4309 @smoke
+  @mc-4309
   Scenario Outline: Create a user as a System Administrator
     Given I login as System Administrator
     And I am logged in
@@ -22,11 +22,11 @@ Feature: Login and Logout
       | Site manager                        | Site/hpo-site-wimadisonschoolofnursing |
       | Communications & Engagement Manager | PMI                                    |
 
-  @mc-4448 @smoke @api
+  @mc-4448 @api
   Scenario: Admin login via API
     When I login as System Administrator via API
 
-  @mc-4592 @smoke @api
+  @mc-4592 @api
   Scenario Outline: Create a user as a System Administrator via API
     When I login as System Administrator via API
     Then I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
@@ -49,7 +49,7 @@ Feature: Login and Logout
       | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
       | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
 
-  @mc-4718 @smoke @api
+  @mc-4718 @api
   Scenario Outline: Verify email for created user
     Given I login as System Administrator via API
     When I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
@@ -61,7 +61,7 @@ Feature: Login and Logout
       | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
       | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
 
-  @mc-4723 @smoke @api
+  @mc-4723 @api
   Scenario Outline: Login with created user via API
     When I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     Then I login as user via API
