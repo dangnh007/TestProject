@@ -258,7 +258,7 @@ public class CapacityManagementPage {
         if (("created").equals(button)) {
             clickOnSendButton();
         }
-        else if(("draft").equals(button)){
+        else if(("saved as draft").equals(button)){
             saveAsDraftButton.waitFor().displayed();
             saveDraft();
         }

@@ -27,11 +27,11 @@ Feature: Campaign Management
   Scenario Outline: As user I want to create new campaign
     And I login as user
     When I create a new campaign with "<channel>" channel
-    Then I see created campaign as "<button>"
+    Then Campaign is "<button>"
 
     Examples:
-      | channel | button  |
-      | SMS     | created |
-      | SMS     | draft   |
-      | Email   | created |
-      | Email   | draft   |
+      | channel | button         |
+      | SMS     | created        |
+      | SMS     | saved as draft |
+      | Email   | created        |
+      | Email   | saved as draft |
