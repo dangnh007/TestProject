@@ -120,6 +120,7 @@ public class CapacityManagementPage {
     private final WebbElement sendButton;
     private final WebbElement campaignNameStarMark;
     private final WebbElement createdCampaign;
+    private final WebbElement spinner;
     private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
     private final List<WebbElement> ageList;
@@ -248,9 +249,11 @@ public class CapacityManagementPage {
         this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-send btn btn-default']");
         this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
         this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + campaignNameRandom + "\")]");
+        this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
     }
 
     public void verifyCreatedCampaign() {
+        spinner.waitFor().notDisplayed();
         createdCampaign.assertState().displayed();
     }
 
