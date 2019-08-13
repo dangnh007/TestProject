@@ -142,7 +142,7 @@ public class ApiSteps {
      * @param toggle sets accepting appointment toggle On or Off.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
-    @Then("^I set new Site Settings with toggle \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" via API")
+    @Then("^I set new Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", goal \"([^\"]*)\", days \"([^\"]*)\" via API")
     public void setNewSiteSettingsViaApi(String toggle, int target, int goal, int days) throws IOException {
         apiUtility.toggleOnOffViaApi(toggle);
         apiUtility.setDailyTargetAndGoalViaApi(target, goal);
@@ -162,7 +162,7 @@ public class ApiSteps {
      * @param toggle sets accepting appointment toggle On or Off.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
-    @Then("^I set default Site Settings with toggle \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\" via API$")
+    @Then("^I set default Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", goal \"([^\"]*)\", days \"([^\"]*)\" via API$")
     public void getFormId(String toggle, int target, int goal, int days) throws IOException {
         apiUtility.toggleOnOffViaApi(toggle);
         apiUtility.setDailyTargetAndGoalViaApi(target, goal);
