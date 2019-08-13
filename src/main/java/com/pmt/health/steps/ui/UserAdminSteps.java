@@ -23,23 +23,19 @@ public class UserAdminSteps {
     }
 
     @Description("Creating a user with a specific parameters")
-    @When("^I create user with \"([^\"]*)\"$")
-    public void createUser(String role) {
+    @When("^I create user with \"([^\"]*)\" and \"([^\"]*)\" level$")
+    public void createUser(String role, String org) {
         this.userAdminPage.userAdmin();
         this.userAdminPage.addUser();
         this.addUserPage.enterFirstName(user.getFirstName());
         this.addUserPage.enterLastName(user.getLastName());
         this.addUserPage.enterEmail(user.getEmail());
         this.addUserPage.selectRole(role);
-    }
-
-    @When("^I set awardee level \"([^\"]*)\"$")
-    public void setAwardeeLevel(String org) {
         this.addUserPage.checkAwardee(org);
         this.addUserPage.saveUser();
     }
 
-    @Then("^I see created user$")
+    @Then("^User has been created$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
     }

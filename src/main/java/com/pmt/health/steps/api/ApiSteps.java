@@ -74,16 +74,6 @@ public class ApiSteps {
     }
 
     /**
-     * Uses api Get call to go into an inbox of mailTrap.
-     *
-     * @throws IOException signals that an I/O exception of some sort has occurred.
-     */
-    @Then("^I check email inbox$")
-    public void emailInbox() throws IOException {
-        eMailUtility.emailInbox();
-    }
-
-    /**
      * Uses api Get call to retrieve value from the messages of mailTrap.
      *
      * @throws IOException          signals that an I/O exception of some sort has occurred.
@@ -91,6 +81,7 @@ public class ApiSteps {
      */
     @And("^I verify email and get its id$")
     public void getEmailId() throws IOException, InterruptedException {
+        eMailUtility.emailInbox();
         eMailUtility.emailGetValue();
     }
 
@@ -143,48 +134,19 @@ public class ApiSteps {
     }
 
     /**
-     * Send PUT request to set accepting appointments for the site settings.
-     *
+     * Send PUT request to set new site settings.
+     * Sets custom hours of operations via API.
+     * @param target sets the target value for the site settings.
+     * @param goal sets the goal value for the site setting.
+     * @param days sets a minimum appointment value.
      * @param toggle sets accepting appointment toggle On or Off.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
-    @Then("^I toggle \"([^\"]*)\" accepting appointments via API$")
-    public void toggleAcceptingAppointmentsViaAPI(String toggle) throws IOException {
+    @Then("^I set new Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", goal \"([^\"]*)\", days \"([^\"]*)\" via API")
+    public void setNewSiteSettingsViaApi(String toggle, int target, int goal, int days) throws IOException {
         apiUtility.toggleOnOffViaApi(toggle);
-    }
-
-    /**
-     * Sends PUT request to set goal and target values for the siteSettings endpoint.
-     *
-     * @param target sets the target value for the site settings.
-     * @param goal   sets the goal value for the site setting.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
-     */
-    @Then("^I set daily \"([^\"]*)\" and \"([^\"]*)\" via API$")
-    public void setDailyGoalAndTargetViaAPI(int target, int goal) throws IOException {
         apiUtility.setDailyTargetAndGoalViaApi(target, goal);
-    }
-
-    /**
-     * Sets minimum appointment notice via API.
-     * Sends PUT request to the minimumAppointment endpoint.
-     *
-     * @param days sets a minimum appointment value.
-     * @throws IOException signals that an I/O exception of some sort has occurred.
-     */
-    @Then("^I set \"([^\"]*)\" of minimum appointment notice via API$")
-    public void setMinimumAppointmentNotice(int days) throws IOException {
         apiUtility.setMinimumAppointmentNoticeViaApi(days);
-    }
-
-    /**
-     * Sets custom hours of operations via API.
-     * Sends PUT request to the weeklyHours endpoint.
-     *
-     * @throws IOException signals that an I/O exception of some sort has occurred.
-     */
-    @Then("^I set custom hours of operations via API$")
-    public void setCustomHoursOfOperationsViaAPI() throws IOException {
         apiUtility.getNameCustomHoursOfOperations();
         if (user.getHoursOfoperarion().isEmpty()) {
             apiUtility.createCustomHoursOfOperationS();
@@ -192,13 +154,19 @@ public class ApiSteps {
     }
 
     /**
+     * Send PUT request to set default site settings.
      * Sets default hours of operations via API.
-     * Sends Put request to the weeklyHours endpoint.
-     *
+     * @param target sets the target value for the site settings.
+     * @param goal sets the goal value for the site setting.
+     * @param days sets a minimum appointment value.
+     * @param toggle sets accepting appointment toggle On or Off.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
-    @Then("^I set default hours of operations via API$")
-    public void getFormId() throws IOException {
+    @Then("^I set default Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", goal \"([^\"]*)\", days \"([^\"]*)\" via API$")
+    public void getFormId(String toggle, int target, int goal, int days) throws IOException {
+        apiUtility.toggleOnOffViaApi(toggle);
+        apiUtility.setDailyTargetAndGoalViaApi(target, goal);
+        apiUtility.setMinimumAppointmentNoticeViaApi(days);
         apiUtility.deleteCustomForm();
     }
 
