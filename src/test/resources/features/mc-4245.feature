@@ -37,7 +37,7 @@ Feature: Login and Logout
       | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
       | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
 
-  @mc-4607 @smoke
+  @mc-4607 
   Scenario Outline: Login with created user
     Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     When I login for the first time and set up my credentials
