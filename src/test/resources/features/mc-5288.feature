@@ -1,4 +1,4 @@
-@feature-mc-5208 @capacity @pmt @smoke
+@feature-mc-5288 @capacity @pmt @smoke
 Feature: Campaign Management
   As a user
   I want to be able
