@@ -14,7 +14,7 @@ import java.util.*;
 
 public class APIUtility {
 
-    private static final String campaignNameRandom = "Test Automation via API #"  + UserUtility.generateUUID(5);
+    private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #"  + UserUtility.generateUUID(5);
     private static final String ID = "id";
     private static final String CUSTOM = "Custom";
     private static final String SCHOOL_OF_NURSING_SITE = "Site%2Fhpo-site-wimadisonschoolofnursing";
@@ -415,11 +415,11 @@ public class APIUtility {
         headers.put("Authorization", user.getAuthToken());
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("channel",channel);
-        jsonObject.addProperty("name", campaignNameRandom);
+        jsonObject.addProperty("name", CAMPAIGN_NAME_RANDOM);
         jsonObject.addProperty("description","Test Automation via API");
         jsonObject.addProperty("goal", "1");
         jsonObject.addProperty("associatedSegmentListId",0);
-        jsonObject.addProperty("associatedTemplateId",1030875);
+        jsonObject.addProperty("associatedTemplateId",1_030_875);
         jsonObject.addProperty("sendDate","");
         jsonObject.addProperty("status", createOrDraft);
         http.addHeaders(headers);

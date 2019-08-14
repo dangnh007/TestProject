@@ -50,8 +50,8 @@ Feature: Campaign Management
       | DRAFT  | Email   |
       | ACTIVE | Email   |
 
-    @mc-test
-    Scenario: As a user I want to verify values on Templates tab
-      And I set up my credentials via API
-      When I login as user
-      Then I verify values on Templates tab
+  @mc-5506
+  Scenario: As a user I want to verify values on Templates tab
+    And I set up my credentials via API
+    When I login as user
+    Then I verify values on Templates tab
