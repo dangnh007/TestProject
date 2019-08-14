@@ -179,4 +179,17 @@ public class ApiSteps {
     public void createNewAppointmentForProspectViaAPI() throws IOException {
         apiUtility.scheduleProspectAppointment();
     }
+
+    /**
+     * Sends POST request to create or draft campaign via API.
+     *
+     * @param createOrDraft sets option between create or draft.
+     * @param channel sets a channel for campaign.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^I create \"([^\"]*)\" campaign with \"([^\"]*)\" via API$")
+    public void createOrDraftCampaignViaAPI(String createOrDraft, String channel) throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.createOrDraftCampaignViaApi(createOrDraft, channel);
+    }
 }

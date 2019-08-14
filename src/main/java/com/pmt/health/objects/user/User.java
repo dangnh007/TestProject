@@ -11,6 +11,7 @@ public class User {
     protected String participantEmail;
     protected String groupValue;
     protected String hoursOfoperarion;
+    protected String authToken;
 
     public User() {
         firstName = "Automation";
@@ -22,6 +23,15 @@ public class User {
         participantEmail = UserUtility.makeRandomUserEmail();
         groupValue = "";
         hoursOfoperarion = "";
+        authToken = "";
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public String getHoursOfoperarion() {

@@ -6,6 +6,7 @@ import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.interactions.services.Response;
 import com.pmt.health.objects.user.User;
+import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.*;
 
 public class APIUtility {
 
+    private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #"  + UserUtility.generateUUID(5);
     private static final String ID = "id";
     private static final String CUSTOM = "Custom";
     private static final String SCHOOL_OF_NURSING_SITE = "Site%2Fhpo-site-wimadisonschoolofnursing";
@@ -33,6 +35,8 @@ public class APIUtility {
     private static final String ENDPOINT_SCHEDULE_APPOINTMENT = "/api/schedule/scheduleMCAppointment";
     private static final String GROUPS_ENDPOINT = "/api/userAdmin/getGroups";
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
+    private static final String REFERER_CAMPAIGN = MAIN_URL + "/communications/campaigns?role=ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER";
+    private static final String ENDPOINT_CAMPAIGN = "/api/communications/campaign";
 
     protected Reporter reporter;
     private HTTP http;
@@ -397,5 +401,33 @@ public class APIUtility {
             }
         }
         user.setHoursOfoperarion(formName);
+    }
+
+    /**
+     * Creates or drafts campaign.
+     */
+    public void createOrDraftCampaignViaApi(String createOrDraft, String channel) throws IOException {
+        String action = "I " + createOrDraft + " campaign via API";
+        String expected = "Successfully " + createOrDraft + " campaign via API";
+        //add headers
+        Map<String, String> headers = new HashMap<>();
+        headers.put(REFERER, REFERER_CAMPAIGN);
+        headers.put("Authorization", user.getAuthToken());
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("channel",channel);
+        jsonObject.addProperty("name", CAMPAIGN_NAME_RANDOM);
+        jsonObject.addProperty("description","Test Automation via API");
+        jsonObject.addProperty("goal", "1");
+        jsonObject.addProperty("associatedSegmentListId",0);
+        jsonObject.addProperty("associatedTemplateId",1_030_875);
+        jsonObject.addProperty("sendDate","");
+        jsonObject.addProperty("status", createOrDraft);
+        http.addHeaders(headers);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+       action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simpleGet(ENDPOINT_CAMPAIGN, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully " + createOrDraft + " campaign via API");
     }
 }
