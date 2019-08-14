@@ -17,8 +17,8 @@ public class CapacityManagementPage {
     private final App app;
     private User user;
     Logger log = Logger.getLogger(CapacityManagementPage.class);
-    
-    private final String campaignNameRandom = "Test Automation #"  + UserUtility.generateUUID(5);
+
+    private final String campaignNameRandom = "Test Automation #" + UserUtility.generateUUID(5);
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
     private final WebbElement tabAudienceSegmentation;
@@ -121,6 +121,12 @@ public class CapacityManagementPage {
     private final WebbElement campaignNameStarMark;
     private final WebbElement createdCampaign;
     private final WebbElement spinner;
+    private final WebbElement idOrder;
+    private final WebbElement nameOrder;
+    private final WebbElement channelOrder;
+    private final WebbElement createDateOrder;
+    private final WebbElement modifiedDateOrder;
+    private final WebbElement templatesTitle;
     private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
     private final List<WebbElement> ageList;
@@ -250,6 +256,46 @@ public class CapacityManagementPage {
         this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
         this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + campaignNameRandom + "\")]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.idOrder = app.newElement(LocatorType.CSS, "th[data-field='id']");
+        this.nameOrder = app.newElement(LocatorType.CSS, "th[data-field='name']");
+        this.channelOrder = app.newElement(LocatorType.CSS, "th[data-field='channel']");
+        this.createDateOrder = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
+        this.modifiedDateOrder = app.newElement(LocatorType.CSS, "th[data-field='modifiedDate']");
+        this.templatesTitle = app.newElement(LocatorType.CSS, "div[class='templates-count col-xs-12']");
+    }
+
+    public void assertTemplatesTitle() {
+        templatesTitle.assertState().displayed();
+    }
+
+    public void orderByName() {
+        nameOrder.click();
+        WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=name]>span[class='order']");
+        order.assertState().present();
+    }
+
+    public void orderById() {
+        idOrder.click();
+        WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=id]>span[class='order']");
+        order.assertState().present();
+    }
+
+    public void orderByChannel() {
+        channelOrder.click();
+        WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=channel]>span[class='order']");
+        order.assertState().present();
+    }
+
+    public void orderByCreatedDate() {
+        createDateOrder.click();
+        WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=createdDate]>span[class='order']");
+        order.assertState().present();
+    }
+
+    public void orderByModifiedDate() {
+        modifiedDateOrder.click();
+        WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=modifiedDate]>span[class='order']");
+        order.assertState().present();
     }
 
     public void verifyCreatedCampaign() {
@@ -260,8 +306,7 @@ public class CapacityManagementPage {
     public void saveOrDraft(String button) {
         if (("created").equals(button)) {
             clickOnSendButton();
-        }
-        else if(("saved as draft").equals(button)){
+        } else if (("saved as draft").equals(button)) {
             saveAsDraftButton.waitFor().displayed();
             saveDraft();
         }
@@ -350,7 +395,7 @@ public class CapacityManagementPage {
         }
     }
 
-    public void selectAudianceSegmentationTab() {
+    public void selectAudienceSegmentationTab() {
         WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/segmentation']");
         if (nonActive.is().present()) {
             tabAudienceSegmentation.click();

@@ -25,13 +25,12 @@ public class CapacityManagementSteps {
         capacityManagementPage.assertAudienceSegmentation();
         capacityManagementPage.assertCampaigns();
         capacityManagementPage.assertTemplates();
-
     }
 
     @When("^I verify all values in the Audience Segmentation section$")
     public void verifyAudienceSection() {
         capacityManagementPage.selectCommunications();
-        capacityManagementPage.selectAudianceSegmentationTab();
+        capacityManagementPage.selectAudienceSegmentationTab();
         capacityManagementPage.createNew();
         capacityManagementPage.verifyAudienceSegmentationLabels();
         capacityManagementPage.verifyDefaultValues();
@@ -44,7 +43,7 @@ public class CapacityManagementSteps {
     @When("^I verify \"([^\"]*)\" and Demographic Segmentation$")
     public void selectProgramMilestonesFromSegmentationGroup(String group) {
         capacityManagementPage.selectCommunications();
-        capacityManagementPage.selectAudianceSegmentationTab();
+        capacityManagementPage.selectAudienceSegmentationTab();
         capacityManagementPage.createNew();
         capacityManagementPage.selectProgramSegmentationCategory(group);
         capacityManagementPage.verifyConsentDropdown();
@@ -72,9 +71,6 @@ public class CapacityManagementSteps {
     public void verifyCampaignTabAndStartCreatingAnewCampaign(String option) {
         capacityManagementPage.selectCommunications();
         capacityManagementPage.assertTitle();
-        capacityManagementPage.assertAudienceSegmentation();
-        capacityManagementPage.assertCampaigns();
-        capacityManagementPage.assertTemplates();
         capacityManagementPage.selectCampaignsTab();
         capacityManagementPage.assertCampaignsTitle();
         capacityManagementPage.createNew();
@@ -97,5 +93,18 @@ public class CapacityManagementSteps {
         capacityManagementPage.assertReviewTitle();
         capacityManagementPage.saveOrDraft(button);
         capacityManagementPage.verifyCreatedCampaign();
+    }
+
+    @Then("^I verify values on Templates tab$")
+    public void verifyValuesOnTemplatesTab() {
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.assertTitle();
+        capacityManagementPage.selectTemplatesTab();
+        capacityManagementPage.assertTemplatesTitle();
+        capacityManagementPage.orderById();
+        capacityManagementPage.orderByName();
+        capacityManagementPage.orderByChannel();
+        capacityManagementPage.orderByCreatedDate();
+        capacityManagementPage.orderByModifiedDate();
     }
 }

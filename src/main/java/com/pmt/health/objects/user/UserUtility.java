@@ -293,4 +293,19 @@ public class UserUtility {
         Response response = adminHttp.simplePost("/api/changePassword", requestData);
         reporterPassFailStep(action, expected, response, "Failed to set new password. ");
     }
+
+    /**
+     * Gets authorization token.
+     */
+    public void getAuthorizationToken() throws IOException {
+        String action = "I get authorization token via API";
+        String expected = "Successfully got authorization token campaign via API";
+        RequestData requestData = new RequestData();
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simpleGet(LOGIN_ENDPOINT, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully get authorization token via API");
+        String authToken = response.getObjectData().get("jwtToken").getAsString();
+        user.setAuthToken("Bearer " + authToken);
+    }
 }

@@ -179,4 +179,10 @@ public class ApiSteps {
     public void createNewAppointmentForProspectViaAPI() throws IOException {
         apiUtility.scheduleProspectAppointment();
     }
+
+    @Then("^I create \"([^\"]*)\" campaign with \"([^\"]*)\" via API$")
+    public void createOrDraftCampaignViaAPI(String createOrDraft, String channel) throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.createOrDraftCampaignViaApi(createOrDraft, channel);
+    }
 }
