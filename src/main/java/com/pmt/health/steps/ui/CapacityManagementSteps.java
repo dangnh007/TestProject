@@ -107,4 +107,16 @@ public class CapacityManagementSteps {
         capacityManagementPage.orderByCreatedDate();
         capacityManagementPage.orderByModifiedDate();
     }
+
+    @Then("^\"([^\"]*)\" and \"([^\"]*)\" should be saved for particular segmentation$")
+    public void saveOrgAndSiteSegmentation(String org, String site) {
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.selectAudienceSegmentationTab();
+        capacityManagementPage.createNew();
+        capacityManagementPage.typeSegmentationName();
+        capacityManagementPage.selectCommunicationPreference("Email");
+        capacityManagementPage.selectOrganization(org);
+        capacityManagementPage.selectSite(site);
+        capacityManagementPage.typeDescription();
+    }
 }

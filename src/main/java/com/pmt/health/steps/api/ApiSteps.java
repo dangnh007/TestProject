@@ -147,6 +147,7 @@ public class ApiSteps {
         apiUtility.toggleOnOffViaApi(toggle);
         apiUtility.setDailyTargetAndGoalViaApi(target, goal);
         apiUtility.setMinimumAppointmentNoticeViaApi(days);
+        apiUtility.createCustomHoursOfOperationS();
         apiUtility.getNameCustomHoursOfOperations();
         if (user.getHoursOfoperarion().isEmpty()) {
             apiUtility.createCustomHoursOfOperationS();

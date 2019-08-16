@@ -30,7 +30,7 @@ public class CapacityManagementPage {
     private final WebbElement siteLabel;
     private final WebbElement descriptionLabel;
     private final WebbElement createButton;
-    private final WebbElement defaultName;
+    private final WebbElement segmentationName;
     private final WebbElement defaultCommunicationPreference;
     private final WebbElement defaultOrganization;
     private final WebbElement defaultSite;
@@ -127,6 +127,8 @@ public class CapacityManagementPage {
     private final WebbElement createDateOrder;
     private final WebbElement modifiedDateOrder;
     private final WebbElement templatesTitle;
+    private final WebbElement descriptionTextForm;
+    private final WebbElement siteDropDown;
     private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
     private final List<WebbElement> ageList;
@@ -153,7 +155,7 @@ public class CapacityManagementPage {
         this.siteLabel = app.newElement(LocatorType.XPATH, "//label[text()='Site']");
         this.descriptionLabel = app.newElement(LocatorType.XPATH, "//label[text()='Description']");
         this.createButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn btn-default']");
-        this.defaultName = app.newElement(LocatorType.CSS, "input[placeholder='Segmentation Title']");
+        this.segmentationName = app.newElement(LocatorType.CSS, "input[placeholder='Segmentation Title']");
         this.defaultCommunicationPreference = app.newElement(LocatorType.XPATH, "//div[text()='Select Channel']");
         this.defaultOrganization = app.newElement(LocatorType.XPATH, "//div[text()='Select Organization']");
         this.defaultSite = app.newElement(LocatorType.XPATH, "//div[text()='Select Site']");
@@ -252,7 +254,7 @@ public class CapacityManagementPage {
         this.firstRadioButton = app.newElement(LocatorType.XPATH, "(//td[@style='text-align: center;'])[1]");
         this.selectTemplateTitle = app.newElement(LocatorType.CSS, "div[class='title']");
         this.reviewTitle = app.newElement(LocatorType.CSS, "div[class=\"default-label medium-label\"]");
-        this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-send btn btn-default']");
+        this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-Send btn btn-default']");
         this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
         this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + campaignNameRandom + "\")]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
@@ -262,6 +264,34 @@ public class CapacityManagementPage {
         this.createDateOrder = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
         this.modifiedDateOrder = app.newElement(LocatorType.CSS, "th[data-field='modifiedDate']");
         this.templatesTitle = app.newElement(LocatorType.CSS, "div[class='templates-count col-xs-12']");
+        this.descriptionTextForm = app.newElement(LocatorType.CSS, "textarea[class=form-control]");
+        this.siteDropDown = app.newElement(LocatorType.ID, "site-select");
+    }
+
+    public void typeDescription() {
+        descriptionTextForm.type("Test Automation");
+    }
+
+    public void selectSite(String site) {
+        siteDropDown.click();
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, site);
+        option.click();
+    }
+
+    public void selectOrganization(String org) {
+        organizationDropDown.click();
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, org);
+        option.click();
+    }
+
+    public void selectCommunicationPreference(String channel) {
+        communicationPreferenceDropDown.click();
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, channel);
+        option.click();
+    }
+
+    public void typeSegmentationName() {
+        segmentationName.type(campaignNameRandom);
     }
 
     public void assertTemplatesTitle() {
@@ -517,7 +547,7 @@ public class CapacityManagementPage {
      * Waits for default values to be displayed and asserts it.
      */
     public void verifyDefaultValues() {
-        defaultName.assertState().displayed();
+        segmentationName.assertState().displayed();
         defaultCommunicationPreference.assertState().displayed();
         defaultOrganization.assertState().displayed();
         defaultSite.assertState().displayed();
