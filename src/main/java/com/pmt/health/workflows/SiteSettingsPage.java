@@ -183,7 +183,6 @@ public class SiteSettingsPage {
         if(warning.is().present() && warning.waitFor().displayed()) {
             ignoreWarning.click();
         }
-        saveButton.click();
     }
 
     public void setCustomTime() {

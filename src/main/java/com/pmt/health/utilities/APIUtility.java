@@ -18,7 +18,6 @@ public class APIUtility {
     private static final String ID = "id";
     private static final String CUSTOM = "Custom";
     private static final String SCHOOL_OF_NURSING_SITE = "Site%2Fhpo-site-wimadisonschoolofnursing";
-    private static final String BANNER_HEALTH = "Site%2Fhpo-site-bannertucson";
     private static final String NODE_MEMBER = "nodes";
     private static final String TIME_ZONE = "timeZone";
     private static final String AMERICA_CHICAGO = "America/Chicago";
@@ -28,7 +27,6 @@ public class APIUtility {
     private static final String ENDPOINT_SITE = "/api/schedule/siteDetail";
     private static final String ENDPOINT_TARGET_AND_GOAL = "/api/capacity/saveTargetAndGoal";
     private static final String SITE_ID_SCHOOL_OF_NURSING = "Site/hpo-site-wimadisonschoolofnursing";
-    private static final String SITE_ID_BANNER_TUCSON = "Site/hpo-site-bannertucson";
     private static final String ENDPOINT_MINIMUM_APPOINTMENT_NOTICE = "/api/schedule/saveMinimumAppointmentNotice";
     private static final String REFERER_SCHEDULE = MAIN_URL + "/settings/scheduling?role=ROLE_MC_SITE_MANAGER";
     private static final String ENDPOINT_HRS_OF_OPERATIONS = "/api/schedule/weeklyHoursOfOperation";
@@ -73,7 +71,7 @@ public class APIUtility {
         String expected = "Successfully toggled accepting appointments via the API";
         // setup toggle member as ON or OFF
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, BANNER_HEALTH);
+        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
         JsonObject toggleOnOff = new JsonObject();
         toggleOnOff.addProperty("acceptingAppointments", "on".equalsIgnoreCase(toggle));
         Map<String, String> referer = new HashMap<>();
@@ -102,7 +100,7 @@ public class APIUtility {
         JsonObject targetAndGoal = new JsonObject();
         targetAndGoal.addProperty("target", target);
         targetAndGoal.addProperty("goal", goal);
-        targetAndGoal.addProperty(SITE_ID, SITE_ID_BANNER_TUCSON);
+        targetAndGoal.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         //set request
@@ -127,7 +125,7 @@ public class APIUtility {
         // setup toggle member as ON or OFF
         JsonObject minimumAppointmentNotice = new JsonObject();
         minimumAppointmentNotice.addProperty("minimumAppointmentNotice", days);
-        minimumAppointmentNotice.addProperty(SITE_ID, SITE_ID_BANNER_TUCSON);
+        minimumAppointmentNotice.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         //set request
@@ -153,7 +151,7 @@ public class APIUtility {
         JsonObject hoursOfOperations = new JsonObject();
         hoursOfOperations.addProperty(ID, "");
         hoursOfOperations.addProperty("name", CUSTOM);
-        hoursOfOperations.addProperty(SITE_ID, SITE_ID_BANNER_TUCSON);
+        hoursOfOperations.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
         hoursOfOperations.addProperty(TIME_ZONE, AMERICA_CHICAGO);
         hoursOfOperations.addProperty("isDefault", false);
         hoursOfOperations.add("status", null);
@@ -194,7 +192,7 @@ public class APIUtility {
     public JsonObject getWorkingTimeObj(String day, String idValue) {
         JsonObject defWorkingTimeObj = new JsonObject();
         defWorkingTimeObj.addProperty(ID, idValue);
-        defWorkingTimeObj.addProperty(SITE_ID, SITE_ID_BANNER_TUCSON);
+        defWorkingTimeObj.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
         defWorkingTimeObj.addProperty("templateName", "");
         defWorkingTimeObj.addProperty("dayOfWeek", day);
         defWorkingTimeObj.add("date", null);
@@ -226,7 +224,7 @@ public class APIUtility {
         String expected = "Successfully get calendar form id via API";
         //Add headers and parameters
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, BANNER_HEALTH);
+        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         RequestData requestData = new RequestData();
@@ -284,7 +282,7 @@ public class APIUtility {
         calendar.set(Calendar.HOUR_OF_DAY, 9);
         calendar.set(Calendar.MINUTE, 0);
         jsonObject.addProperty("time", calendar.getTimeInMillis() / 1000);
-        jsonObject.addProperty(SITE_ID, BANNER_HEALTH);
+        jsonObject.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
         jsonObject.add("prospectId", null);
         jsonObject.add("participantId", null);
         jsonObject.addProperty("lastName", user.getLastName() + " API");
@@ -384,7 +382,7 @@ public class APIUtility {
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, BANNER_HEALTH);
+        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
         http.addHeaders(referer);
         RequestData requestData = new RequestData();
         requestData.setParams(parameters);

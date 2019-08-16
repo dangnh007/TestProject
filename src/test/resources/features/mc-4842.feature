@@ -4,16 +4,13 @@ Feature: PMT Site Settings
   I want to modify Site Settings
 
   Background:
-#    Given I create user with "ROLE_MC_SITE_MANAGER" and "PMI", "Wisconsin Consortium", "University of Wisconsin, Madison", "University of WI Madison School of Nursing"
-    Given I create user with "ROLE_MC_SITE_MANAGER" and "PMI", "Arizona", "Banner Health", "Banner University Medical Center - Tucson"
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "PMI", "Wisconsin Consortium", "University of Wisconsin, Madison", "University of WI Madison School of Nursing"
 
-
-  @mc-4851
+  @mc-4851 @unsafe
   Scenario: I login as Site manager and set up Site Settings
     And I set up my credentials via API
     And I login as user
-    When I set new Site Settings with toggle "on", target "15", days "Same day"
-    And I wait 3 seconds
+    When I set new Site Settings with toggle "on", target "15", days "+ 1 Day"
     And I logout
     And I login as user
     Then I set default Site Settings with toggle "off", target "0", days "+ 3 Days"
