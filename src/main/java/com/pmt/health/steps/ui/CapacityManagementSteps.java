@@ -6,8 +6,6 @@ import com.pmt.health.workflows.CapacityManagementPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import java.nio.channels.Channel;
-
 public class CapacityManagementSteps {
 
     private final User user;
