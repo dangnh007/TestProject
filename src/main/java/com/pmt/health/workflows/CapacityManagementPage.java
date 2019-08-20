@@ -120,8 +120,6 @@ public class CapacityManagementPage {
     private final WebbElement reviewTitle;
     private final WebbElement sendButton;
     private final WebbElement campaignNameStarMark;
-    private final WebbElement createdCampaign;
-    private final WebbElement spinner;
     private final WebbElement idOrder;
     private final WebbElement nameOrder;
     private final WebbElement channelOrder;
@@ -337,8 +335,6 @@ public class CapacityManagementPage {
         this.reviewTitle = app.newElement(LocatorType.CSS, "div[class=\"default-label medium-label\"]");
         this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-Send btn btn-default']");
         this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
-        this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + campaignNameRandom + "\")]");
-        this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
         this.idOrder = app.newElement(LocatorType.CSS, "th[data-field='id']");
         this.nameOrder = app.newElement(LocatorType.CSS, "th[data-field='name']");
         this.channelOrder = app.newElement(LocatorType.CSS, "th[data-field='channel']");
