@@ -149,7 +149,7 @@ podTemplate(
                                 ,
                                 "StandUp Application": {
                                     helmDeploy(
-                                            gitBranch: testAgainstRaw,
+                                            gitBranch: testAgainst,
                                             stackName: "${stackName}",
                                             missionControlEnabled: true,
                                             chartsRepo: "devcharts",
