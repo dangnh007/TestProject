@@ -149,10 +149,10 @@ podTemplate(
                                 ,
                                 "StandUp Application": {
                                     helmDeploy(
-                                            gitBranch: testAgainst,
+                                            gitBranch: testAgainstRaw,
                                             stackName: "${stackName}",
                                             missionControlEnabled: true,
-                                            chartsRepo: "devcharts",
+                                            chartRepo: "devcharts",
                                             stageFunc: buildStage
                                     )
                                                     // prevent db pods from being evicted while running tests
