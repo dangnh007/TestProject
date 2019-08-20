@@ -419,7 +419,7 @@ public class APIUtility {
         jsonObject.addProperty("description","Test Automation via API");
         jsonObject.addProperty("goal", "1");
         jsonObject.addProperty("associatedSegmentListId",0);
-        jsonObject.addProperty("associatedTemplateId",1_030_875);
+        jsonObject.addProperty("associatedTemplateId",1038584);
         jsonObject.addProperty("sendDate","");
         jsonObject.addProperty("status", createOrDraft);
         http.addHeaders(headers);

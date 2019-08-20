@@ -6,6 +6,8 @@ import com.pmt.health.workflows.CapacityManagementPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import java.nio.channels.Channel;
+
 public class CapacityManagementSteps {
 
     private final User user;
@@ -92,6 +94,7 @@ public class CapacityManagementSteps {
     public void reviewCampaignAndCreateIt(String button) {
         capacityManagementPage.assertReviewTitle();
         capacityManagementPage.saveOrDraft(button);
+        capacityManagementPage.confirmSend();
         capacityManagementPage.verifyCreatedCampaign();
     }
 
@@ -108,15 +111,32 @@ public class CapacityManagementSteps {
         capacityManagementPage.orderByModifiedDate();
     }
 
-    @Then("^\"([^\"]*)\" and \"([^\"]*)\" should be saved for particular segmentation$")
-    public void saveOrgAndSiteSegmentation(String org, String site) {
+    @Then("I verify organizations")
+    public void saveOrgAndSiteSegmentation() {
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.selectAudienceSegmentationTab();
+        capacityManagementPage.createNew();
+        capacityManagementPage.verifyOrgList();
+    }
+
+    @Then("^I created segmentation with \"([^\"]*)\" and \"([^\"]*)\" on \"([^\"]*)\"$")
+    public void createSegmentation(String org, String site, String channel) {
         capacityManagementPage.selectCommunications();
         capacityManagementPage.selectAudienceSegmentationTab();
         capacityManagementPage.createNew();
         capacityManagementPage.typeSegmentationName();
-        capacityManagementPage.selectCommunicationPreference("Email");
+        capacityManagementPage.selectCommunicationPreference(channel);
         capacityManagementPage.selectOrganization(org);
         capacityManagementPage.selectSite(site);
         capacityManagementPage.typeDescription();
+        capacityManagementPage.selectProgramSegmentationCategory("Program Milestones");
+        capacityManagementPage.consentDropDownClick();
+        capacityManagementPage.selectConsent("Primary Consent");
+        capacityManagementPage.addNewCategory();
+        capacityManagementPage.selectProgramSegmentationCategory("Demographic Segmentation");
+        capacityManagementPage.argDropdown();
+        capacityManagementPage.selectAgeRaceGender("Age");
+        capacityManagementPage.selectAge("25-34");
+        capacityManagementPage.saveSegmentation();
     }
 }
