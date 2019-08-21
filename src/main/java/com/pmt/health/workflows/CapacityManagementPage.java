@@ -72,7 +72,8 @@ public class CapacityManagementPage {
     private final WebbElement after;
     private final WebbElement onOrBefore;
     private final WebbElement onOrAfter;
-    private final WebbElement inBetween;
+    private final WebbElement isWithin;
+    private final WebbElement isNotWithin;
     private final WebbElement ageRaceGenderDropDown;
     private final WebbElement age;
     private final WebbElement race;
@@ -292,8 +293,9 @@ public class CapacityManagementPage {
         this.after = app.newElement(LocatorType.ARIALABEL, "after");
         this.onOrBefore = app.newElement(LocatorType.ARIALABEL, "on or before");
         this.onOrAfter = app.newElement(LocatorType.ARIALABEL, "on or after");
-        this.inBetween = app.newElement(LocatorType.ARIALABEL, "in between");
-        dateList = Arrays.asList(onAnyDate, onExactDate, before, after, onOrBefore, onOrAfter, inBetween);
+        this.isWithin = app.newElement(LocatorType.ARIALABEL, "is within");
+        this.isNotWithin = app.newElement(LocatorType.ARIALABEL, "is not within");
+        dateList = Arrays.asList(onAnyDate, onExactDate, before, after, onOrBefore, onOrAfter, isWithin, isNotWithin);
         this.ageRaceGenderDropDown = app.newElement(LocatorType.XPATH, "(//div[@id='primary-select-value'])[2]");
         this.age = app.newElement(LocatorType.ARIALABEL, "Age");
         this.race = app.newElement(LocatorType.ARIALABEL, "Race");
