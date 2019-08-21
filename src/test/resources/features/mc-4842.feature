@@ -10,9 +10,9 @@ Feature: PMT Site Settings
   Scenario: I login as Site manager and set up Site Settings
     Given I set up my credentials via API
     And I login as user
-    When I set new Site Settings with toggle "on", target "15", days "+ 1 Day"
+    And I set new Site Settings with toggle "on", target "15", days "+ 1 Day"
     And I logout
-    And I login as user
+    When I login as user
     Then I set default Site Settings with toggle "off", target "0", days "+ 3 Days"
 
   @mc-4852 @api
