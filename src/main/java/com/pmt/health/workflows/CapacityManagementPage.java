@@ -205,7 +205,7 @@ public class CapacityManagementPage {
     private final WebbElement weillCornellOrg;
     private final WebbElement warning;
     private final WebbElement sendNowButton;
-    private final WebbElement succesMessage;
+    private final WebbElement successMessage;
     private final List<WebbElement> orgList;
     private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
@@ -432,7 +432,7 @@ public class CapacityManagementPage {
                 vaPhoenixHealthcareOrg, vaSanDiegoOrg, vhTestOrg, walgreensHoustonOrg, walgreensMemphisOrg, walgreensPhoenixOrg, weillCornellOrg);
         this.warning = app.newElement(LocatorType.CSS, "p[class='title']");
         this.sendNowButton = app.newElement(LocatorType.CSS, "button[class='button-send-now btn btn-primary']");
-        this.succesMessage = app.newElement(LocatorType.CSS, "div[class='message animated fade success in']");
+        this.successMessage = app.newElement(LocatorType.CSS, "div[class='message animated fade success in']");
     }
 
     public void confirmSend() {
@@ -514,7 +514,7 @@ public class CapacityManagementPage {
     }
 
     public void verifyCreatedCampaign() {
-      succesMessage.is().displayed();
+      successMessage.is().displayed();
     }
 
     public void saveOrDraft(String button) {
