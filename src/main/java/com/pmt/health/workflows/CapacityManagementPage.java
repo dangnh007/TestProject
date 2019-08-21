@@ -108,8 +108,18 @@ public class CapacityManagementPage {
     private final WebbElement campaignName;
     private final WebbElement descriptionOptional;
     private final WebbElement capmaignGoalDropdown;
-    private final WebbElement goal1;
-    private final WebbElement goal2;
+    private final WebbElement healthCareAccessGoal;
+    private final WebbElement overallHealthGoal;
+    private final WebbElement theBasicsGoal;
+    private final WebbElement lifestyleGoal;
+    private final WebbElement familyHistoryGoal;
+    private final WebbElement primaryConsentGoal;
+    private final WebbElement ehrGoal;
+    private final WebbElement personalMedicalGoal;
+    private final WebbElement sharingYourEhrGoal;
+    private final WebbElement biospecimenGoal;
+    private final WebbElement pmBGoal;
+    private final WebbElement samplesToIzolateDnaGoal;
     private final WebbElement nextButton;
     private final WebbElement cancelButton;
     private final WebbElement saveButton;
@@ -323,9 +333,20 @@ public class CapacityManagementPage {
         this.campaignName = app.newElement(LocatorType.CSS, "input[label='Campaign Name']");
         this.descriptionOptional = app.newElement(LocatorType.CSS, "textarea[label='Description (Optional)']");
         this.capmaignGoalDropdown = app.newElement(LocatorType.CSS, "div[class='select-custom-wrapper']");
-        this.goal1 = app.newElement(LocatorType.ARIALABEL, "Goal 1");
-        this.goal2 = app.newElement(LocatorType.ARIALABEL, "Goal 2");
-        campaignsGoalList = Arrays.asList(goal1, goal2);
+        this.healthCareAccessGoal = app.newElement(LocatorType.ARIALABEL, "Complete Health Care Access & Utilization PPI Module");
+        this.overallHealthGoal = app.newElement(LocatorType.ARIALABEL, "Complete Overall Health PPI Module");
+        this.theBasicsGoal = app.newElement(LocatorType.ARIALABEL, "Complete The Basics PPI Module");
+        this.lifestyleGoal = app.newElement(LocatorType.ARIALABEL, "Complete Lifestyle PPI Module");
+        this.familyHistoryGoal = app.newElement(LocatorType.ARIALABEL, "Complete Family History PPI Module");
+        this.primaryConsentGoal = app.newElement(LocatorType.ARIALABEL, "Complete Primary Consent");
+        this.ehrGoal = app.newElement(LocatorType.ARIALABEL, "Complete EHR Consent");
+        this.personalMedicalGoal = app.newElement(LocatorType.ARIALABEL, "Complete Personal Medical History PPI Module");
+        this.sharingYourEhrGoal = app.newElement(LocatorType.ARIALABEL, "Complete Sharing Your Electronic Health Records");
+        this.biospecimenGoal = app.newElement(LocatorType.ARIALABEL, "Complete Biospecimen");
+        this.pmBGoal = app.newElement(LocatorType.ARIALABEL, "Complete PM/B");
+        this.samplesToIzolateDnaGoal = app.newElement(LocatorType.ARIALABEL, "Complete Samples to Isolate DNA");
+        campaignsGoalList = Arrays.asList(healthCareAccessGoal, overallHealthGoal, theBasicsGoal, lifestyleGoal, familyHistoryGoal, primaryConsentGoal,
+                ehrGoal, personalMedicalGoal, sharingYourEhrGoal, biospecimenGoal, pmBGoal, samplesToIzolateDnaGoal);
         this.nextButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-next btn btn-default']");
         this.cancelButton = app.newElement(LocatorType.CSS, "button[class='btn btn-secondary btn-cancel btn btn-default']");
         this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save  btn btn-default']");
@@ -514,7 +535,7 @@ public class CapacityManagementPage {
     }
 
     public void verifyCreatedCampaign() {
-      successMessage.is().displayed();
+        successMessage.is().displayed();
     }
 
     public void saveOrDraft(String button) {
@@ -575,7 +596,7 @@ public class CapacityManagementPage {
         for (WebbElement each : campaignsGoalList) {
             each.assertState().displayed();
         }
-        goal1.click();
+        overallHealthGoal.click();
     }
 
     public void enterCampaignName() {
