@@ -144,7 +144,7 @@ public class APIUtility {
      * Lands as user on Settings via the API.
      * create hours of operations
      */
-    public Response createCustomHoursOfOperationS() throws IOException {
+    public Response createCustomHoursOfOperations() throws IOException {
         String action = "I create hours of operations via API";
         String expected = "Successfully create hours of operations via the API";
         // create hours of operations
@@ -419,7 +419,7 @@ public class APIUtility {
         jsonObject.addProperty("description","Test Automation via API");
         jsonObject.addProperty("goal", "1");
         jsonObject.addProperty("associatedSegmentListId",0);
-        jsonObject.addProperty("associatedTemplateId",1_030_875);
+        jsonObject.addProperty("associatedTemplateId",1_038_584);
         jsonObject.addProperty("sendDate","");
         jsonObject.addProperty("status", createOrDraft);
         http.addHeaders(headers);

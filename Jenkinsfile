@@ -152,7 +152,7 @@ podTemplate(
                                             gitBranch: testAgainstRaw,
                                             stackName: "${stackName}",
                                             missionControlEnabled: true,
-                                            chartsRepo: "devcharts",
+                                            chartRepo: "devcharts",
                                             stageFunc: buildStage
                                     )
                                                     // prevent db pods from being evicted while running tests
@@ -169,7 +169,7 @@ podTemplate(
                                                 pullRequest: pullRequest,
                                                 tool: 'mvn',
                                                 sonarBranch: env.BRANCH_NAME,
-                                                branchName: branch,
+                                                branch: branch,
                                                 branchType: branchType,
                                                 project: env.PROJECT,
                                                 projectVersion: "1.0.${env.BUILD_NUMBER}",
@@ -204,7 +204,7 @@ podTemplate(
                                 pullRequest: pullRequest,
                                 tool: 'mvn',
                                 sonarBranch: env.BRANCH_NAME,
-                                branchName: branch,
+                                branch: branch,
                                 branchType: branchType,
                                 project: env.PROJECT,
                                 projectVersion: "1.0.${env.BUILD_NUMBER}",

@@ -21,7 +21,7 @@ public class SiteSettingsSteps {
         userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
     }
 
-    @Then("^I set new Site Settings with toggle \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+    @Then("^I set new Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", days \"([^\"]*)\"$")
     public void setNewSiteSettings(String toggle, String target, String day) {
         userAdminPage.userSettings();
         siteSettingsPage.assertTitle();
@@ -38,7 +38,7 @@ public class SiteSettingsSteps {
         siteSettingsPage.hoFormUpdate();
     }
 
-    @Then("^I set default Site Settings with toggle \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+    @Then("^I set default Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", days \"([^\"]*)\"$")
     public void setDefaultSiteSettings(String toggle, String target, String day) {
         userAdminPage.userSettings();
         siteSettingsPage.assertTitle();

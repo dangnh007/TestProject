@@ -92,6 +92,7 @@ public class CapacityManagementSteps {
     public void reviewCampaignAndCreateIt(String button) {
         capacityManagementPage.assertReviewTitle();
         capacityManagementPage.saveOrDraft(button);
+        capacityManagementPage.confirmSend();
         capacityManagementPage.verifyCreatedCampaign();
     }
 
@@ -106,5 +107,34 @@ public class CapacityManagementSteps {
         capacityManagementPage.orderByChannel();
         capacityManagementPage.orderByCreatedDate();
         capacityManagementPage.orderByModifiedDate();
+    }
+
+    @Then("I verify organizations")
+    public void saveOrgAndSiteSegmentation() {
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.selectAudienceSegmentationTab();
+        capacityManagementPage.createNew();
+        capacityManagementPage.verifyOrgList();
+    }
+
+    @Then("^I created segmentation with \"([^\"]*)\" and \"([^\"]*)\" on \"([^\"]*)\"$")
+    public void createSegmentation(String org, String site, String channel) {
+        capacityManagementPage.selectCommunications();
+        capacityManagementPage.selectAudienceSegmentationTab();
+        capacityManagementPage.createNew();
+        capacityManagementPage.typeSegmentationName();
+        capacityManagementPage.selectCommunicationPreference(channel);
+        capacityManagementPage.selectOrganization(org);
+        capacityManagementPage.selectSite(site);
+        capacityManagementPage.typeDescription();
+        capacityManagementPage.selectProgramSegmentationCategory("Program Milestones");
+        capacityManagementPage.consentDropDownClick();
+        capacityManagementPage.selectConsent("Primary Consent");
+        capacityManagementPage.addNewCategory();
+        capacityManagementPage.selectProgramSegmentationCategory("Demographic Segmentation");
+        capacityManagementPage.argDropdown();
+        capacityManagementPage.selectAgeRaceGender("Age");
+        capacityManagementPage.selectAge("25-34");
+        capacityManagementPage.saveSegmentation();
     }
 }

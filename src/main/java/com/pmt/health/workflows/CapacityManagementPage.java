@@ -30,7 +30,7 @@ public class CapacityManagementPage {
     private final WebbElement siteLabel;
     private final WebbElement descriptionLabel;
     private final WebbElement createButton;
-    private final WebbElement defaultName;
+    private final WebbElement segmentationName;
     private final WebbElement defaultCommunicationPreference;
     private final WebbElement defaultOrganization;
     private final WebbElement defaultSite;
@@ -72,7 +72,8 @@ public class CapacityManagementPage {
     private final WebbElement after;
     private final WebbElement onOrBefore;
     private final WebbElement onOrAfter;
-    private final WebbElement inBetween;
+    private final WebbElement isWithin;
+    private final WebbElement isNotWithin;
     private final WebbElement ageRaceGenderDropDown;
     private final WebbElement age;
     private final WebbElement race;
@@ -108,10 +109,21 @@ public class CapacityManagementPage {
     private final WebbElement campaignName;
     private final WebbElement descriptionOptional;
     private final WebbElement capmaignGoalDropdown;
-    private final WebbElement goal1;
-    private final WebbElement goal2;
+    private final WebbElement healthCareAccessGoal;
+    private final WebbElement overallHealthGoal;
+    private final WebbElement theBasicsGoal;
+    private final WebbElement lifestyleGoal;
+    private final WebbElement familyHistoryGoal;
+    private final WebbElement primaryConsentGoal;
+    private final WebbElement ehrGoal;
+    private final WebbElement personalMedicalGoal;
+    private final WebbElement sharingYourEhrGoal;
+    private final WebbElement biospecimenGoal;
+    private final WebbElement pmBGoal;
+    private final WebbElement samplesToIzolateDnaGoal;
     private final WebbElement nextButton;
     private final WebbElement cancelButton;
+    private final WebbElement saveButton;
     private final WebbElement saveAsDraftButton;
     private final WebbElement campaignNameTitle;
     private final WebbElement firstRadioButton;
@@ -119,14 +131,93 @@ public class CapacityManagementPage {
     private final WebbElement reviewTitle;
     private final WebbElement sendButton;
     private final WebbElement campaignNameStarMark;
-    private final WebbElement createdCampaign;
-    private final WebbElement spinner;
     private final WebbElement idOrder;
     private final WebbElement nameOrder;
     private final WebbElement channelOrder;
     private final WebbElement createDateOrder;
     private final WebbElement modifiedDateOrder;
     private final WebbElement templatesTitle;
+    private final WebbElement descriptionTextForm;
+    private final WebbElement siteDropDown;
+    private final WebbElement bannerHealthOrg;
+    private final WebbElement baylorScottAndWhiteOrg;
+    private final WebbElement bostonMedicalOrg;
+    private final WebbElement ceadarsSinaiCenterOrg;
+    private final WebbElement centerForCommunityOrg;
+    private final WebbElement cherokeeHealthOrg;
+    private final WebbElement communityHealthCenterOrg;
+    private final WebbElement cooperGreenMercyOrg;
+    private final WebbElement dvSanDiegoOrg;
+    private final WebbElement emsiOrg;
+    private final WebbElement eauClaireCenterOrg;
+    private final WebbElement emoryUniversityOrg;
+    private final WebbElement erieFamilyHealthOrg;
+    private final WebbElement essentiaHealthOrg;
+    private final WebbElement genomicsTestOrg;
+    private final WebbElement hpoSanDiegoBloodBankOrg;
+    private final WebbElement hrhCareOrg;
+    private final WebbElement harlemHospitalOrg;
+    private final WebbElement henryFordHealthOrg;
+    private final WebbElement huntsvilleHospitalOrg;
+    private final WebbElement jacksonHindsOrg;
+    private final WebbElement loisianaStateUnversityOrg;
+    private final WebbElement mcwSixteenStreetOrg;
+    private final WebbElement mariposaCommunityOrg;
+    private final WebbElement marshfieldClinicOrg;
+    private final WebbElement medicalCollegeOfWisconsinOrg;
+    private final WebbElement mobileAssetOrg;
+    private final WebbElement morehouseSchoolOrg;
+    private final WebbElement nearNorthHealthOrg;
+    private final WebbElement newYorkPresbyterianOrg;
+    private final WebbElement northsnoreUniversityOrg;
+    private final WebbElement northwesternUniversityOrg;
+    private final WebbElement partnersHealthcareOrg;
+    private final WebbElement reliantMedicalOrg;
+    private final WebbElement rushUniversityOrg;
+    private final WebbElement sanYsidroOrg;
+    private final WebbElement spectrumHealthOrg;
+    private final WebbElement swedishAmericanCenterOrg;
+    private final WebbElement templeUniversityOrg;
+    private final WebbElement testProdOrg;
+    private final WebbElement tuluneUniversityOrg;
+    private final WebbElement universityMedicalCenterTuscaloosaOrg;
+    private final WebbElement uoaBirmingamOrg;
+    private final WebbElement uoaHuntsvilleOrg;
+    private final WebbElement uoaMontgomeryOrg;
+    private final WebbElement uoaSelmaOrg;
+    private final WebbElement uocIrvineSchoolOrg;
+    private final WebbElement uocDavisOrg;
+    private final WebbElement uocSanDiegoOrg;
+    private final WebbElement uocSanFranciscoOrg;
+    private final WebbElement universityOfChicagoOrg;
+    private final WebbElement universityOfFloridaOrg;
+    private final WebbElement universityOfIllinoisOrg;
+    private final WebbElement universityOfMiamiOrg;
+    private final WebbElement universityOfMississippiOrg;
+    private final WebbElement universityOfPittsburghOrg;
+    private final WebbElement universityOfSouthAlabamaOrg;
+    private final WebbElement universityOfSouthernCaliforniaOrg;
+    private final WebbElement universityOfWisconsinOrg;
+    private final WebbElement vaAtlantaOrg;
+    private final WebbElement vaBostonOrg;
+    private final WebbElement vaClementOrg;
+    private final WebbElement vaEasternKansasOrg;
+    private final WebbElement vaEventOrg;
+    private final WebbElement vaMichaelEOrg;
+    private final WebbElement vaMInneapolisOrg;
+    private final WebbElement vaNewYorkHarborOrg;
+    private final WebbElement vaPaloAltoOrg;
+    private final WebbElement vaPhoenixHealthcareOrg;
+    private final WebbElement vaSanDiegoOrg;
+    private final WebbElement vhTestOrg;
+    private final WebbElement walgreensHoustonOrg;
+    private final WebbElement walgreensMemphisOrg;
+    private final WebbElement walgreensPhoenixOrg;
+    private final WebbElement weillCornellOrg;
+    private final WebbElement warning;
+    private final WebbElement sendNowButton;
+    private final WebbElement successMessage;
+    private final List<WebbElement> orgList;
     private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
     private final List<WebbElement> ageList;
@@ -142,6 +233,7 @@ public class CapacityManagementPage {
     public CapacityManagementPage(App app, User user) {
         this.app = app;
         this.user = user;
+        this.saveButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-md btn btn-default']");
         this.communicationsButton = app.newElement(LocatorType.CSS, "svg[class='src-components-common-icon-styles__communications-icon--3P03Etk6']");
         this.headingCommunications = app.newElement(LocatorType.XPATH, "//h1[text()='Communications']");
         this.tabAudienceSegmentation = app.newElement(LocatorType.XPATH, "//a[text()='Audience Segmentation']");
@@ -153,10 +245,10 @@ public class CapacityManagementPage {
         this.siteLabel = app.newElement(LocatorType.XPATH, "//label[text()='Site']");
         this.descriptionLabel = app.newElement(LocatorType.XPATH, "//label[text()='Description']");
         this.createButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn btn-default']");
-        this.defaultName = app.newElement(LocatorType.CSS, "input[placeholder='Segmentation Title']");
+        this.segmentationName = app.newElement(LocatorType.CSS, "input[placeholder='Segmentation Title']");
         this.defaultCommunicationPreference = app.newElement(LocatorType.XPATH, "//div[text()='Select Channel']");
-        this.defaultOrganization = app.newElement(LocatorType.XPATH, "//div[text()='Select Organization']");
-        this.defaultSite = app.newElement(LocatorType.XPATH, "//div[text()='Select Site']");
+        this.defaultOrganization = app.newElement(LocatorType.XPATH, "//div[text()='All Organizations (Default)']");
+        this.defaultSite = app.newElement(LocatorType.XPATH, "//div[text()='All Sites (Default)']");
         this.communicationPreferenceDropDown = app.newElement(LocatorType.ID, "comm-preference-select");
         this.smsPreference = app.newElement(LocatorType.ARIALABEL, "SMS");
         this.emailPreference = app.newElement(LocatorType.ARIALABEL, "Email");
@@ -201,8 +293,9 @@ public class CapacityManagementPage {
         this.after = app.newElement(LocatorType.ARIALABEL, "after");
         this.onOrBefore = app.newElement(LocatorType.ARIALABEL, "on or before");
         this.onOrAfter = app.newElement(LocatorType.ARIALABEL, "on or after");
-        this.inBetween = app.newElement(LocatorType.ARIALABEL, "in between");
-        dateList = Arrays.asList(onAnyDate, onExactDate, before, after, onOrBefore, onOrAfter, inBetween);
+        this.isWithin = app.newElement(LocatorType.ARIALABEL, "is within");
+        this.isNotWithin = app.newElement(LocatorType.ARIALABEL, "is not within");
+        dateList = Arrays.asList(onAnyDate, onExactDate, before, after, onOrBefore, onOrAfter, isWithin, isNotWithin);
         this.ageRaceGenderDropDown = app.newElement(LocatorType.XPATH, "(//div[@id='primary-select-value'])[2]");
         this.age = app.newElement(LocatorType.ARIALABEL, "Age");
         this.race = app.newElement(LocatorType.ARIALABEL, "Race");
@@ -242,26 +335,171 @@ public class CapacityManagementPage {
         this.campaignName = app.newElement(LocatorType.CSS, "input[label='Campaign Name']");
         this.descriptionOptional = app.newElement(LocatorType.CSS, "textarea[label='Description (Optional)']");
         this.capmaignGoalDropdown = app.newElement(LocatorType.CSS, "div[class='select-custom-wrapper']");
-        this.goal1 = app.newElement(LocatorType.ARIALABEL, "Goal 1");
-        this.goal2 = app.newElement(LocatorType.ARIALABEL, "Goal 2");
-        campaignsGoalList = Arrays.asList(goal1, goal2);
-        this.nextButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-next btn btn-default'");
-        this.cancelButton = app.newElement(LocatorType.CSS, "button[class='btn btn-secondary btn-cancel btn btn-default'");
-        this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save btn btn-default'");
+        this.healthCareAccessGoal = app.newElement(LocatorType.ARIALABEL, "Complete Health Care Access & Utilization PPI Module");
+        this.overallHealthGoal = app.newElement(LocatorType.ARIALABEL, "Complete Overall Health PPI Module");
+        this.theBasicsGoal = app.newElement(LocatorType.ARIALABEL, "Complete The Basics PPI Module");
+        this.lifestyleGoal = app.newElement(LocatorType.ARIALABEL, "Complete Lifestyle PPI Module");
+        this.familyHistoryGoal = app.newElement(LocatorType.ARIALABEL, "Complete Family History PPI Module");
+        this.primaryConsentGoal = app.newElement(LocatorType.ARIALABEL, "Complete Primary Consent");
+        this.ehrGoal = app.newElement(LocatorType.ARIALABEL, "Complete EHR Consent");
+        this.personalMedicalGoal = app.newElement(LocatorType.ARIALABEL, "Complete Personal Medical History PPI Module");
+        this.sharingYourEhrGoal = app.newElement(LocatorType.ARIALABEL, "Complete Sharing Your Electronic Health Records");
+        this.biospecimenGoal = app.newElement(LocatorType.ARIALABEL, "Complete Biospecimen");
+        this.pmBGoal = app.newElement(LocatorType.ARIALABEL, "Complete PM/B");
+        this.samplesToIzolateDnaGoal = app.newElement(LocatorType.ARIALABEL, "Complete Samples to Isolate DNA");
+        campaignsGoalList = Arrays.asList(healthCareAccessGoal, overallHealthGoal, theBasicsGoal, lifestyleGoal, familyHistoryGoal, primaryConsentGoal,
+                ehrGoal, personalMedicalGoal, sharingYourEhrGoal, biospecimenGoal, pmBGoal, samplesToIzolateDnaGoal);
+        this.nextButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-next btn btn-default']");
+        this.cancelButton = app.newElement(LocatorType.CSS, "button[class='btn btn-secondary btn-cancel btn btn-default']");
+        this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save  btn btn-default']");
         this.campaignNameTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name']");
         this.firstRadioButton = app.newElement(LocatorType.XPATH, "(//td[@style='text-align: center;'])[1]");
         this.selectTemplateTitle = app.newElement(LocatorType.CSS, "div[class='title']");
         this.reviewTitle = app.newElement(LocatorType.CSS, "div[class=\"default-label medium-label\"]");
-        this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-send btn btn-default']");
+        this.sendButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary-2 btn-Send btn btn-default']");
         this.campaignNameStarMark = app.newElement(LocatorType.XPATH, "//label[text()='Campaign Name']//span");
-        this.createdCampaign = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + campaignNameRandom + "\")]");
-        this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
         this.idOrder = app.newElement(LocatorType.CSS, "th[data-field='id']");
         this.nameOrder = app.newElement(LocatorType.CSS, "th[data-field='name']");
         this.channelOrder = app.newElement(LocatorType.CSS, "th[data-field='channel']");
         this.createDateOrder = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
         this.modifiedDateOrder = app.newElement(LocatorType.CSS, "th[data-field='modifiedDate']");
         this.templatesTitle = app.newElement(LocatorType.CSS, "div[class='templates-count col-xs-12']");
+        this.descriptionTextForm = app.newElement(LocatorType.CSS, "textarea[class=form-control]");
+        this.siteDropDown = app.newElement(LocatorType.ID, "site-select");
+        this.bannerHealthOrg = app.newElement(LocatorType.ARIALABEL, "Banner Health");
+        this.baylorScottAndWhiteOrg = app.newElement(LocatorType.ARIALABEL, "Baylor Scott and White Health");
+        this.bostonMedicalOrg = app.newElement(LocatorType.ARIALABEL, "Boston Medical Center");
+        this.ceadarsSinaiCenterOrg = app.newElement(LocatorType.ARIALABEL, "Cedars-Sinai Medical Center");
+        this.centerForCommunityOrg = app.newElement(LocatorType.ARIALABEL, "Center for Community Engagement and Health Partnerships");
+        this.cherokeeHealthOrg = app.newElement(LocatorType.ARIALABEL, "Cherokee Health Systems");
+        this.communityHealthCenterOrg = app.newElement(LocatorType.ARIALABEL, "Community Health Center, Inc");
+        this.cooperGreenMercyOrg = app.newElement(LocatorType.ARIALABEL, "Cooper Green Mercy Hospital");
+        this.dvSanDiegoOrg = app.newElement(LocatorType.ARIALABEL, "DV San Diego Blood Bank");
+        this.emsiOrg = app.newElement(LocatorType.ARIALABEL, "EMSI");
+        this.eauClaireCenterOrg = app.newElement(LocatorType.ARIALABEL, "Eau Claire Cooperative Health Center");
+        this.emoryUniversityOrg = app.newElement(LocatorType.ARIALABEL, "Emory University");
+        this.erieFamilyHealthOrg = app.newElement(LocatorType.ARIALABEL, "Erie Family Health Centers");
+        this.essentiaHealthOrg = app.newElement(LocatorType.ARIALABEL, "Essentia Health");
+        this.genomicsTestOrg = app.newElement(LocatorType.ARIALABEL, "GenomicsTest Organization");
+        this.hpoSanDiegoBloodBankOrg = app.newElement(LocatorType.ARIALABEL, "HPO San Diego Blood Bank");
+        this.hrhCareOrg = app.newElement(LocatorType.ARIALABEL, "HRHCare, Inc.");
+        this.harlemHospitalOrg = app.newElement(LocatorType.ARIALABEL, "Harlem Hospital");
+        this.henryFordHealthOrg = app.newElement(LocatorType.ARIALABEL, "Henry Ford Health System");
+        this.huntsvilleHospitalOrg = app.newElement(LocatorType.ARIALABEL, "Huntsville Hospital");
+        this.jacksonHindsOrg = app.newElement(LocatorType.ARIALABEL, "Jackson-Hinds Comprehensive Health Center");
+        this.loisianaStateUnversityOrg = app.newElement(LocatorType.ARIALABEL, "Louisiana State University");
+        this.mcwSixteenStreetOrg = app.newElement(LocatorType.ARIALABEL, "MCW - Sixteenth Street Community Health Center (SSHC 16th)");
+        this.mariposaCommunityOrg = app.newElement(LocatorType.ARIALABEL, "Mariposa Community Health Center");
+        this.marshfieldClinicOrg = app.newElement(LocatorType.ARIALABEL, "Marshfield Clinic");
+        this.medicalCollegeOfWisconsinOrg = app.newElement(LocatorType.ARIALABEL, "Medical College of Wisconsin");
+        this.mobileAssetOrg = app.newElement(LocatorType.ARIALABEL, "Mobile Engagement Asset (MEA) 2");
+        this.morehouseSchoolOrg = app.newElement(LocatorType.ARIALABEL, "Morehouse School of Medicine");
+        this.nearNorthHealthOrg = app.newElement(LocatorType.ARIALABEL, "Near North Health Services Corporation");
+        this.newYorkPresbyterianOrg = app.newElement(LocatorType.ARIALABEL, "New York Presbyterian Columbia University");
+        this.northsnoreUniversityOrg = app.newElement(LocatorType.ARIALABEL, "Northshore University Health System");
+        this.northwesternUniversityOrg = app.newElement(LocatorType.ARIALABEL, "Northwestern University");
+        this.partnersHealthcareOrg = app.newElement(LocatorType.ARIALABEL, "Partners Healthcare");
+        this.reliantMedicalOrg = app.newElement(LocatorType.ARIALABEL, "Reliant Medical Group (Meyers Primary Care)");
+        this.rushUniversityOrg = app.newElement(LocatorType.ARIALABEL, "Rush University");
+        this.sanYsidroOrg = app.newElement(LocatorType.ARIALABEL, "San Ysidro Health Center");
+        this.spectrumHealthOrg = app.newElement(LocatorType.ARIALABEL, "Spectrum Health System");
+        this.swedishAmericanCenterOrg = app.newElement(LocatorType.ARIALABEL, "Swedish American Regional Center, UW Health");
+        this.templeUniversityOrg = app.newElement(LocatorType.ARIALABEL, "Temple University");
+        this.testProdOrg = app.newElement(LocatorType.ARIALABEL, "Test Prod Organization");
+        this.tuluneUniversityOrg = app.newElement(LocatorType.ARIALABEL, "Tulane University");
+        this.universityMedicalCenterTuscaloosaOrg = app.newElement(LocatorType.ARIALABEL, "University Medical Center Tuscaloosa");
+        this.uoaBirmingamOrg = app.newElement(LocatorType.ARIALABEL, "University of Alabama Birmingham");
+        this.uoaHuntsvilleOrg = app.newElement(LocatorType.ARIALABEL, "University of Alabama Birmingham Huntsville");
+        this.uoaMontgomeryOrg = app.newElement(LocatorType.ARIALABEL, "University of Alabama Birmingham Montgomery");
+        this.uoaSelmaOrg = app.newElement(LocatorType.ARIALABEL, "University of Alabama Birmingham Selma");
+        this.uocIrvineSchoolOrg = app.newElement(LocatorType.ARIALABEL, "University of California Irvine School of Medicine");
+        this.uocDavisOrg = app.newElement(LocatorType.ARIALABEL, "University of California, Davis");
+        this.uocSanDiegoOrg = app.newElement(LocatorType.ARIALABEL, "University of California, San Diego");
+        this.uocSanFranciscoOrg = app.newElement(LocatorType.ARIALABEL, "University of California, San Francisco");
+        this.universityOfChicagoOrg = app.newElement(LocatorType.ARIALABEL, "University of Chicago");
+        this.universityOfFloridaOrg = app.newElement(LocatorType.ARIALABEL, "University of Florida");
+        this.universityOfIllinoisOrg = app.newElement(LocatorType.ARIALABEL, "University of Illinois at Chicago");
+        this.universityOfMiamiOrg = app.newElement(LocatorType.ARIALABEL, "University of Miami");
+        this.universityOfMississippiOrg = app.newElement(LocatorType.ARIALABEL, "University of Mississippi Medical Center");
+        this.universityOfPittsburghOrg = app.newElement(LocatorType.ARIALABEL, "University of Pittsburgh Medical Center");
+        this.universityOfSouthAlabamaOrg = app.newElement(LocatorType.ARIALABEL, "University of South Alabama");
+        this.universityOfSouthernCaliforniaOrg = app.newElement(LocatorType.ARIALABEL, "University of Southern California");
+        this.universityOfWisconsinOrg = app.newElement(LocatorType.ARIALABEL, "University of Wisconsin, Madison");
+        this.vaAtlantaOrg = app.newElement(LocatorType.ARIALABEL, "VA Atlanta Medical Center");
+        this.vaBostonOrg = app.newElement(LocatorType.ARIALABEL, "VA Boston Healthcare System");
+        this.vaClementOrg = app.newElement(LocatorType.ARIALABEL, "VA Clement J. Zablocki Medical Center");
+        this.vaEasternKansasOrg = app.newElement(LocatorType.ARIALABEL, "VA Eastern Kansas Health Care System");
+        this.vaEventOrg = app.newElement(LocatorType.ARIALABEL, "VA Event");
+        this.vaMichaelEOrg = app.newElement(LocatorType.ARIALABEL, "VA Michael E. DeBakey Medical Center");
+        this.vaMInneapolisOrg = app.newElement(LocatorType.ARIALABEL, "VA Minneapolis Healthcare System");
+        this.vaNewYorkHarborOrg = app.newElement(LocatorType.ARIALABEL, "VA New York Harbor Healthcare System");
+        this.vaPaloAltoOrg = app.newElement(LocatorType.ARIALABEL, "VA Palo Alto Health Care System");
+        this.vaPhoenixHealthcareOrg = app.newElement(LocatorType.ARIALABEL, "VA Phoenix Healthcare System");
+        this.vaSanDiegoOrg = app.newElement(LocatorType.ARIALABEL, "VA San Diego Healthcare System");
+        this.vhTestOrg = app.newElement(LocatorType.ARIALABEL, "VH Test Organization");
+        this.walgreensHoustonOrg = app.newElement(LocatorType.ARIALABEL, "Walgreens Houston");
+        this.walgreensMemphisOrg = app.newElement(LocatorType.ARIALABEL, "Walgreens Memphis");
+        this.walgreensPhoenixOrg = app.newElement(LocatorType.ARIALABEL, "Walgreens Phoenix");
+        this.weillCornellOrg = app.newElement(LocatorType.ARIALABEL, "Weill Cornell Medicine");
+        orgList = Arrays.asList(bannerHealthOrg, baylorScottAndWhiteOrg, bostonMedicalOrg, ceadarsSinaiCenterOrg, centerForCommunityOrg,
+                cherokeeHealthOrg, communityHealthCenterOrg, cooperGreenMercyOrg, dvSanDiegoOrg, emsiOrg, eauClaireCenterOrg, emoryUniversityOrg,
+                erieFamilyHealthOrg, essentiaHealthOrg, genomicsTestOrg, hpoSanDiegoBloodBankOrg, hrhCareOrg, harlemHospitalOrg, henryFordHealthOrg,
+                huntsvilleHospitalOrg, jacksonHindsOrg, loisianaStateUnversityOrg, mcwSixteenStreetOrg, mariposaCommunityOrg, marshfieldClinicOrg,
+                medicalCollegeOfWisconsinOrg, mobileAssetOrg, morehouseSchoolOrg, nearNorthHealthOrg, newYorkPresbyterianOrg, northsnoreUniversityOrg,
+                northwesternUniversityOrg, partnersHealthcareOrg, reliantMedicalOrg, rushUniversityOrg, sanYsidroOrg, spectrumHealthOrg,
+                swedishAmericanCenterOrg, templeUniversityOrg, testProdOrg, tuluneUniversityOrg, universityMedicalCenterTuscaloosaOrg,
+                uoaBirmingamOrg, uoaHuntsvilleOrg, uoaMontgomeryOrg, uoaSelmaOrg, uocIrvineSchoolOrg, uocDavisOrg, uocSanDiegoOrg, uocSanFranciscoOrg,
+                universityOfChicagoOrg, universityOfFloridaOrg, universityOfIllinoisOrg, universityOfMiamiOrg, universityOfMississippiOrg,
+                universityOfPittsburghOrg, universityOfSouthAlabamaOrg, universityOfSouthernCaliforniaOrg, universityOfWisconsinOrg, vaAtlantaOrg,
+                vaBostonOrg, vaClementOrg, vaEasternKansasOrg, vaEventOrg, vaMichaelEOrg, vaMInneapolisOrg, vaNewYorkHarborOrg, vaPaloAltoOrg,
+                vaPhoenixHealthcareOrg, vaSanDiegoOrg, vhTestOrg, walgreensHoustonOrg, walgreensMemphisOrg, walgreensPhoenixOrg, weillCornellOrg);
+        this.warning = app.newElement(LocatorType.CSS, "p[class='title']");
+        this.sendNowButton = app.newElement(LocatorType.CSS, "button[class='button-send-now btn btn-primary']");
+        this.successMessage = app.newElement(LocatorType.CSS, "div[class='message animated fade success in']");
+    }
+
+    public void confirmSend() {
+        if (warning.is().present()) {
+            sendNowButton.click();
+        }
+    }
+
+    public void saveSegmentation() {
+        saveButton.waitFor().displayed();
+        saveButton.click();
+    }
+
+    public void verifyOrgList() {
+        organizationDropDown.click();
+        for (WebbElement each : orgList) {
+            each.assertState().displayed();
+        }
+    }
+
+    public void typeDescription() {
+        descriptionTextForm.type("Test Automation");
+    }
+
+    public void selectSite(String site) {
+        siteDropDown.click();
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, site);
+        option.click();
+    }
+
+    public void selectOrganization(String org) {
+        organizationDropDown.click();
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, org);
+        option.click();
+    }
+
+    public void selectCommunicationPreference(String channel) {
+        communicationPreferenceDropDown.click();
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, channel);
+        option.click();
+    }
+
+    public void typeSegmentationName() {
+        segmentationName.type(campaignNameRandom);
     }
 
     public void assertTemplatesTitle() {
@@ -299,8 +537,7 @@ public class CapacityManagementPage {
     }
 
     public void verifyCreatedCampaign() {
-        spinner.waitFor().notDisplayed();
-        createdCampaign.assertState().displayed();
+        successMessage.is().displayed();
     }
 
     public void saveOrDraft(String button) {
@@ -361,7 +598,7 @@ public class CapacityManagementPage {
         for (WebbElement each : campaignsGoalList) {
             each.assertState().displayed();
         }
-        goal1.click();
+        overallHealthGoal.click();
     }
 
     public void enterCampaignName() {
@@ -407,6 +644,13 @@ public class CapacityManagementPage {
         for (WebbElement each : ageList) {
             each.assertState().displayed();
         }
+    }
+
+    public void selectAge(String age) {
+        ageRaceGenderValuesDropDown.click();
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, age);
+        option.click();
+        ageRaceGenderValuesDropDown.click();
     }
 
     public void verifyGenderList() {
@@ -470,6 +714,10 @@ public class CapacityManagementPage {
         }
     }
 
+    public void consentDropDownClick() {
+        consentDropDown.click();
+    }
+
     public void verifyConsentDropdown() {
         consentDropDown.click();
         for (WebbElement each : consentList) {
@@ -517,7 +765,7 @@ public class CapacityManagementPage {
      * Waits for default values to be displayed and asserts it.
      */
     public void verifyDefaultValues() {
-        defaultName.assertState().displayed();
+        segmentationName.assertState().displayed();
         defaultCommunicationPreference.assertState().displayed();
         defaultOrganization.assertState().displayed();
         defaultSite.assertState().displayed();

@@ -8,22 +8,22 @@ Feature: PMT Site Settings
 
   @mc-4851 @unsafe
   Scenario: I login as Site manager and set up Site Settings
-    And I set up my credentials via API
+    Given I set up my credentials via API
     And I login as user
-    When I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I set new Site Settings with toggle "on", target "15", days "+ 1 Day"
     And I logout
-    And I login as user
-    Then I set default Site Settings with toggle "off", target "0", goal "0", days "3" via API
+    When I login as user
+    Then I set default Site Settings with toggle "off", target "0", days "+ 3 Days"
 
   @mc-4852 @api
   Scenario: Set up Site Settings via API
-    And I login as user via API
+    Given I login as user via API
     When I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
     Then I set default Site Settings with toggle "off", target "0", goal "0", days "3" via API
 
   @mc-5143
   Scenario: Create a new appointment for prospect as Site Manager
-    And I login as user via API
+    Given I login as user via API
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
     And I login as user
     When I create new appointment for prospect
@@ -31,7 +31,7 @@ Feature: PMT Site Settings
 
   @mc-5144 @api
   Scenario: Create a new appointment for prospect as Site Manager via API
-    And I login as user via API
+    Given I login as user via API
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
     When I create new appointment for prospect via API
     Then I set default Site Settings with toggle "off", target "0", goal "0", days "3" via API
