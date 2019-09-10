@@ -13,7 +13,7 @@ def resultsHomeDir
 def commitSha
 def testAgainst = "develop"
 def testAgainstRaw = testAgainst
-def containerName = "vibrent/automation-framework"
+def containerName = "vibrent/pmt-automation-framework"
 def podName = "${project}-${env.BRANCH_NAME.replaceAll(/\//, '-')}-${env.BUILD_NUMBER}"
 def podLabel = podName
 def pullSecrets = ['reg.vibrenthealth.com', 'dockergroup.vibrenthealth.com']
