@@ -1,5 +1,6 @@
 package com.pmt.health.utilities;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.pmt.health.interactions.services.HTTP;
@@ -14,8 +15,16 @@ import java.util.*;
 
 public class APIUtility {
 
-    private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #"  + UserUtility.generateUUID(5);
+    private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #" + UserUtility.generateUUID(5);
+    private static final String VALUE_LIST = "valueList";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String PROGRAM_ID = "65b1bc8";
+    private static final String VIEW_TYPE = "viewType";
+    private static final String IS_EQUAL_TO = "Is equal to";
     private static final String ID = "id";
+    private static final String CHANNEL = "channel";
+    private static final String VALUE = "value";
+    private static final String LABEL = "label";
     private static final String CUSTOM = "Custom";
     private static final String SCHOOL_OF_NURSING_SITE = "Site%2Fhpo-site-wimadisonschoolofnursing";
     private static final String NODE_MEMBER = "nodes";
@@ -36,7 +45,9 @@ public class APIUtility {
     private static final String GROUPS_ENDPOINT = "/api/userAdmin/getGroups";
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
     private static final String REFERER_CAMPAIGN = MAIN_URL + "/communications/campaigns?role=ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER";
+    private static final String REFERER_SEGMENTATION = MAIN_URL + "/communications/segmentation?role=ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER";
     private static final String ENDPOINT_CAMPAIGN = "/api/communications/campaign";
+    private static final String ENDPOINT_SEGMENTATION = "/api/communications/segment";
 
     protected Reporter reporter;
     private HTTP http;
@@ -412,22 +423,173 @@ public class APIUtility {
         //add headers
         Map<String, String> headers = new HashMap<>();
         headers.put(REFERER, REFERER_CAMPAIGN);
-        headers.put("Authorization", user.getAuthToken());
+        headers.put(AUTHORIZATION, user.getAuthToken());
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("channel",channel);
+        jsonObject.addProperty(CHANNEL, channel);
         jsonObject.addProperty("name", CAMPAIGN_NAME_RANDOM);
-        jsonObject.addProperty("description","Test Automation via API");
-        jsonObject.addProperty("goal", "1");
-        jsonObject.addProperty("associatedSegmentListId",0);
-        jsonObject.addProperty("associatedTemplateId",1_038_584);
-        jsonObject.addProperty("sendDate","");
+        jsonObject.addProperty("description", "Test Automation via API");
+        jsonObject.addProperty("goal", "1");//Survey/279
+        jsonObject.addProperty("associatedSegmentListId", createSegmentationViaApi(channel));
+        jsonObject.addProperty("associatedTemplateId", 1_038_584);
+        jsonObject.addProperty("sendDate", "");
         jsonObject.addProperty("status", createOrDraft);
         http.addHeaders(headers);
         RequestData requestData = new RequestData();
         requestData.setJSON(jsonObject);
-       action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = http.simpleGet(ENDPOINT_CAMPAIGN, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully " + createOrDraft + " campaign via API");
+    }
+
+    /**
+     * Creates segmentation
+     */
+    public String createSegmentationViaApi(String channel) throws IOException {
+        String action = "I create segmentation via API";
+        String expected = "Successfully create segmentation via API";
+        //add headers
+        Map<String, String> headers = new HashMap<>();
+        headers.put(REFERER, REFERER_SEGMENTATION);
+        headers.put(AUTHORIZATION, user.getAuthToken());
+        //json body
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", "API TEST");
+        jsonObject.addProperty("owner", "Automation user");
+        jsonObject.addProperty(CHANNEL, channel);
+        JsonArray orgs = new JsonArray();
+        JsonObject orgsObject = new JsonObject();
+        orgsObject.addProperty(ID, 25);
+        orgsObject.addProperty(VALUE, "Organization/AZ_TUCSON_BANNER_HEALTH");
+        orgsObject.addProperty(LABEL, "Banner Health");
+        orgsObject.addProperty("parentId", 24);
+        orgs.add(orgsObject);
+        jsonObject.add("selectedOrgs", orgs);
+        JsonArray sites = new JsonArray();
+        JsonObject sitesObject = new JsonObject();
+        sitesObject.addProperty(ID, 27);
+        sitesObject.addProperty(VALUE, "Site/hpo-site-bannerbaywood");
+        sitesObject.addProperty(LABEL, "Banner Baywood Medical Center");
+        sitesObject.addProperty("parentId", 25);
+        sites.add(sitesObject);
+        jsonObject.add("selectedSites", sites);
+        jsonObject.addProperty("description", "API TEST description");
+        jsonObject.add("recipients", null);
+        jsonObject.add("lastRefreshed", null);
+        jsonObject.add("lastUpdated", null);
+        jsonObject.addProperty("groupOperator", "or");
+        jsonObject.addProperty("archived", false);
+        jsonObject.addProperty("editable", true);
+        JsonArray groupList = new JsonArray();
+        JsonObject groupListObj = new JsonObject();
+        groupListObj.addProperty(ID, PROGRAM_ID);
+        groupListObj.addProperty("position", 0);
+        groupListObj.addProperty("categoryOperator", "and");
+        groupList.add(groupListObj);
+        jsonObject.add("segmentationGroupList", groupList);
+        JsonArray categoryList = new JsonArray();
+        //list of categories for filtering segmentation
+        categoryList.add(segmentationCategoryMemberObj("45dad55", PROGRAM_ID, "Program Milestones",
+                "programMilestones", "milestone",
+                "survey", "milestone", "primaryConsent", "Primary Consent",
+                "is", IS_EQUAL_TO,
+                "survey", 1, "Eligible, But Not Started",
+                "anytime", "on any date (default)"));
+        categoryList.add(segmentationCategoryMemberObj("f406869", PROGRAM_ID, "Demographic Segmentation",
+                "demographic", "multi",
+                "multi",
+                "age", "Age",
+                "is", IS_EQUAL_TO,
+                "age", 3, "35-44"));
+        categoryList.add(segmentationCategoryMemberObj("82bbea4", PROGRAM_ID, "Campaign Activity",
+                "campaignActivity", "campaign",
+                "email", "campaign", "emailSent", "Email Sent",
+                "is", IS_EQUAL_TO,
+                "email", 1, "Email Campaign 1",
+                "anytime", "on any date (default)"));
+        jsonObject.add("segmentationCategoryList", categoryList);
+        http.addHeaders(headers);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simplePost(ENDPOINT_SEGMENTATION, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully create segmentation via API");
+        return response.getObjectData().get("id").getAsString();
+    }
+
+    /**
+     * Segmentation category member
+     * Method takes args for each filter
+     */
+    @JsonCreator
+    private static JsonObject segmentationCategoryMemberObj(String id, String groupId, String title, String category, String viewType,
+                                                            String optionType, String optionViewType, String optionValue, String optionLabel,
+                                                            String operatorValue, String operatorLabel,
+                                                            String multiOptionType, int multiOptionValue, String multiOptionLabel,
+                                                            String dateOperatorValue, String dateOperatorLabel) {
+        JsonObject categoryListObj =
+                segmentationObject(id, groupId, title, category, viewType, operatorValue, operatorLabel, multiOptionType, multiOptionValue, multiOptionLabel);
+        JsonObject primaryOption = new JsonObject();
+        primaryOption.addProperty("type", optionType);
+        primaryOption.addProperty(VIEW_TYPE, optionViewType);
+        primaryOption.addProperty(VALUE, optionValue);
+        primaryOption.addProperty(LABEL, optionLabel);
+        categoryListObj.get(VALUE_LIST).getAsJsonObject().add("selectedPrimaryOption", primaryOption);
+        JsonObject dateOperator = new JsonObject();
+        dateOperator.addProperty(VALUE, dateOperatorValue);
+        dateOperator.addProperty(LABEL, dateOperatorLabel);
+        categoryListObj.get(VALUE_LIST).getAsJsonObject().add("selectedDateOperator", dateOperator);
+        return categoryListObj;
+    }
+
+    /**
+     * Segmentation category member
+     * Overloaded method to implement various options of filtering
+     */
+    @JsonCreator
+    private static JsonObject segmentationCategoryMemberObj(String id, String groupId, String title, String category, String viewType,
+                                                            String optionViewType, String optionValue, String optionLabel,
+                                                            String operatorValue, String operatorLabel,
+                                                            String multiOptionType, int multiOptionValue, String multiOptionLabel) {
+        JsonObject categoryListObj = segmentationObject(id, groupId, title, category, viewType, operatorValue,
+                operatorLabel, multiOptionType, multiOptionValue, multiOptionLabel);
+        JsonObject primaryOption = new JsonObject();
+        primaryOption.addProperty(VIEW_TYPE, optionViewType);
+        primaryOption.addProperty(VALUE, optionValue);
+        primaryOption.addProperty(LABEL, optionLabel);
+        categoryListObj.get(VALUE_LIST).getAsJsonObject().add("selectedPrimaryOption", primaryOption);
+        categoryListObj.get(VALUE_LIST).getAsJsonObject().add("selectedDateOperator", null);
+        return categoryListObj;
+    }
+
+    /**
+     * Segmentation member
+     * Reusable method for segmentationCategoryMemberObj
+     */
+    @JsonCreator
+    private static JsonObject segmentationObject(String id, String groupId, String title, String category, String viewType,
+                                                 String operatorValue, String operatorLabel,
+                                                 String multiOptionType, int multiOptionValue, String multiOptionLabel) {
+        JsonObject categoryListObj = new JsonObject();
+        categoryListObj.addProperty(ID, id);
+        categoryListObj.addProperty("groupId", groupId);
+        categoryListObj.addProperty("title", title);
+        categoryListObj.addProperty("category", category);
+        categoryListObj.addProperty(VIEW_TYPE, viewType);
+        JsonObject valueList = new JsonObject();
+        JsonObject primaryOperator = new JsonObject();
+        primaryOperator.addProperty(VALUE, operatorValue);
+        primaryOperator.addProperty(LABEL, operatorLabel);
+        valueList.add("selectedPrimaryOperator", primaryOperator);
+        JsonArray multiOptionsArr = new JsonArray();
+        JsonObject multiOptions = new JsonObject();
+        multiOptions.addProperty("type", multiOptionType);
+        multiOptions.addProperty(VALUE, multiOptionValue);
+        multiOptions.addProperty(LABEL, multiOptionLabel);
+        multiOptionsArr.add(multiOptions);
+        valueList.add("selectedMultiOptions", multiOptionsArr);
+        categoryListObj.add(VALUE_LIST, valueList);
+        return categoryListObj;
     }
 }

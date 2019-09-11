@@ -35,7 +35,6 @@ public class CapacityManagementPage {
     private final WebbElement defaultOrganization;
     private final WebbElement defaultSite;
     private final WebbElement communicationPreferenceDropDown;
-    private final WebbElement smsPreference;
     private final WebbElement emailPreference;
     private final WebbElement organizationDropDown;
     private final WebbElement bannerHealth;
@@ -78,6 +77,10 @@ public class CapacityManagementPage {
     private final WebbElement age;
     private final WebbElement race;
     private final WebbElement gender;
+    private final WebbElement campaignActivityDropDown;
+    private final WebbElement emailSent;
+    private final WebbElement emailOpened;
+    private final WebbElement emailClicked;
     private final WebbElement equalDropDownSecond;
     private final WebbElement addLink;
     private final WebbElement ageRaceGenderValuesDropDown;
@@ -217,6 +220,7 @@ public class CapacityManagementPage {
     private final WebbElement warning;
     private final WebbElement sendNowButton;
     private final WebbElement successMessage;
+    private final List<WebbElement> emailList;
     private final List<WebbElement> orgList;
     private final List<WebbElement> campaignsGoalList;
     private final List<WebbElement> genderList;
@@ -246,13 +250,12 @@ public class CapacityManagementPage {
         this.descriptionLabel = app.newElement(LocatorType.XPATH, "//label[text()='Description']");
         this.createButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn btn-default']");
         this.segmentationName = app.newElement(LocatorType.CSS, "input[placeholder='Segmentation Title']");
-        this.defaultCommunicationPreference = app.newElement(LocatorType.XPATH, "//div[text()='Select Channel']");
+        this.defaultCommunicationPreference = app.newElement(LocatorType.XPATH, "//span[text()='Email']");
         this.defaultOrganization = app.newElement(LocatorType.XPATH, "//div[text()='All Organizations (Default)']");
         this.defaultSite = app.newElement(LocatorType.XPATH, "//div[text()='All Sites (Default)']");
         this.communicationPreferenceDropDown = app.newElement(LocatorType.ID, "comm-preference-select");
-        this.smsPreference = app.newElement(LocatorType.ARIALABEL, "SMS");
         this.emailPreference = app.newElement(LocatorType.ARIALABEL, "Email");
-        communicationList = Arrays.asList(smsPreference, emailPreference);
+        communicationList = Arrays.asList(emailPreference);
         this.organizationDropDown = app.newElement(LocatorType.XPATH, "(//div[@class=' select-custom-wrapper'])[2]");
         this.bannerHealth = app.newElement(LocatorType.ARIALABEL, "Banner Health");
         this.siteDisable = app.newElement(LocatorType.CSS, "div[class='Select is-clearable is-disabled Select--multi']");
@@ -265,21 +268,21 @@ public class CapacityManagementPage {
         this.primaryConsent = app.newElement(LocatorType.ARIALABEL, "Primary Consent");
         this.ehrConsent = app.newElement(LocatorType.ARIALABEL, "EHR Consent");
         this.ehrConsentResponse = app.newElement(LocatorType.ARIALABEL, "EHR Consent Response");
-        this.basicPpi = app.newElement(LocatorType.ARIALABEL, "Basic PPI Module");
-        this.lifestylePpi = app.newElement(LocatorType.ARIALABEL, "Lifestyle PPI Module");
-        this.overallHealthPpi = app.newElement(LocatorType.ARIALABEL, "Overall Health PPI Module");
-        this.healthCareAccessPpi = app.newElement(LocatorType.ARIALABEL, "Health Care Access & Utilization PPI Module");
-        this.familyHealthPpi = app.newElement(LocatorType.ARIALABEL, "Family Health PPI Module");
-        this.personalMedicalPpi = app.newElement(LocatorType.ARIALABEL, "Personal Medical History PPI Module");
+        this.basicPpi = app.newElement(LocatorType.ARIALABEL, "The Basics");
+        this.lifestylePpi = app.newElement(LocatorType.ARIALABEL, "Lifestyle");
+        this.overallHealthPpi = app.newElement(LocatorType.ARIALABEL, "Overall Health");
+        this.healthCareAccessPpi = app.newElement(LocatorType.ARIALABEL, "Health Care Access & Utilization");
+        this.familyHealthPpi = app.newElement(LocatorType.ARIALABEL, "Family History");
+        this.personalMedicalPpi = app.newElement(LocatorType.ARIALABEL, "Personal Medical History");
         this.physicalMeasurement = app.newElement(LocatorType.ARIALABEL, "Physical Measurement");
         this.biosample = app.newElement(LocatorType.ARIALABEL, "Biosample");
         consentList = Arrays.asList(primaryConsent, ehrConsent, ehrConsentResponse, basicPpi,
                 lifestylePpi, overallHealthPpi, healthCareAccessPpi, familyHealthPpi, personalMedicalPpi, physicalMeasurement, biosample);
         this.equalDropDown = app.newElement(LocatorType.ID, "primary-operator-select");
-        this.isEqualTo = app.newElement(LocatorType.ARIALABEL, "Is equal to");
-        this.isNotEqualTo = app.newElement(LocatorType.ARIALABEL, "Is not equal to");
-        this.isAnyOf = app.newElement(LocatorType.ARIALABEL, "Is any of");
-        this.isNotAnyOf = app.newElement(LocatorType.ARIALABEL, "Is not any of");
+        this.isEqualTo = app.newElement(LocatorType.ARIALABEL, "is equal to");
+        this.isNotEqualTo = app.newElement(LocatorType.ARIALABEL, "is not equal to");
+        this.isAnyOf = app.newElement(LocatorType.ARIALABEL, "is any of");
+        this.isNotAnyOf = app.newElement(LocatorType.ARIALABEL, "is not any of");
         equalList = Arrays.asList(isEqualTo, isNotEqualTo, isAnyOf, isNotAnyOf);
         this.statusDropDown = app.newElement(LocatorType.ID, "modifier-select");
         this.eligible = app.newElement(LocatorType.ARIALABEL, "Eligible, But Not Started");
@@ -287,7 +290,7 @@ public class CapacityManagementPage {
         this.completed = app.newElement(LocatorType.ARIALABEL, "Completed");
         statusList = Arrays.asList(eligible, inProgress, completed);
         this.dateDropDown = app.newElement(LocatorType.ID, "date-operator-select");
-        this.onAnyDate = app.newElement(LocatorType.ARIALABEL, "on any date (default)");
+        this.onAnyDate = app.newElement(LocatorType.ARIALABEL, "on any date (Default)");
         this.onExactDate = app.newElement(LocatorType.ARIALABEL, "on exact date");
         this.before = app.newElement(LocatorType.ARIALABEL, "before");
         this.after = app.newElement(LocatorType.ARIALABEL, "after");
@@ -300,6 +303,11 @@ public class CapacityManagementPage {
         this.age = app.newElement(LocatorType.ARIALABEL, "Age");
         this.race = app.newElement(LocatorType.ARIALABEL, "Race");
         this.gender = app.newElement(LocatorType.ARIALABEL, "Gender");
+        this.campaignActivityDropDown = app.newElement(LocatorType.XPATH, "(//div[@id='primary-select-value'])[3]");
+        this.emailSent = app.newElement(LocatorType.ARIALABEL, "Email Sent");
+        this.emailOpened = app.newElement(LocatorType.ARIALABEL, "Email Opened");
+        this.emailClicked = app.newElement(LocatorType.ARIALABEL, "Email Clicked");
+        emailList = Arrays.asList(emailSent, emailOpened, emailClicked);
         ageRaceGenderList = Arrays.asList(age, race, gender);
         this.equalDropDownSecond = app.newElement(LocatorType.ID, "multi-operator-select");
         this.addLink = app.newElement(LocatorType.CSS, "a[class='action-link add-link']");
@@ -325,9 +333,9 @@ public class CapacityManagementPage {
         ageList = Arrays.asList(age18, age25, age35, age45, age55, age65, age75, age85);
         this.man = app.newElement(LocatorType.ARIALABEL, "Man");
         this.woman = app.newElement(LocatorType.ARIALABEL, "Woman");
-        this.nonBinary = app.newElement(LocatorType.ARIALABEL, "Non-binary");
+        this.nonBinary = app.newElement(LocatorType.ARIALABEL, "Non-Binary");
         this.transgender = app.newElement(LocatorType.ARIALABEL, "Transgender");
-        this.noneOfTheseGender = app.newElement(LocatorType.ARIALABEL, "None of these fully describe me");
+        this.noneOfTheseGender = app.newElement(LocatorType.ARIALABEL, "None of these describe me, and I want to specify");
         this.preferNotToAnswerGender = app.newElement(LocatorType.ARIALABEL, "Prefer not to answer");
         genderList = Arrays.asList(man, woman, nonBinary, transgender, noneOfTheseGender, preferNotToAnswerGender);
         this.campaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-tittle']");
@@ -351,7 +359,7 @@ public class CapacityManagementPage {
                 ehrGoal, personalMedicalGoal, sharingYourEhrGoal, biospecimenGoal, pmBGoal, samplesToIzolateDnaGoal);
         this.nextButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-next btn btn-default']");
         this.cancelButton = app.newElement(LocatorType.CSS, "button[class='btn btn-secondary btn-cancel btn btn-default']");
-        this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save  btn btn-default']");
+        this.saveAsDraftButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-save btn btn-default']");
         this.campaignNameTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name']");
         this.firstRadioButton = app.newElement(LocatorType.XPATH, "(//td[@style='text-align: center;'])[1]");
         this.selectTemplateTitle = app.newElement(LocatorType.CSS, "div[class='title']");
@@ -683,8 +691,20 @@ public class CapacityManagementPage {
         option.click();
     }
 
+    public void selectEmailFilter(String emailFilter) {
+        WebbElement option = app.newElement(LocatorType.ARIALABEL, emailFilter);
+        option.click();
+    }
+
     public void argDropdown() {
         ageRaceGenderDropDown.click();
+    }
+
+    public void verifyCampaignActivityDropDown() {
+        campaignActivityDropDown.click();
+        for (WebbElement each : emailList) {
+            each.assertState().displayed();
+        }
     }
 
     public void verifyAgeRaceGenderDropdown() {
@@ -790,7 +810,7 @@ public class CapacityManagementPage {
     }
 
     /**
-     * Clicks in Communications button.
+     * Clicks on Communications button.
      */
     public void selectCommunications() {
         communicationsButton.click();

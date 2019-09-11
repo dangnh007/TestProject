@@ -136,9 +136,10 @@ public class ApiSteps {
     /**
      * Send PUT request to set new site settings.
      * Sets custom hours of operations via API.
+     *
      * @param target sets the target value for the site settings.
-     * @param goal sets the goal value for the site setting.
-     * @param days sets a minimum appointment value.
+     * @param goal   sets the goal value for the site setting.
+     * @param days   sets a minimum appointment value.
      * @param toggle sets accepting appointment toggle On or Off.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
@@ -157,9 +158,10 @@ public class ApiSteps {
     /**
      * Send PUT request to set default site settings.
      * Sets default hours of operations via API.
+     *
      * @param target sets the target value for the site settings.
-     * @param goal sets the goal value for the site setting.
-     * @param days sets a minimum appointment value.
+     * @param goal   sets the goal value for the site setting.
+     * @param days   sets a minimum appointment value.
      * @param toggle sets accepting appointment toggle On or Off.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
@@ -185,12 +187,24 @@ public class ApiSteps {
      * Sends POST request to create or draft campaign via API.
      *
      * @param createOrDraft sets option between create or draft.
-     * @param channel sets a channel for campaign.
+     * @param channel       sets a channel for campaign.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
     @Then("^I create \"([^\"]*)\" campaign with \"([^\"]*)\" via API$")
     public void createOrDraftCampaignViaAPI(String createOrDraft, String channel) throws IOException {
         userUtility.getAuthorizationToken();
         apiUtility.createOrDraftCampaignViaApi(createOrDraft, channel);
+    }
+
+    /**
+     * Sends POST request to segmentation via API.
+     *
+     * @param channel sets a channel for campaign.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^I create new segmentation with (Email|SMS) channel via API$")
+    public void createNewSegmentationViaAPI(String channel) throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.createSegmentationViaApi(channel);
     }
 }

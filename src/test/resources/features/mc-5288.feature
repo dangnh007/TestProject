@@ -1,8 +1,8 @@
 @feature-mc-5288 @capacity @pmt @smoke
-Feature: Campaign Management
+Feature: Post-Enrollment Communication
   As a user
   I want to be able
-  modify and validate Capacity Management features
+  modify and validate Post-Enrollment Communication features
 
   Background:
     Given I create user with "ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER" and "All of Us", "", "", ""
@@ -23,34 +23,31 @@ Feature: Campaign Management
   Scenario: As a user I want to verify New Filter section, its groups and categories
     Given I set up my credentials via API
     When I login as user
-    Then I verify "Program Milestones" and Demographic Segmentation
+    Then I verify "Program Milestones", "Demographic Segmentation" and "Campaign Activity"
 
   @mc-5428
   Scenario Outline: As user I want to create new campaign
     Given I set up my credentials via API
     And I login as user
-    And I created segmentation with "<org>" and "<site>" on "<channel>"
-    When I create a new campaign with "<channel>" channel
+    And I created segmentation with "<org>" and "<site>" on Email channel
+    And I wait 2 seconds
+    When I create a new campaign with "Email" channel
     Then Campaign is "<button>"
 
     Examples:
-      | channel | button         | org           | site                          |
-      | SMS     | created        | Banner Health | Banner Baywood Medical Center |
-      | SMS     | saved as draft | Banner Health | Banner Baywood Medical Center |
-      | Email   | created        | Banner Health | Banner Baywood Medical Center |
-      | Email   | saved as draft | Banner Health | Banner Baywood Medical Center |
+      | button         | org           | site                          |
+      | created        | Banner Health | Banner Baywood Medical Center |
+      | saved as draft | Banner Health | Banner Baywood Medical Center |
 
   @mc-5494 @api
   Scenario Outline: As a user I create or draft campaign via API
     When I login as user via API
-    Then I create "<status>" campaign with "<channel>" via API
+    Then I create "<status>" campaign with "Email" via API
 
     Examples:
-      | status | channel |
-      | DRAFT  | SMS     |
-      | ACTIVE | SMS     |
-      | DRAFT  | Email   |
-      | ACTIVE | Email   |
+      | status |
+      | DRAFT  |
+      | ACTIVE |
 
   @mc-5506
   Scenario: As a user I want to verify values on Templates tab
@@ -68,12 +65,17 @@ Feature: Campaign Management
   Scenario Outline: As a user I want to create segmentation for particular organization and site
     Given I set up my credentials via API
     When I login as user
-    Then I created segmentation with "<org>" and "<site>" on "<channel>"
+    Then I created segmentation with "<org>" and "<site>" on Email channel
     Examples:
-      | org                   | site                          | channel |
-      | Banner Health         | Banner Baywood Medical Center | Email   |
-      | Banner Health         | Banner Baywood Medical Center | SMS     |
-      | Boston Medical Center | Boston Medical Center         | Email   |
-      | Boston Medical Center | Boston Medical Center         | SMS     |
+      | org                   | site                          |
+      | Banner Health         | Banner Baywood Medical Center |
+      | Boston Medical Center | Boston Medical Center         |
+
+  @mc-5664 @api
+  Scenario: As a user I want to create new segmentation via API
+    When I login as user via API
+    Then I create new segmentation with Email channel via API
+
+
 
 

@@ -5,6 +5,7 @@ import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.CapacityManagementPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.springframework.context.annotation.Description;
 
 public class CapacityManagementSteps {
 
@@ -40,19 +41,20 @@ public class CapacityManagementSteps {
         capacityManagementPage.verifySegmentationGroup();
     }
 
-    @When("^I verify \"([^\"]*)\" and Demographic Segmentation$")
-    public void selectProgramMilestonesFromSegmentationGroup(String group) {
+    @Description("Passing three filters as a parameter for a new segmentation page")
+    @When("^I verify \"([^\"]*)\", \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void selectProgramMilestonesFromSegmentationGroup(String filter1, String filter2, String filter3) {
         capacityManagementPage.selectCommunications();
         capacityManagementPage.selectAudienceSegmentationTab();
         capacityManagementPage.createNew();
-        capacityManagementPage.selectProgramSegmentationCategory(group);
+        capacityManagementPage.selectProgramSegmentationCategory(filter1);
         capacityManagementPage.verifyConsentDropdown();
         capacityManagementPage.selectConsent("Primary Consent");
         capacityManagementPage.verifyEqualDropdown();
         capacityManagementPage.verifyStatusDropDown();
         capacityManagementPage.verifyDateDropDown();
         capacityManagementPage.addNewCategory();
-        capacityManagementPage.selectProgramSegmentationCategory("Demographic Segmentation");
+        capacityManagementPage.selectProgramSegmentationCategory(filter2);
         capacityManagementPage.argDropdown();
         capacityManagementPage.verifyAgeRaceGenderDropdown();
         capacityManagementPage.selectAgeRaceGender("Age");
@@ -65,6 +67,10 @@ public class CapacityManagementSteps {
         capacityManagementPage.selectAgeRaceGender("Gender");
         capacityManagementPage.verifyEqualDropDownSecond();
         capacityManagementPage.verifyGenderList();
+        capacityManagementPage.addNewCategory();
+        capacityManagementPage.selectProgramSegmentationCategory(filter3);
+        capacityManagementPage.verifyCampaignActivityDropDown();
+        capacityManagementPage.selectEmailFilter("Email Opened");
     }
 
     @Then("^I create a new campaign with \"([^\"]*)\" channel$")
@@ -117,7 +123,7 @@ public class CapacityManagementSteps {
         capacityManagementPage.verifyOrgList();
     }
 
-    @Then("^I created segmentation with \"([^\"]*)\" and \"([^\"]*)\" on \"([^\"]*)\"$")
+    @Then("^I created segmentation with \"([^\"]*)\" and \"([^\"]*)\" on (Email|SMS) channel$")
     public void createSegmentation(String org, String site, String channel) {
         capacityManagementPage.selectCommunications();
         capacityManagementPage.selectAudienceSegmentationTab();
@@ -135,6 +141,10 @@ public class CapacityManagementSteps {
         capacityManagementPage.argDropdown();
         capacityManagementPage.selectAgeRaceGender("Age");
         capacityManagementPage.selectAge("25-34");
+        capacityManagementPage.addNewCategory();
+        capacityManagementPage.selectProgramSegmentationCategory("Campaign Activity");
+        capacityManagementPage.verifyCampaignActivityDropDown();
+        capacityManagementPage.selectEmailFilter("Email Opened");
         capacityManagementPage.saveSegmentation();
     }
 }

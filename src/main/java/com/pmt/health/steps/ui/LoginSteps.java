@@ -42,6 +42,7 @@ public class LoginSteps {
         this.loginPage.setLogin();
         this.loginPage.typeNewPassword();
         this.loginPage.clickSubmitButton();
+        this.loginPage.deleteCookie();
     }
 
     @When("^I logout$")
@@ -51,6 +52,6 @@ public class LoginSteps {
 
     @Then("^I am logged in$")
     public void assertLoggedIn() {
-       this.userAdminPage.assertLoggedIn();
+        this.userAdminPage.assertLoggedIn();
     }
 }

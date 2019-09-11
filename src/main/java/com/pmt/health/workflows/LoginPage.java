@@ -119,6 +119,10 @@ public class LoginPage {
         app.goToURL(app.getSite().toString());
     }
 
+    public void deleteCookie() {
+        app.deleteAllCookies();
+    }
+
     public void logout() {
         userDropdown.click();
         logoutButton.click();
