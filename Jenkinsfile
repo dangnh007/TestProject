@@ -216,44 +216,43 @@ podTemplate(
                     },
                     deploy: {},
                     test: { failableStage ->
-                        parallel(
-                                runDockerTests(
-                                        testBranch: branch,
-                                        registry: VibrentConstants.CIREG_REGISTRY,
-                                        buildNumber: env.BUILD_NUMBER,
-                                        framework: "PMTAutomationFramework",
-                                        other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
-                                        platforms: [
-                                                [
-                                                        name       : 'api',
-                                                        container  : "${containerName}-default",
-                                                        tags       : '@api',
-                                                        defaultWait: 15,
-                                                        threads    : 1
-                                                ],
-                                        ],
-                                        stageFunc: failableStage
-                                )
+                        def parallelTests = runDockerTests(
+                            testBranch: branch,
+                            registry: VibrentConstants.CIREG_REGISTRY,
+                            buildNumber: env.BUILD_NUMBER,
+                            framework: "PMTAutomationFramework",
+                            other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
+                            platforms: [
+                                    [
+                                            name       : 'api',
+                                            container  : "${containerName}-default",
+                                            tags       : '@api',
+                                            defaultWait: 15,
+                                            threads    : 1
+                                    ],
+                            ],
+                            stageFunc: failableStage
                         )
-                        parallel(
-                                runDockerTests(
-                                        testBranch: branch,
-                                        registry: VibrentConstants.CIREG_REGISTRY,
-                                        buildNumber: env.BUILD_NUMBER,
-                                        framework: "PMTAutomationFramework",
-                                        other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
-                                        platforms: [
-                                                [
-                                                        name       : 'chrome',
-                                                        container  : "${containerName}-chrome",
-                                                        tags       : '~@api --tags @smoke',
-                                                        defaultWait: 15,
-                                                        threads    : 1
-                                                ],
-                                        ],
-                                        stageFunc: failableStage
-                                )
-                        )
+                        parallelTests += runDockerTests(
+                                 testBranch: branch,
+                                 registry: VibrentConstants.CIREG_REGISTRY,
+                                 buildNumber: env.BUILD_NUMBER,
+                                 framework: "PMTAutomationFramework",
+                                 other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
+                                 platforms: [
+                                         [
+                                                 name       : 'chrome',
+                                                 container  : "${containerName}-chrome",
+                                                 tags       : '~@api --tags @smoke',
+                                                 defaultWait: 15,
+                                                 threads    : 1
+                                         ],
+                                 ],
+                                 stageFunc: failableStage
+                         )
+
+                        parallel(parallelTests)
+
                     },
                     publish: { failableStage ->
                         if (branchCheckout == "develop" || branchType == "release") {

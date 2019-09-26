@@ -30,12 +30,12 @@ public class SiteSettingsSteps {
         siteSettingsPage.setTarget(target);
         siteSettingsPage.appNotice(day);
         siteSettingsPage.saveChanges();
-        siteSettingsPage.assertMessage();
         siteSettingsPage.editPage();
         siteSettingsPage.customHoursOfOperation();
         siteSettingsPage.setCustomHrName();
         siteSettingsPage.checkDay();
         siteSettingsPage.hoFormUpdate();
+        siteSettingsPage.saveChanges();
     }
 
     @Then("^I set default Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", days \"([^\"]*)\"$")
@@ -47,7 +47,6 @@ public class SiteSettingsSteps {
         siteSettingsPage.setTarget(target);
         siteSettingsPage.appNotice(day);
         siteSettingsPage.saveChanges();
-        siteSettingsPage.assertMessage();
         siteSettingsPage.editPage();
         siteSettingsPage.customHoursOfOperationDelete();
 

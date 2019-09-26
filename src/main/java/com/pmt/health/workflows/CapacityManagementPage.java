@@ -338,7 +338,7 @@ public class CapacityManagementPage {
         this.noneOfTheseGender = app.newElement(LocatorType.ARIALABEL, "None of these describe me, and I want to specify");
         this.preferNotToAnswerGender = app.newElement(LocatorType.ARIALABEL, "Prefer not to answer");
         genderList = Arrays.asList(man, woman, nonBinary, transgender, noneOfTheseGender, preferNotToAnswerGender);
-        this.campaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-tittle']");
+        this.campaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-tittle col-xs-6']");
         this.newCampaignsTitle = app.newElement(LocatorType.CSS, "div[class='campaign-name'");
         this.campaignName = app.newElement(LocatorType.CSS, "input[label='Campaign Name']");
         this.descriptionOptional = app.newElement(LocatorType.CSS, "textarea[label='Description (Optional)']");

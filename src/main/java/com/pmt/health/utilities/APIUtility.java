@@ -357,6 +357,11 @@ public class APIUtility {
             }
         }
         for (int j = 0; j < nodesAwardee.size() && !awardee.isEmpty(); j++) {
+            if (nodesAwardee.size() < 10) {
+                reporter.fail("List is not retrieved. ");
+                response = http.get(GROUPS_ENDPOINT, requestData);
+            }
+
             if (nodesAwardee.get(j).toString().contains(awardee)) {
                 nodesOrg = nodesAwardee.get(j).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }

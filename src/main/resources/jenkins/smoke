@@ -1,0 +1,198 @@
+@Library('acadiaBuildTools@develop') _
+import com.vibrenthealth.jenkinsLibrary.Utils
+
+
+def webBranch = "${WebBranch}".replaceAll(/\//, "-")
+def failure = false
+def stackNameRegex = "[^A-Za-z0-9-]"
+def stackName = "MC-${Tags.substring(1)}-${env.BUILD_NUMBER}-${webBranch}".replaceAll(stackNameRegex, "-").toLowerCase()
+buildNumber = "${Tags.substring(1)}${env.BUILD_NUMBER}".replaceAll(stackNameRegex, "-").toLowerCase()
+def utils = new Utils(this)
+
+def setDevice(device, int defWait, int chromeWait) {
+    def defaultWait = defWait
+    switch (device) {
+        case "chrome":
+            defaultWait = chromeWait
+            break
+    }
+    return ['defaultWait': defaultWait]
+}
+
+try {
+    def buildLabel = "${stackName}-build-app"
+    podTemplate(
+            cloud: 'default',
+            label: buildLabel,
+            name: buildLabel,
+            imagePullSecrets: ['dockergroup.vibrenthealth.com', 'reg.vibrenthealth.com'],
+            containers: kubeUtils.getCiContainers([
+                    containerList: [
+                            'kubectl',
+                            'helm',
+                            'jq',
+                            'android-gradle-5.1.1',
+                            'maven',
+                            'ansible-playbook'
+                    ]
+            ]),
+            volumes: [
+                    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+                    hostPathVolume(mountPath: '/root/.m2', hostPath: '/data/m2repo')
+            ],
+            idleTimeout: 30
+    ) {
+        node(buildLabel) {
+            env.CUSTOM_WORKSPACE = utils.getCustomWorkspace()
+            sh "mkdir ${env.CUSTOM_WORKSPACE}"
+            dir(env.CUSTOM_WORKSPACE) {
+                parallel(
+                        "StandUp Application": {
+                            helmDeploy(
+                                    gitBranch: DeployChart,
+                                    stackName: stackName,
+                                    chartRepo: "devcharts",
+                                    drcEnabled: "true",
+                                    missionControlEnabled: true,
+                                    installVns: true,
+                                    overrideValues: """
+                                        api:
+                                            applicationSettings:
+                                                TWO_FA_OVERRIDE: true
+                                        kafka:
+                                            replicas : 3
+                                            zookeeper:
+                                                replicaCount: 3
+                                    """
+                            )
+                            container('kubectl') {
+                                sh "kubectl scale deployment -n ${stackName} api-deployment --replicas=3"
+                                sh "kubectl annotate ns ${stackName} vibrenthealth/permanent=true --overwrite"
+                                sh "kubectl annotate pods -n ${stackName} --all cluster-autoscaler.kubernetes.io/safe-to-evict=false"
+                            }
+                        },
+                )
+            }
+            cleanUp.deleteWs()
+        }
+    }
+
+    ["safe", "unsafe"].each {
+        def threadsValue = 15
+        def tagsValue = ""
+        def reportName = ""
+        switch (it) {
+            case "safe":
+                tagsValue = "--tags ~@unsafe --tags ~@wip --tags ~@load --tags ${Tags}"
+                break
+            case "unsafe":
+                threadsValue = 1
+                tagsValue = "--tags @unsafe --tags ~@wip --tags ~@load --tags ${Tags}"
+                reportName = "-Unsafe"
+                break
+        }
+        ["api", "chrome"].each {
+            def hubValue = true
+            def defaultWaitValue = setDevice(it, 30, 15).get('defaultWait')
+            def tagsToRun
+            switch (it) {
+                case "api":
+                    tagsToRun = "${tagsValue} --tags @api"
+                    hubValue = false
+                    defaultWaitValue = 15
+                    break
+                default:
+                    tagsToRun = "${tagsValue} --tags ~@api"
+            }
+            def testLabel = "${stackName}-run-${it}"
+            podTemplate(
+                    cloud: 'default',
+                    label: testLabel,
+                    name: testLabel,
+                    imagePullSecrets: ['dockergroup.vibrenthealth.com'],
+                    containers: kubeUtils.getCiContainers([
+                            containerList: [
+                                    'docker',
+                                    "docker-${it}",
+                                    "aws-cli-${it}",
+                            ]
+                    ]),
+                    volumes: [
+                            hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+                            hostPathVolume(mountPath: '/root/.m2', hostPath: '/data/m2repo')
+                    ],
+                    idleTimeout: 2880
+            ) {
+                node(testLabel) {
+                    env.CUSTOM_WORKSPACE = utils.getCustomWorkspace()
+                    sh "mkdir ${env.CUSTOM_WORKSPACE}"
+                    dir(env.CUSTOM_WORKSPACE) {
+                        setDevice(it, 30, 15)
+                        cleanWs()
+                        try {
+                            parallel(
+                                    runDockerTests(
+                                            testBranch: webBranch,
+                                            framework : "PMTAutomationFramework",
+                                            other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
+                                            jira: "Nightly ${Tags.substring(1).capitalize()} Tests",
+                                            extraReportName: reportName,
+                                            platforms: [
+                                                    [
+                                                            name       : it,
+                                                            container  : 'vibrent/pmt-automation-framework-default',
+                                                            fullTags   : tagsToRun,
+                                                            defaultWait: defaultWaitValue,
+                                                            threads    : threadsValue,
+                                                            hub        : hubValue,
+                                                    ]
+
+                                            ]
+                                    )
+                            )
+                        }
+                        catch (err) {
+                            failure = true
+                            echo "ERROR: ${err}"
+                            notifyAppropriate.handleAborts(err) //rethrows the error if the job was aborted
+                            //also sets build state correctly, which gets
+                            //reset in the finally block ¯\_(ツ)_/¯
+                        }
+                    }
+                    cleanUp.deleteWs()
+                }
+            }
+        }
+    }
+} finally {
+    def destroyLabel = "${stackName}-destroy-app"
+    podTemplate(
+            cloud: 'default',
+            label: destroyLabel,
+            name: destroyLabel,
+            imagePullSecrets: ['dockergroup.vibrenthealth.com'],
+            containers: kubeUtils.getCiContainers([
+                    containerList: [
+                            'kubectl',
+                            'helm',
+                    ]
+            ]),
+            volumes: [
+                    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
+                    hostPathVolume(mountPath: '/root/.m2', hostPath: '/data/m2repo')
+            ],
+            idleTimeout: 30
+    ) {
+        node(destroyLabel) {
+            stage("Destroy Application") {
+                container('kubectl') {
+                    sh "kubectl annotate ns ${stackName} vibrenthealth/permanent=false --overwrite"
+                }
+                build job: 'Delete Branded Environment', parameters: [string(name: 'STACK_ID', value: stackName)], wait: false
+            }
+            if (failure) {
+                currentBuild.setResult('FAILURE')
+            }
+        }
+    }
+}
