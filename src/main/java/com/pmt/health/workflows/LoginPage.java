@@ -80,6 +80,11 @@ public class LoginPage {
         }
     }
 
+    /**
+     * Types email address with current parameter
+     *
+     * @param username username value
+     */
     public void enterEmail(String username) {
         emailInput.type(username);
         if ("".equals(username)) {
@@ -88,6 +93,11 @@ public class LoginPage {
         }
     }
 
+    /**
+     * Types password with current parameter
+     *
+     * @param password password value
+     */
     public void enterPassword(String password) {
         passwordInput.type(password);
         if ("".equals(password)) {
@@ -96,6 +106,9 @@ public class LoginPage {
         }
     }
 
+    /**
+     * locates login button
+     */
     public Element getLoginButton() {
         return loginButton;
     }
@@ -119,10 +132,16 @@ public class LoginPage {
         app.goToURL(app.getSite().toString());
     }
 
+    /**
+     * calls method of app class to delete cookies of the session
+     */
     public void deleteCookie() {
         app.deleteAllCookies();
     }
 
+    /**
+     * logs user out by clicking on dropdown and clicking on logout button
+     */
     public void logout() {
         userDropdown.click();
         logoutButton.click();
@@ -130,7 +149,6 @@ public class LoginPage {
 
     /**
      * Activates the login control for the user parameter
-     *
      */
     public void login() {
         enterEmail(user.getEmail());
@@ -145,22 +163,38 @@ public class LoginPage {
         }
     }
 
+    /**
+     * Types mfa with current parameter
+     * @param obtainOath2Key method which converts mfa
+     */
     private void enterMFA(String obtainOath2Key) {
         getMFA().type(obtainOath2Key);
     }
 
+    /**
+     * locates mfa inout fields
+     */
     private Element getMFA() {
         return mfaInput;
     }
 
+    /**
+     * clicks on submit button
+     */
     public void clickSubmitButton() {
         submitButton.click();
     }
 
+    /**
+     * Types new password for newly created user
+     */
     public void typeNewPassword() {
         passwordSet.type(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
     }
 
+    /**
+     * sets secret key for newly created user via UI
+     */
     public void setKey() {
         secretKey.waitFor().displayed();
         String key = secretKey.get().text();

@@ -77,7 +77,7 @@ try {
         }
     }
 
-    ["safe", "unsafe"].each {
+    ["safe"].each {
         def threadsValue = 15
         def tagsValue = ""
         def reportName = ""

@@ -18,6 +18,7 @@ public class CapacityManagementPage {
     private User user;
     Logger log = Logger.getLogger(CapacityManagementPage.class);
 
+    //generates random name for the test automation field
     private final String campaignNameRandom = "Test Automation #" + UserUtility.generateUUID(5);
     private final WebbElement communicationsButton;
     private final WebbElement headingCommunications;
@@ -466,17 +467,28 @@ public class CapacityManagementPage {
         this.successMessage = app.newElement(LocatorType.CSS, "div[class='message animated fade success in']");
     }
 
+    /**
+     * clicks on the send now button if met condition
+     */
     public void confirmSend() {
         if (warning.is().present()) {
             sendNowButton.click();
         }
     }
 
+    /**
+     * waits for the button to be displayed
+     * clicks on the send button
+     */
     public void saveSegmentation() {
         saveButton.waitFor().displayed();
         saveButton.click();
     }
 
+    /**
+     * clicks on the organization dropdown
+     * verifies values of organization list
+     */
     public void verifyOrgList() {
         organizationDropDown.click();
         for (WebbElement each : orgList) {
@@ -488,66 +500,110 @@ public class CapacityManagementPage {
         descriptionTextForm.type("Test Automation");
     }
 
+    /**
+     * clicks on the parameter from site dropdown
+     * @param site string parameter
+     */
     public void selectSite(String site) {
         siteDropDown.click();
         WebbElement option = app.newElement(LocatorType.ARIALABEL, site);
         option.click();
     }
 
+    /**
+     * clicks on the parameter from organization dropdown
+     * @param org string parameter
+     */
     public void selectOrganization(String org) {
         organizationDropDown.click();
         WebbElement option = app.newElement(LocatorType.ARIALABEL, org);
         option.click();
     }
 
+    /**
+     * clicks on the parameter from communication preferences dropdown
+     * @param channel string parameter
+     */
     public void selectCommunicationPreference(String channel) {
         communicationPreferenceDropDown.click();
         WebbElement option = app.newElement(LocatorType.ARIALABEL, channel);
         option.click();
     }
 
+    /**
+     * types string into segment name field
+     */
     public void typeSegmentationName() {
         segmentationName.type(campaignNameRandom);
     }
 
+    /**
+     * Verifies if correct title is displayed
+     */
     public void assertTemplatesTitle() {
         templatesTitle.assertState().displayed();
     }
 
+    /**
+     * clicks on the name order
+     * asserts order
+     */
     public void orderByName() {
         nameOrder.click();
         WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=name]>span[class='order']");
         order.assertState().present();
     }
 
+    /**
+     * clicks on the id order
+     * asserts order
+     */
     public void orderById() {
         idOrder.click();
         WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=id]>span[class='order']");
         order.assertState().present();
     }
 
+    /**
+     * clicks on the channel order
+     * asserts order
+     */
     public void orderByChannel() {
         channelOrder.click();
         WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=channel]>span[class='order']");
         order.assertState().present();
     }
 
+    /**
+     * clicks on the created date order
+     * asserts order
+     */
     public void orderByCreatedDate() {
         createDateOrder.click();
         WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=createdDate]>span[class='order']");
         order.assertState().present();
     }
 
+    /**
+     * clicks on the date order
+     * asserts order
+     */
     public void orderByModifiedDate() {
         modifiedDateOrder.click();
         WebbElement order = app.newElement(LocatorType.CSS, "th[data-field=modifiedDate]>span[class='order']");
         order.assertState().present();
     }
 
+    /**
+     * waits until successful message is displayed
+     */
     public void verifyCreatedCampaign() {
         successMessage.is().displayed();
     }
 
+    /**
+     * clicks on the button depends on condition
+     */
     public void saveOrDraft(String button) {
         if (("created").equals(button)) {
             clickOnSendButton();
@@ -557,42 +613,72 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * waits for the button to be displayed
+     * clicks on the send button
+     */
     public void clickOnSendButton() {
         sendButton.waitFor().displayed();
         sendButton.click();
     }
 
+    /**
+     * Verifies if correct title is displayed
+     */
     public void assertReviewTitle() {
         reviewTitle.assertState().displayed();
     }
 
+    /**
+     * Verifies if correct title is displayed
+     */
     public void assertSelectTemplateTitle() {
         selectTemplateTitle.assertState().displayed();
     }
 
+    /**
+     * checks first radio button in the list on the page
+     */
     public void selectFirstRadioButton() {
         firstRadioButton.click();
     }
 
+    /**
+     * Verifies correct campaign name
+     * checks if it is displayed
+     */
     public void verifyCampaignName() {
         if (campaignNameRandom.equals(campaignNameTitle.get().text())) {
             campaignNameTitle.assertState().displayed();
         }
     }
 
+    /**
+     * clicks on the save as draft button
+     */
     public void saveDraft() {
         saveAsDraftButton.click();
     }
 
+    /**
+     * clicks on the cancel button
+     */
     public void clickOnCancelButton() {
         cancelButton.click();
     }
 
+    /**
+     * waits for the button to be displayed
+     * clicks on the next button
+     */
     public void clickOnNextButton() {
         nextButton.waitFor().displayed();
         nextButton.click();
     }
 
+    /**
+     * selects channel based on passed parameter
+     */
     public void selectChannel(String option) {
         WebbElement radioOption = app.newElement(LocatorType.CSS, "input[label='" + option + "']");
         WebbElement radioSelect = app.newElement(LocatorType.XPATH, "//span[text()='" + option + "']");
@@ -601,6 +687,10 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the campaign goal dropdown
+     * clicks on selected value
+     */
     public void selectCampaignGoal() {
         capmaignGoalDropdown.click();
         for (WebbElement each : campaignsGoalList) {
@@ -609,23 +699,39 @@ public class CapacityManagementPage {
         overallHealthGoal.click();
     }
 
+    /**
+     * types campaign name and checks field on presence
+     */
     public void enterCampaignName() {
         campaignNameStarMark.assertState().displayed();
         campaignName.type(campaignNameRandom);
     }
 
+    /**
+     * types campaign name and checks field on presence
+     */
     public void enterDescriptionOptional() {
         descriptionOptional.type("Test Automation");
     }
 
+    /**
+     * Verifies if correct title is displayed
+     */
     public void assertNewCampaignsTitle() {
         newCampaignsTitle.assertState().displayed();
     }
 
+    /**
+     * Verifies if correct title is displayed
+     */
     public void assertCampaignsTitle() {
         campaignsTitle.assertState().displayed();
     }
 
+    /**
+     * checks if tab is active,
+     * if it is not clicks on the tab's button
+     */
     public void selectCampaignsTab() {
         WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/campaigns']");
         if (nonActive.is().present()) {
@@ -633,6 +739,10 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * checks if tab is active,
+     * if it is not clicks on the tab's button
+     */
     public void selectTemplatesTab() {
         WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/templates']");
         if (nonActive.is().present()) {
@@ -640,6 +750,10 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * checks if tab is active,
+     * if it is not clicks on the tab's button
+     */
     public void selectAudienceSegmentationTab() {
         WebbElement nonActive = app.newElement(LocatorType.XPATH, "//li[@class='sub-tab ']/a[@href='/communications/segmentation']");
         if (nonActive.is().present()) {
@@ -647,6 +761,10 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the arg dropdown
+     * verifies age list of current dropdown
+     */
     public void verifyAgeList() {
         ageRaceGenderValuesDropDown.click();
         for (WebbElement each : ageList) {
@@ -654,6 +772,11 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the arg dropdown
+     * selects current parameter
+     * @param age passing age value
+     */
     public void selectAge(String age) {
         ageRaceGenderValuesDropDown.click();
         WebbElement option = app.newElement(LocatorType.ARIALABEL, age);
@@ -661,6 +784,10 @@ public class CapacityManagementPage {
         ageRaceGenderValuesDropDown.click();
     }
 
+    /**
+     * clicks on the arg dropdown
+     * verifies gender list of current dropdown
+     */
     public void verifyGenderList() {
         ageRaceGenderValuesDropDown.click();
         for (WebbElement each : genderList) {
@@ -668,6 +795,10 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the arg dropdown
+     * verifies race list of current dropdown
+     */
     public void verifyRaceList() {
         ageRaceGenderValuesDropDown.click();
         for (WebbElement each : raceList) {
@@ -679,6 +810,10 @@ public class CapacityManagementPage {
         addLink.click();
     }
 
+    /**
+     * clicks on the equal to dropdown
+     * verifies values of current dropdown
+     */
     public void verifyEqualDropDownSecond() {
         equalDropDownSecond.click();
         for (WebbElement each : equalList) {
@@ -686,20 +821,35 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the parametrized value
+     * @param ageRaceGender passing arg option
+     */
     public void selectAgeRaceGender(String ageRaceGender) {
         WebbElement option = app.newElement(LocatorType.ARIALABEL, ageRaceGender);
         option.click();
     }
 
+    /**
+     * clicks on the parametrized value
+     * @param emailFilter passing email filter
+     */
     public void selectEmailFilter(String emailFilter) {
         WebbElement option = app.newElement(LocatorType.ARIALABEL, emailFilter);
         option.click();
     }
 
+    /**
+     * clicks on the multi valuable dropdown
+     */
     public void argDropdown() {
         ageRaceGenderDropDown.click();
     }
 
+    /**
+     * clicks on the campaign activity dropdown
+     * verifies values of current dropdown
+     */
     public void verifyCampaignActivityDropDown() {
         campaignActivityDropDown.click();
         for (WebbElement each : emailList) {
@@ -707,12 +857,19 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * verifies values of previously clicked dropdown
+     */
     public void verifyAgeRaceGenderDropdown() {
         for (WebbElement each : ageRaceGenderList) {
             each.assertState().displayed();
         }
     }
 
+    /**
+     * clicks on the date dropdown
+     * verifies values of current dropdown
+     */
     public void verifyDateDropDown() {
         dateDropDown.click();
         for (WebbElement each : dateList) {
@@ -720,6 +877,10 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the status dropdown
+     * verifies values of current dropdown
+     */
     public void verifyStatusDropDown() {
         statusDropDown.click();
         for (WebbElement each : statusList) {
@@ -727,6 +888,10 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the equals to dropdown
+     * verifies values of current dropdown
+     */
     public void verifyEqualDropdown() {
         equalDropDown.click();
         for (WebbElement each : equalList) {
@@ -734,10 +899,17 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * clicks on the consent dropdown
+     */
     public void consentDropDownClick() {
         consentDropDown.click();
     }
 
+    /**
+     * clicks on the consent dropdown
+     * verifies values of current dropdown
+     */
     public void verifyConsentDropdown() {
         consentDropDown.click();
         for (WebbElement each : consentList) {
@@ -745,11 +917,20 @@ public class CapacityManagementPage {
         }
     }
 
+    /**
+     * select consent in previously clicked dropdown
+     * @param consent parameter of the consent value
+     */
     public void selectConsent(String consent) {
         WebbElement option = app.newElement(LocatorType.ARIALABEL, consent);
         option.click();
     }
 
+    /**
+     * clicks on the segmentation category dropdown
+     * select parameter and clicks on to add it
+     * @param group passing group parameter
+     */
     public void selectProgramSegmentationCategory(String group) {
         segmentationGroupDropDown.click();
         WebbElement option = app.newElement(LocatorType.ARIALABEL, group);
@@ -757,6 +938,10 @@ public class CapacityManagementPage {
         addCategoryButton.click();
     }
 
+    /**
+     * clicks on the segmentation groups dropdown
+     * verifies values of current dropdown
+     */
     public void verifySegmentationGroup() {
         segmentationGroupDropDown.click();
         for (WebbElement each : segmentationList) {
@@ -765,15 +950,26 @@ public class CapacityManagementPage {
         addCategoryButton.assertState().displayed();
     }
 
+    /**
+     * Verifies that site dropdown is is disable
+     */
     public void verifySiteValues() {
         siteDisable.assertState().displayed();
     }
 
+    /**
+     * clicks on the organization dropdown
+     * verifies one of the organizations of current dropdown
+     */
     public void verifyOrganizationValues() {
         organizationDropDown.click();
         bannerHealth.assertState().displayed();
     }
 
+    /**
+     * clicks on the communication preference dropdown
+     * verifies values of current dropdown
+     */
     public void verifyCommunicationPreferenceValues() {
         communicationPreferenceDropDown.click();
         for (WebbElement each : communicationList) {

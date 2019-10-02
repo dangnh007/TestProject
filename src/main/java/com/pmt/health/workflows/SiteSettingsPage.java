@@ -87,30 +87,49 @@ public class SiteSettingsPage {
         this.ignoreWarning = app.newElement(LocatorType.CSS, "button[class='btn-ghost btn-ghost-primary btn btn-default']");
     }
 
-
+    /**
+     * waits until success message is displayed
+     */
     public void assertSuccessAppointmentMessage() {
         messageOfSuccessAppointment.waitFor().displayed();
     }
 
+    /**
+     * clicks on schedule appointment button
+     */
     public void scheduleAppointment() {
         scheduleButton.click();
     }
 
+    /**
+     * clicks on 8:00 AM button
+     */
     public void selectTime() {
         time8am.click();
     }
 
-    public void selectDate() {
+    /**
+     * checks today's date
+     * parsing attribute to set date for a next day
+     */
+    public void  selectDate() {
         String today = todayDate.get().attribute(DATA_VALUE);
         int tomorrow = Integer.parseInt(today) + 1;
         WebbElement tomorrowDate = app.newElement(LocatorType.XPATH, "//tr/td[@" + DATA_VALUE + "='" + tomorrow + "']");
         tomorrowDate.click();
     }
 
+    /**
+     * types string into notes field
+     */
     public void addAppointmentNotes() {
         appointmentNotes.type("test appointment");
     }
 
+    /**
+     * clicks on the language dropdown
+     * selects English language of current dropdown
+     */
     public void selectLanguage() {
         languagesDropDown.waitFor().displayed();
         languagesDropDown.click();
@@ -118,19 +137,33 @@ public class SiteSettingsPage {
         selectLanguage.click();
     }
 
+    /**
+     * clicks on the next button
+     */
     public void completeParticipantInfo() {
         nextButton.click();
     }
 
+    /**
+     * checks if the back button is present
+     * and if it is, clicks on the next button
+     */
     public void completeAppointmentDetails() {
         if (backButton.is().present())
             nextButton.click();
     }
 
+    /**
+     * clicks on the new appointment button
+     */
     public void addNewAppointment() {
         newAppointmentButton.click();
     }
 
+    /**
+     * types parameterized string into email address field
+     * @param emailAddress string parameter
+     */
     public void enterEmailAddress(String emailAddress) {
         emailAddressInput.type(emailAddress);
         if ("".equals(emailAddress)) {
@@ -139,6 +172,10 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * types parameter into phone number field
+     * @param phoneNumber long parameter
+     */
     public void enterPhoneNumber(String phoneNumber) {
         phoneNumberInput.type(phoneNumber);
         if ("".equals(phoneNumber)) {
@@ -147,6 +184,10 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * types parameter into dob field
+     * @param dateOfBirth date parameter
+     */
     public void enterDateOfBirth(String dateOfBirth) {
         dateOfBirthInput.type(dateOfBirth);
         if ("".equals(dateOfBirth)) {
@@ -155,6 +196,10 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * types parameter into last name field
+     * @param lastName string parameter
+     */
     public void enterLastName(String lastName) {
         lastNameInput.type(lastName);
         if ("".equals(lastName)) {
@@ -163,6 +208,10 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * types parameter into first name field
+     * @param firstName string parameter
+     */
     public void enterFirstName(String firstName) {
         firstNameInput.type(firstName);
         if ("".equals(firstName)) {
@@ -171,6 +220,11 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * clicks on the delete button
+     * if delete confirmation frame pops up
+     * clicks on the confirm button
+     */
     public void deleteCustomHours() {
         deleteButton.waitFor().displayed();
         deleteButton.click();
@@ -178,6 +232,9 @@ public class SiteSettingsPage {
         deleteConfirm.click();
     }
 
+    /**
+     * clicks on the button to update information filled in HOO form
+     */
     public void hoFormUpdate() {
         hoFormUpdate.click();
         if(warning.is().present() && warning.waitFor().displayed()) {
@@ -185,6 +242,9 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * sets time frame "from-to" for the time blocks of HOO
+     */
     public void setCustomTime() {
         this.timeFrom.click();
         WebbElement amTime = app.newElement(LocatorType.CSS, "div[aria-label='08:00 AM']");
@@ -198,6 +258,9 @@ public class SiteSettingsPage {
         customHrName.type("Custom");
     }
 
+    /**
+     * Sets up hours of operation frame
+     */
     public void checkDay() {
         String pContains = "//p[contains(text(), ";
         List<String> days = new ArrayList<>();
@@ -220,12 +283,19 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * clicks on HOO dropdown
+     * selects create new custom
+     */
     public void customHoursOfOperation() {
         hoursOfOperation.click();
         WebbElement customHrSelection = app.newElement(LocatorType.CSS, "span.glyphicon.glyphicon-plus");
         customHrSelection.click();
     }
 
+    /**
+     * deletes "Custom" hours of operation
+     */
     public void customHoursOfOperationDelete() {
         hoursOfOperation.click();
         WebbElement customHrSelection = app.newElement(LocatorType.CSS, "div[title=Custom]");
@@ -233,6 +303,10 @@ public class SiteSettingsPage {
         deleteCustomHours();
     }
 
+    /**
+     * selects day with parametrized attribute
+     * @param day passing string parameter
+     */
     public void appNotice(String day) {
         appointmentNotice.waitFor().displayed();
         appointmentNotice.click();
@@ -240,11 +314,19 @@ public class SiteSettingsPage {
         appNoticeSelection.click();
     }
 
+    /**
+     * sets target parameter
+     * @param target target parameter
+     */
     public void setTarget(String target) {
         editTargetField.clear();
         editTargetField.type(target);
     }
 
+    /**
+     * checks if toggle on/off button is true or false to activate or deactivate it
+     * @param toggle toggle on/off button parameter
+     */
     public void toggleOnOff(String toggle) {
         WebbElement onOff = app.newElement(LocatorType.CSS, "input[" + DATA_VALUE + "]");
         onOff.waitFor().present();
@@ -256,19 +338,31 @@ public class SiteSettingsPage {
         }
     }
 
+    /**
+     * clicks on the pencil/edit button
+     */
     public void editPage() {
         pencilButton.click();
     }
 
+    /**
+     * clicks on the save button
+     */
     public void saveChanges() {
         saveButton.click();
     }
 
+    /**
+     * checks if current title is displayed
+     */
     public void assertTitle() {
         siteSettingsHeading.waitFor().displayed();
         siteSettingsHeading.assertState().displayed();
     }
 
+    /**
+     * checks if the success massage is displayed
+     */
     public void assertMessage() {
         messageOfChanges.waitFor().displayed();
         messageOfChanges.assertState().displayed();

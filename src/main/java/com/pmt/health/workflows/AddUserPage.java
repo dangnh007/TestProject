@@ -27,17 +27,29 @@ public class AddUserPage {
         this.saveButton = app.newElement(LocatorType.ID, "save");
     }
 
+    /**
+     * click on the checkbox with parameterised organization/awardee
+     * @param org passing organization value
+     */
     public void checkAwardee(String org) {
         WebbElement awardee = app.newElement(LocatorType.ID, org);
         awardee.click();
     }
 
+    /**
+     * checks if element is present
+     * and if it is, clicks on the save button
+     */
     public void saveUser() {
         if (saveButton.is().present()) {
             saveButton.click();
         }
     }
 
+    /**
+     * input for the first name field
+     * @param firstName passing first name parameter
+     */
     public void enterFirstName(String firstName) {
         firstNameInput.type(firstName);
         if ("".equals(firstName)) {
@@ -46,6 +58,10 @@ public class AddUserPage {
         }
     }
 
+    /**
+     * input for the last name field
+     * @param lastName passing last name parameter
+     */
     public void enterLastName(String lastName) {
         lastNameInput.type(lastName);
         if ("".equals(lastName)) {
@@ -54,6 +70,10 @@ public class AddUserPage {
         }
     }
 
+    /**
+     * input for the email field
+     * @param email passing email parameter
+     */
     public void enterEmail(String email) {
         emailInput.type(email);
         if ("".equals(email)) {
@@ -62,6 +82,10 @@ public class AddUserPage {
         }
     }
 
+    /**
+     * input for the user role field
+     * @param role passing user role parameter
+     */
     public void selectRole(String role) {
         rolesInput.type(role + Keys.ENTER);
         if ("".equals(role)) {

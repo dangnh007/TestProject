@@ -18,6 +18,7 @@ import java.util.*;
 public class UserUtility {
 
     private static final String PASSWORD = "password";//NOSONAR
+    private static final String MFA = "mfaCode";
     private static final String EMAIL = "email";
     private static final String ADMIN_USER = ".admin.user";
     private static final String ADMIN_PASS = ".admin.pass";
@@ -114,6 +115,13 @@ public class UserUtility {
         return response;
     }
 
+    /**
+     * Refactored method for reporter
+     * @param action what it does
+     * @param expected values or response
+     * @param response actual response
+     * @param failMessage massage displayed if there is a failure
+     */
     private void reporterPassFailStep(String action, String expected, Response response, String failMessage) {
         if (response != null && response.getCode() == 200) {
             reporter.pass(action, expected, expected + ". " + Reporter.formatAndLabelJson(response, Reporter.RESPONSE));
@@ -136,7 +144,7 @@ public class UserUtility {
         RequestData requestData = new RequestData();
         adminHttp.addHeaders(referer);
         JsonObject mfa = new JsonObject();
-        mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
+        mfa.addProperty(MFA, HTTP.obtainOath2Key());
         requestData.setJSON(mfa);
         action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
         // make the actual call
@@ -147,16 +155,18 @@ public class UserUtility {
                 response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
                 break;
             } catch (VibrentIOException vioe) {
+                log.info(vioe);
                 count++;
                 log.error("Failed MFA for logging in");
                 log.error(requestData.getJSON());
-                mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
+                mfa.addProperty(MFA, HTTP.obtainOath2Key());
                 requestData.setJSON(mfa);
                 action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     log.error(ex);
+                    Thread.currentThread().interrupt();
                 }
             }
         }
@@ -245,7 +255,7 @@ public class UserUtility {
         String expected = "Successfully pass authenticator code for user via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
-        mfa.addProperty("mfaCode", HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
+        mfa.addProperty(MFA, HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
         RequestData requestData = new RequestData();
         requestData.setJSON(mfa);
         action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
@@ -257,21 +267,23 @@ public class UserUtility {
                 response = adminHttp.simplePost("/api/login/authenticatorCode", requestData);
                 break;
             } catch (VibrentIOException vioe) {
+                log.info(vioe);
                 count++;
                 log.info("Failed MFA for logging in");
-                mfa.addProperty("mfaCode", HTTP.obtainOath2Key());
+                mfa.addProperty(MFA, HTTP.obtainOath2Key());
                 requestData.setJSON(mfa);
                 action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     log.error(ex);
+                    Thread.currentThread().interrupt();
                 }
             }
         }
         reporterPassFailStep(action.toString(), expected, response, "User not successfully passed authenticator code. ");
         //Gets userId value from response
-        String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString();
+        String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString(); 
         user.setUserId(userId);
     }
 
