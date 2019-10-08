@@ -1,4 +1,4 @@
-@feature-mc-5288 @capacity @pmt @smoke
+@feature-mc-5288 @capacity @pmt @smoke @wip
 Feature: Post-Enrollment Communication
   As a user
   I want to be able
