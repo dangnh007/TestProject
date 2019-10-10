@@ -18,15 +18,22 @@ public class APIUtility {
     private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #" + UserUtility.generateUUID(5);
     private static final String VALUE_LIST = "valueList";
     private static final String AUTHORIZATION = "Authorization";
+    private static final String CAMPAIGN_VIA_API = " campaign via API";
     private static final String PROGRAM_ID = "65b1bc8";
     private static final String VIEW_TYPE = "viewType";
     private static final String IS_EQUAL_TO = "Is equal to";
+    private static final String PARENT_NAME = "parentName";
+    private static final String ENDPOINT_TEST_GROUPS = "/api/eda/group/info";
+    private static final String TEST_EMAIL = "test@test.com";
+    private static final String PATH_NAME = "pathName";
+    private static final String NAME = "name";
     private static final String ID = "id";
     private static final String CHANNEL = "channel";
     private static final String VALUE = "value";
     private static final String LABEL = "label";
     private static final String CUSTOM = "Custom";
-    private static final String SCHOOL_OF_NURSING_SITE = "Site%2Fhpo-site-wimadisonschoolofnursing";
+    private static final String EMAIL_ADDRESS = "emailAddress";
+    private static final String TEST_SITE = "Site/hpo-test-automation";
     private static final String NODE_MEMBER = "nodes";
     private static final String TIME_ZONE = "timeZone";
     private static final String AMERICA_CHICAGO = "America/Chicago";
@@ -35,7 +42,7 @@ public class APIUtility {
     private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.mc");
     private static final String ENDPOINT_SITE = "/api/schedule/siteDetail";
     private static final String ENDPOINT_TARGET_AND_GOAL = "/api/capacity/saveTargetAndGoal";
-    private static final String SITE_ID_SCHOOL_OF_NURSING = "Site/hpo-site-wimadisonschoolofnursing";
+    private static final String SITE_ID_TEST_AUTOMATION = "Site/hpo-test-automation";
     private static final String ENDPOINT_MINIMUM_APPOINTMENT_NOTICE = "/api/schedule/saveMinimumAppointmentNotice";
     private static final String REFERER_SCHEDULE = MAIN_URL + "/settings/scheduling?role=ROLE_MC_SITE_MANAGER";
     private static final String ENDPOINT_HRS_OF_OPERATIONS = "/api/schedule/weeklyHoursOfOperation";
@@ -82,7 +89,7 @@ public class APIUtility {
         String expected = "Successfully toggled accepting appointments via the API";
         // setup toggle member as ON or OFF
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
+        parameters.put(SITE_ID, TEST_SITE);
         JsonObject toggleOnOff = new JsonObject();
         toggleOnOff.addProperty("acceptingAppointments", "on".equalsIgnoreCase(toggle));
         Map<String, String> referer = new HashMap<>();
@@ -111,7 +118,7 @@ public class APIUtility {
         JsonObject targetAndGoal = new JsonObject();
         targetAndGoal.addProperty("target", target);
         targetAndGoal.addProperty("goal", goal);
-        targetAndGoal.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
+        targetAndGoal.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         //set request
@@ -136,7 +143,7 @@ public class APIUtility {
         // setup toggle member as ON or OFF
         JsonObject minimumAppointmentNotice = new JsonObject();
         minimumAppointmentNotice.addProperty("minimumAppointmentNotice", days);
-        minimumAppointmentNotice.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
+        minimumAppointmentNotice.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         //set request
@@ -162,7 +169,7 @@ public class APIUtility {
         JsonObject hoursOfOperations = new JsonObject();
         hoursOfOperations.addProperty(ID, "");
         hoursOfOperations.addProperty("name", CUSTOM);
-        hoursOfOperations.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
+        hoursOfOperations.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
         hoursOfOperations.addProperty(TIME_ZONE, AMERICA_CHICAGO);
         hoursOfOperations.addProperty("isDefault", false);
         hoursOfOperations.add("status", null);
@@ -203,7 +210,7 @@ public class APIUtility {
     public JsonObject getWorkingTimeObj(String day, String idValue) {
         JsonObject defWorkingTimeObj = new JsonObject();
         defWorkingTimeObj.addProperty(ID, idValue);
-        defWorkingTimeObj.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
+        defWorkingTimeObj.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
         defWorkingTimeObj.addProperty("templateName", "");
         defWorkingTimeObj.addProperty("dayOfWeek", day);
         defWorkingTimeObj.add("date", null);
@@ -235,7 +242,7 @@ public class APIUtility {
         String expected = "Successfully get calendar form id via API";
         //Add headers and parameters
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
+        parameters.put(SITE_ID, SITE_ID_TEST_AUTOMATION);
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         RequestData requestData = new RequestData();
@@ -293,12 +300,12 @@ public class APIUtility {
         calendar.set(Calendar.HOUR_OF_DAY, 9);
         calendar.set(Calendar.MINUTE, 0);
         jsonObject.addProperty("time", calendar.getTimeInMillis() / 1000);
-        jsonObject.addProperty(SITE_ID, SITE_ID_SCHOOL_OF_NURSING);
+        jsonObject.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
         jsonObject.add("prospectId", null);
         jsonObject.add("participantId", null);
         jsonObject.addProperty("lastName", user.getLastName() + " API");
         jsonObject.addProperty("firstName", user.getFirstName() + " API");
-        jsonObject.addProperty("emailAddress", user.getParticipantEmail());
+        jsonObject.addProperty(EMAIL_ADDRESS, user.getParticipantEmail());
         jsonObject.add("dob", null);
         jsonObject.addProperty("language", "en");
         jsonObject.addProperty("emailCommunication", false);
@@ -338,6 +345,7 @@ public class APIUtility {
         Response response = http.get(GROUPS_ENDPOINT, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully get a group value via API. ");
         String programId = "";
+        String orgId = "";
         String siteId = "";
         //Empty jsonArrays to go through the json respond
         JsonArray jsonArray = response.getArrayData();
@@ -360,13 +368,13 @@ public class APIUtility {
             if (nodesAwardee.size() < 10) {
                 reporter.fail("List is not retrieved. ");
             }
-
             if (nodesAwardee.get(j).toString().contains(awardee)) {
                 nodesOrg = nodesAwardee.get(j).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
         for (int k = 0; k < nodesOrg.size() && !org.isEmpty(); k++) {
             if (nodesOrg.get(k).toString().contains(org)) {
+                orgId = nodesOrg.get(k).getAsJsonObject().get(ID).getAsString();
                 nodesSite = nodesOrg.get(k).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
@@ -375,15 +383,49 @@ public class APIUtility {
                 siteId = nodesSite.get(b).getAsJsonObject().get(ID).getAsString();
             }
         }
-        //Sets group value depending on the role
+        setGroupValueOfUser(role, programId, siteId, orgId);
+    }
+
+    private void setGroupValueOfUser(String role, String programId, String siteId, String orgId) {
+        // Sets group value depending on the role
         if ("ROLE_MC_NIH".equals(role)) {
             user.setGroupValue(programId);
-        }
-        if ("ROLE_MC_SITE_MANAGER".equals(role)) {
+        } else if ("ROLE_MC_SITE_MANAGER".equals(role)) {
             user.setGroupValue(siteId);
-        }
-        if ("ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER".equals(role)) {
+        } else if ("ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER".equals(role)) {
+            if (!"".equals(orgId)) {
+                user.setGroupValue(orgId);
+            }
+            if (!"".equals(programId)) {
+                user.setGroupValue(programId);
+            }
+        } else if ("ROLE_MC_ADMINISTRATOR".equals(role)) {
+            if (!"".equals(siteId)) {
+                user.setGroupValue(siteId);
+            }
+            if (!"".equals(orgId)) {
+                user.setGroupValue(orgId);
+            }
+        } else if ("ROLE_MC_PROGRAM_COORDINATOR".equals(role)) {
+            if (!"".equals(orgId)) {
+                user.setGroupValue(orgId);
+            }
+        } else if ("ROLE_MC_PROGRAM_MANAGER".equals(role)) {
+            if (!"".equals(orgId)) {
+                user.setGroupValue(orgId);
+            }
+        } else if ("ROLE_MC_RESEARCH_ASSISTANT".equals(role)) {
+            user.setGroupValue(siteId);
+        } else if ("ROLE_MC_SUPPORT_ADMIN".equals(role)) {
+            if (!"".equals(orgId)) {
+                user.setGroupValue(orgId);
+            }
+        } else if ("ROLE_MC_SYSTEM_ADMINISTRATOR".equals(role)) {
             user.setGroupValue(programId);
+        } else if ("ROLE_MC_HIERARCHY_MANAGER".equals(role)) {
+            user.setGroupValue(programId);
+        } else if ("ROLE_MC_SUPPORT_STAFF".equals(role) && (!"".equals(orgId))) {
+            user.setGroupValue(orgId);
         }
     }
 
@@ -397,7 +439,7 @@ public class APIUtility {
         Map<String, String> referer = new HashMap<>();
         referer.put(REFERER, REFERER_SCHEDULE);
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(SITE_ID, SCHOOL_OF_NURSING_SITE);
+        parameters.put(SITE_ID, TEST_SITE);
         http.addHeaders(referer);
         RequestData requestData = new RequestData();
         requestData.setParams(parameters);
@@ -422,8 +464,8 @@ public class APIUtility {
      * Creates or drafts campaign.
      */
     public void createOrDraftCampaignViaApi(String createOrDraft, String channel) throws IOException {
-        String action = "I " + createOrDraft + " campaign via API";
-        String expected = "Successfully " + createOrDraft + " campaign via API";
+        String action = "I " + createOrDraft + CAMPAIGN_VIA_API;
+        String expected = "Successfully " + createOrDraft + CAMPAIGN_VIA_API;
         //add headers
         Map<String, String> headers = new HashMap<>();
         headers.put(REFERER, REFERER_CAMPAIGN);
@@ -443,7 +485,7 @@ public class APIUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = http.simpleGet(ENDPOINT_CAMPAIGN, requestData);
-        reporterPassFailStep(action, expected, response, "Not successfully " + createOrDraft + " campaign via API");
+        reporterPassFailStep(action, expected, response, "Not successfully " + createOrDraft + CAMPAIGN_VIA_API);
     }
 
     /**
@@ -595,5 +637,44 @@ public class APIUtility {
         valueList.add("selectedMultiOptions", multiOptionsArr);
         categoryListObj.add(VALUE_LIST, valueList);
         return categoryListObj;
+    }
+
+    public Response addTestingGroups() throws IOException {
+        String action = "I add testing groups via API";
+        String expected = "Successfully add testing groups via API";
+        HTTP test = new HTTP(MAIN_URL);
+        //add headers and parameters
+        JsonArray jsonArray = new JsonArray();
+        JsonObject jsonObject1 = new JsonObject();
+        jsonObject1.addProperty(LABEL, "TEST AUTOMATION AWARDEE");
+        jsonObject1.addProperty(PATH_NAME, "PMI|Awardee/TEST_AUTOMATION");
+        jsonObject1.addProperty(EMAIL_ADDRESS, TEST_EMAIL);
+        jsonObject1.addProperty(NAME, "Awardee/TEST_AUTOMATION");
+        jsonObject1.addProperty(PARENT_NAME, "PMI");
+        JsonObject jsonObject2 = new JsonObject();
+        jsonObject2.addProperty(LABEL, "TEST AUTOMATION ORGANIZATION");
+        jsonObject2.addProperty(PATH_NAME, "PMI|Awardee/TEST_AUTOMATION|Organization/TEST_AUTOMATION_ORGANIZATION");
+        jsonObject2.addProperty(EMAIL_ADDRESS, TEST_EMAIL);
+        jsonObject2.addProperty(NAME, "Organization/TEST_AUTOMATION_ORGANIZATION");
+        jsonObject2.addProperty(PARENT_NAME, "Awardee/TEST_AUTOMATION");
+        JsonObject jsonObject3 = new JsonObject();
+        jsonObject3.addProperty(LABEL, "TEST AUTOMATION SITE");
+        jsonObject3.addProperty(PATH_NAME, "PMI|Awardee/TEST_AUTOMATION|Organization/TEST_AUTOMATION_ORGANIZATION|Site/hpo-test-automation");
+        jsonObject3.addProperty(EMAIL_ADDRESS, TEST_EMAIL);
+        jsonObject3.addProperty(NAME, TEST_SITE);
+        jsonObject3.addProperty(PARENT_NAME, "Organization/TEST_AUTOMATION_ORGANIZATION");
+        jsonArray.add(jsonObject1);
+        jsonArray.add(jsonObject2);
+        jsonArray.add(jsonObject3);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(AUTHORIZATION, user.getAuthToken());
+        RequestData requestData = new RequestData();
+        test.addHeaders(headers);
+        requestData.setJSON(jsonArray);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = test.simplePut(ENDPOINT_TEST_GROUPS, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully add testing groups via API. ");
+        return response;
     }
 }

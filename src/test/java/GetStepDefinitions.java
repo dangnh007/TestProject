@@ -1,7 +1,6 @@
 import com.pmt.health.steps.DeviceSteps;
 import com.pmt.health.steps.UserSteps;
 import com.pmt.health.steps.api.ApiSteps;
-import com.pmt.health.steps.api.AuthSteps;
 import com.pmt.health.steps.ui.*;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -42,10 +41,9 @@ public class GetStepDefinitions {
         // ui
         stepDefinitions.add(AddUserSteps.class);
         stepDefinitions.add(LoginSteps.class);
-        stepDefinitions.add(CapacityManagementSteps.class);
+        stepDefinitions.add(CommunictionsPageSteps.class);
         stepDefinitions.add(UserAdminSteps.class);
         // api
-        stepDefinitions.add(AuthSteps.class);
         stepDefinitions.add(ApiSteps.class);
 
 

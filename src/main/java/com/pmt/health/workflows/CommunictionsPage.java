@@ -12,11 +12,11 @@ import java.util.List;
 
 //SuppressWarning added to remove highlighted fields by InteliJ, which has been thrown when List<WebbElement> was added.
 @SuppressWarnings("FieldCanBeLocal")
-public class CapacityManagementPage {
+public class CommunictionsPage {
 
     private final App app;
     private User user;
-    Logger log = Logger.getLogger(CapacityManagementPage.class);
+    Logger log = Logger.getLogger(CommunictionsPage.class);
 
     //generates random name for the test automation field
     private final String campaignNameRandom = "Test Automation #" + UserUtility.generateUUID(5);
@@ -235,7 +235,7 @@ public class CapacityManagementPage {
     private final List<WebbElement> segmentationList;
     private final List<WebbElement> statusList;
 
-    public CapacityManagementPage(App app, User user) {
+    public CommunictionsPage(App app, User user) {
         this.app = app;
         this.user = user;
         this.saveButton = app.newElement(LocatorType.CSS, "button[class='btn btn-primary btn-md btn btn-default']");

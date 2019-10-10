@@ -207,4 +207,15 @@ public class ApiSteps {
         userUtility.getAuthorizationToken();
         apiUtility.createSegmentationViaApi(channel);
     }
+
+    /**
+     * Retrieves access token and updates groups
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^I create test groups via API$")
+    public void createTestGroups() throws IOException {
+        userUtility.getAccessToken();
+        apiUtility.addTestingGroups();
+    }
 }

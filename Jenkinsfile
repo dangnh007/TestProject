@@ -22,7 +22,7 @@ podTemplate(
         cloud: 'default',
         label: podLabel,
         imagePullSecrets: pullSecrets,
-    containers: kubeUtils.getCiContainers(containerList: ['maven', 'python', 'kubectl', 'helm', 'docker', 'docker-api', 'docker-chrome', 'aws-cli-api', 'aws-cli-chrome', 'android-gradle', 'ansible-playbook']),
+        containers: kubeUtils.getCiContainers(containerList: ['maven', 'python', 'kubectl', 'helm', 'docker', 'docker-api', 'docker-chrome', 'aws-cli-api', 'aws-cli-chrome', 'android-gradle', 'ansible-playbook']),
         volumes: [
                 hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
                 hostPathVolume(mountPath: '/root/.m2', hostPath: '/data/m2repo')
@@ -155,7 +155,7 @@ podTemplate(
                                             chartRepo: "devcharts",
                                             stageFunc: buildStage
                                     )
-                                                    // prevent db pods from being evicted while running tests
+                                    // prevent db pods from being evicted while running tests
                                     container('kubectl') {
                                         sh "kubectl annotate pods -n ${stackName} --all cluster-autoscaler.kubernetes.io/safe-to-evict=false"
                                     }
@@ -217,39 +217,42 @@ podTemplate(
                     deploy: {},
                     test: { failableStage ->
                         def parallelTests = runDockerTests(
-                            testBranch: branch,
-                            registry: VibrentConstants.CIREG_REGISTRY,
-                            buildNumber: env.BUILD_NUMBER,
-                            framework: "PMTAutomationFramework",
-                            other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
-                            platforms: [
-                                    [
-                                            name       : 'api',
-                                            container  : "${containerName}-default",
-                                            tags       : '@api',
-                                            defaultWait: 15,
-                                            threads    : 1
-                                    ],
-                            ],
-                            stageFunc: failableStage
+                                testBranch: branch,
+                                registry: VibrentConstants.CIREG_REGISTRY,
+                                buildNumber: env.BUILD_NUMBER,
+                                framework: "PMTAutomationFramework",
+                                other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com " +
+                                        "-Dautomation.url.sub=https://sub-${stackName}.qak8s.vibrenthealth.com",
+                                platforms: [
+                                        [
+                                                name       : 'api',
+                                                container  : "${containerName}-default",
+                                                tags       : '@api',
+                                                defaultWait: 15,
+                                                threads    : 1
+                                        ],
+                                ],
+                                stageFunc: failableStage
                         )
                         parallelTests += runDockerTests(
-                                 testBranch: branch,
-                                 registry: VibrentConstants.CIREG_REGISTRY,
-                                 buildNumber: env.BUILD_NUMBER,
-                                 framework: "PMTAutomationFramework",
-                                 other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
-                                 platforms: [
-                                         [
-                                                 name       : 'chrome',
-                                                 container  : "${containerName}-chrome",
-                                                 tags       : '~@api --tags @smoke',
-                                                 defaultWait: 15,
-                                                 threads    : 1
-                                         ],
-                                 ],
-                                 stageFunc: failableStage
-                         )
+                                testBranch: branch,
+                                registry: VibrentConstants.CIREG_REGISTRY,
+                                buildNumber: env.BUILD_NUMBER,
+                                framework: "PMTAutomationFramework",
+                                other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com " +
+                                        "-Dautomation.url.sub=https://sub-${stackName}.qak8s.vibrenthealth.com",
+
+                                platforms: [
+                                        [
+                                                name       : 'chrome',
+                                                container  : "${containerName}-chrome",
+                                                tags       : '~@api --tags @smoke',
+                                                defaultWait: 15,
+                                                threads    : 1
+                                        ],
+                                ],
+                                stageFunc: failableStage
+                        )
 
                         parallel(parallelTests)
 
@@ -264,16 +267,16 @@ podTemplate(
                             sh "git push -f --tags"
                         }
                         helmUtils.updateDependenciesInUmbrella(
-                            chartRepoBranch: env.BRANCH_NAME,
-                            umbrellaCharts: ['acadia'], fromProject: env.PROJECT, fromBuildNumber: "${branch}-${env.BUILD_NUMBER}",
-                            dependencies: [], containers: [
+                                chartRepoBranch: env.BRANCH_NAME,
+                                umbrellaCharts: ['acadia'], fromProject: env.PROJECT, fromBuildNumber: "${branch}-${env.BUILD_NUMBER}",
+                                dependencies: [], containers: [
                                 [
-                                    "name": containerName,
-                                    "tag" : "${branch}-${commitSha}"
+                                        "name": containerName,
+                                        "tag" : "${branch}-${commitSha}"
                                 ],
-                            ],
-                            stageFunc: failableStage
-                        ).each { k,v -> v.call() }
+                        ],
+                                stageFunc: failableStage
+                        ).each { k, v -> v.call() }
                     }
             )
         }

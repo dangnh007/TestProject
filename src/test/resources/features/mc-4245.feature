@@ -12,15 +12,16 @@ Feature: Login and Logout
   @mc-4309
   Scenario Outline: Create a user as a System Administrator
     Given I login as System Administrator
-    And I am logged in
+    And I create test groups via API
     When I create user with "<role>" and "<org>" level
     Then User has been created
 
     Examples:
-      | role                                | org                                    |
-      | NIH                                 | PMI                                    |
-      | Site manager                        | Site/hpo-site-wimadisonschoolofnursing |
-      | Communications & Engagement Manager | PMI                                    |
+      | role            | org                                       |
+      | Site Manager    | Site/hpo-test-automation                  |
+      | Support Admin   | Organization/TEST_AUTOMATION_ORGANIZATION |
+      | Program Manager | Awardee/TEST_AUTOMATION                   |
+
 
   @mc-4448 @api
   Scenario: Admin login via API
@@ -28,14 +29,15 @@ Feature: Login and Logout
 
   @mc-4592 @api
   Scenario Outline: Create a user as a System Administrator via API
-    When I login as System Administrator via API
+    Given I login as System Administrator via API
+    When I create test groups via API
     Then I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
 
     Examples:
-      | role                                      | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
+      | role                    | program   | awardee                 | org                          | site                 |
+      | ROLE_MC_PROGRAM_MANAGER | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SUPPORT_ADMIN   | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SITE_MANAGER    | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION | TEST AUTOMATION SITE |
 
   @mc-4607
   Scenario Outline: Login with created user
@@ -44,10 +46,10 @@ Feature: Login and Logout
     Then I login as user
 
     Examples:
-      | role                                      | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
+      | role                    | program   | awardee                 | org                          | site                 |
+      | ROLE_MC_PROGRAM_MANAGER | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SUPPORT_ADMIN   | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SITE_MANAGER    | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION | TEST AUTOMATION SITE |
 
   @mc-4718 @api
   Scenario Outline: Verify email for created user
@@ -56,18 +58,19 @@ Feature: Login and Logout
     Then I verify email and get its id
 
     Examples:
-      | role                                      | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
+      | role                    | program   | awardee                 | org                          | site                 |
+      | ROLE_MC_PROGRAM_MANAGER | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SUPPORT_ADMIN   | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SITE_MANAGER    | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION | TEST AUTOMATION SITE |
 
   @mc-4723 @api
   Scenario Outline: Login with created user via API
+    Given I create test groups via API
     When I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     Then I login as user via API
 
     Examples:
-      | role                                      | program   | awardee              | org                              | site                                       |
-      | ROLE_MC_NIH                               | All of Us |                      |                                  |                                            |
-      | ROLE_MC_SITE_MANAGER                      | All of Us | Wisconsin Consortium | University of Wisconsin, Madison | University of WI Madison School of Nursing |
-      | ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER | All of Us |                      |                                  |                                            |
+      | role                    | program   | awardee                 | org                          | site                 |
+      | ROLE_MC_PROGRAM_MANAGER | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SUPPORT_ADMIN   | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
+      | ROLE_MC_SITE_MANAGER    | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION | TEST AUTOMATION SITE |

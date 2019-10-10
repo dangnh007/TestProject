@@ -20,6 +20,10 @@ public class UserUtility {
     private static final String PASSWORD = "password";//NOSONAR
     private static final String MFA = "mfaCode";
     private static final String EMAIL = "email";
+    private static final String OAUTH_ENDPOINT = "/api/oauth/token";
+    private static final String CLIENT_ID = "client_id";
+    private static final String CLIENT_SECRET = "client_secret";
+    private static final String GRANT_TYPE = "grant_type";
     private static final String ADMIN_USER = ".admin.user";
     private static final String ADMIN_PASS = ".admin.pass";
     private static final String LOGIN_MESSAGE = "Logging in via the API";
@@ -283,8 +287,10 @@ public class UserUtility {
         }
         reporterPassFailStep(action.toString(), expected, response, "User not successfully passed authenticator code. ");
         //Gets userId value from response
-        String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString(); 
-        user.setUserId(userId);
+        if (response != null) {
+            String userId = response.getObjectData().get("data").getAsJsonObject().get("userPreferences").getAsJsonObject().get("userId").getAsString();
+            user.setUserId(userId);
+        }
     }
 
     /**
@@ -318,6 +324,28 @@ public class UserUtility {
         Response response = adminHttp.simpleGet(LOGIN_ENDPOINT, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully get authorization token via API");
         String authToken = response.getObjectData().get("jwtToken").getAsString();
+        user.setAuthToken("Bearer " + authToken);
+    }
+
+    /**
+     * Gets access token.
+     */
+    public void getAccessToken() throws IOException {
+        String action = "I get access token via API";
+        String expected = "Successfully got access token via API";
+        HTTP http = new HTTP(Property.getProgramProperty(Configuration.getEnvironment() + ".url.sub"));
+        // setup parameters
+        Map<String, String> parameter = new HashMap<>();
+        parameter.put(CLIENT_ID, "missionControl");
+        parameter.put(CLIENT_SECRET, "pmiSecret");
+        parameter.put(GRANT_TYPE, "client_credentials");
+        RequestData requestData = new RequestData();
+        requestData.setParams(parameter);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.post(OAUTH_ENDPOINT, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully get access token via API");
+        String authToken = response.getObjectData().get("access_token").getAsString();
         user.setAuthToken("Bearer " + authToken);
     }
 }

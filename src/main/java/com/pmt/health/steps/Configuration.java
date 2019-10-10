@@ -59,9 +59,7 @@ public class Configuration {
      */
     public static String getEnvironment() {
         return System.getProperty(ENVIRONMENT_PROP, "qa").toLowerCase();
-
     }
-
 
     /**
      * Builds the environment URL, based on the provided environment parameter, and environment site.
@@ -90,7 +88,7 @@ public class Configuration {
     }
 
     /**
-     * Builds the subscriber environment URL, based on the provided environment parameter.
+     * Builds the user environment URL, based on the provided environment parameter.
      * Defaults to the automation environment.
      *
      * @return url that should be used for specified environment
@@ -98,7 +96,6 @@ public class Configuration {
     public static URL getMissionControlEnvironmentURL() {
         return getEnvironmentURL("mc");
     }
-
 
     public URL getSiteURL() {
         return siteURL;
@@ -115,16 +112,6 @@ public class Configuration {
      */
     public String getProgram() {
         return program;
-    }
-
-    /**
-     * Gets the androidID for the application environment. This is obtained from program properties files based on
-     * the environment, however, this can be overridden from a value provided from the cmd
-     *
-     * @return
-     */
-    public String getAppPackage() {
-        return environmentID;
     }
 
     /**

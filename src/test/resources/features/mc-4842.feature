@@ -4,9 +4,9 @@ Feature: PMT Site Settings
   I want to modify Site Settings
 
   Background:
-    Given I create user with "ROLE_MC_SITE_MANAGER" and "PMI", "Wisconsin Consortium", "University of Wisconsin, Madison", "University of WI Madison School of Nursing"
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
 
-  @mc-4851 @unsafe
+  @mc-4851
   Scenario: I login as Site manager and set up Site Settings
     Given I set up my credentials via API
     And I login as user
