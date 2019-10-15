@@ -14,11 +14,13 @@ public class LoginSteps {
     private final LoginPage loginPage;
     private final UserAdminPage userAdminPage;
 
+
     public LoginSteps(DeviceController deviceController, User user) {
         this.user = user;
         this.deviceController = deviceController;
         loginPage = new LoginPage(this.deviceController.getApp(), user);
         userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
+
     }
 
     @When("^I (try to)?login as System Administrator$")
@@ -53,5 +55,12 @@ public class LoginSteps {
     @Then("^I am logged in$")
     public void assertLoggedIn() {
         this.userAdminPage.assertLoggedIn();
+    }
+
+
+    @Then("^I login as edited user$")
+    public void loginAsEditedUser() {
+        loginPage.loadEnvironment();
+        loginPage.loginEditedUser();
     }
 }

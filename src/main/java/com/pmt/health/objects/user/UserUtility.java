@@ -182,11 +182,12 @@ public class UserUtility {
      * Creates user with reusable parameters
      */
     public Response apiCreateUser(String role) throws IOException {
+        String uEmail = UserUtility.makeRandomUserEmail();
         String action = "Create user via the API";
         String expected = "Successfully created user via the API";
         //setup our body for creating user
         JsonObject createUser = new JsonObject();
-        createUser.addProperty(EMAIL, user.getEmail());
+        createUser.addProperty(EMAIL, uEmail);
         createUser.addProperty("firstName", user.getFirstName());
         createUser.addProperty("lastName", user.getLastName());
         //some of the fields in the body has array parameter
@@ -206,6 +207,10 @@ public class UserUtility {
         // make the actual call
         Response response = adminHttp.simplePost("/api/userAdmin/user?roleName=ROLE_MC_SYSTEM_ADMINISTRATOR", requestData);
         reporterPassFailStep(action, expected, response, "User has been not created. ");
+        if(user.searchedUserEmail.isEmpty()) {
+            user.setSearchedUserEmail(uEmail);
+        }
+        user.setEmail(uEmail);
         return response;
     }
 
@@ -228,6 +233,10 @@ public class UserUtility {
         reporterPassFailStep(action, expected, response, "Failed to find secret key. ");
         //gets secret key from response
         String secretKey = response.getObjectData().get("data").getAsJsonObject().get("secret").getAsString();
+        if(user.searchedUserSecret.isEmpty()) {
+            user.setSearchedUserSecret(secretKey);
+        }
+
         user.setSecretKey(secretKey);
     }
 

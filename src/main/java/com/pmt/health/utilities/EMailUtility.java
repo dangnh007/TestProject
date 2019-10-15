@@ -94,7 +94,11 @@ public class EMailUtility {
         }
         //index where string become valuable and set it into an user object
         //skips other not valuable characters and spaces until index of needed value
+        if(user.getSearchedUserPassword().isEmpty()) {
+            user.setSearchedUserPassword(password.substring(11));
+        }
         user.setPassword(password.substring(11));
+
     }
 
     private void generateReport(String action, String expected, Response response) {

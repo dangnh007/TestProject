@@ -9,6 +9,7 @@ public class UserAdminPage {
 
     private final WebbElement addUserButton;
     private final WebbElement loggedInHeadingUserAdministration;
+    private final WebbElement loggedInHeadingUser;
     private final WebbElement loggedInHeadingAdmin;
     private final WebbElement loggedInHeadingSiteManagerUser;
     private final WebbElement createdUser;
@@ -16,17 +17,54 @@ public class UserAdminPage {
     private final WebbElement userSettingsButton;
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
+    private final WebbElement userAdminButtonProgramManager;
+    private final WebbElement searchField;
+    private final WebbElement tableEmailAssert;
+    private final WebbElement editUserHeader;
+    private final WebbElement actionDropdown;
+    private final WebbElement editAction;
 
     public UserAdminPage(App app, User user) {
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
         this.loggedInHeadingUserAdministration = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
+        this.loggedInHeadingUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
         this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
         this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
         this.userAdminButton = app.newElement(LocatorType.CSS, "ul li:nth-of-type(4) a");
+        this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
         this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.searchField = app.newElement(LocatorType.CSS, "input[placeholder='Search']");
+        this.tableEmailAssert = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getSearchedUserEmail() + "\")]");
+        this.actionDropdown = app.newElement(LocatorType.CSS, "button[class='action-btn dropdown-toggle btn btn-default']");
+        this.editUserHeader = app.newElement(LocatorType.XPATH, "//div[contains(text(),'Edit User')]");
+        this.editAction = app.newElement(LocatorType.XPATH, "//li/a[contains(text(),'Edit')]");
+    }
+
+    public void assertEditUserHeader() {
+        editUserHeader.assertState().displayed();
+    }
+
+    public void selectActionDropDown() {
+        actionDropdown.click();
+        editAction.click();
+    }
+
+    public void searchField(String parameter) {
+        searchField.type(parameter);
+    }
+
+    public void assertSearchedEmail() {
+        tableEmailAssert.assertState().displayed();
+    }
+
+    /**
+     * Clicks on the "User Admin" button
+     */
+    public void userAdminButtonProgramManager() {
+        userAdminButtonProgramManager.click();
     }
 
     /**
@@ -78,6 +116,13 @@ public class UserAdminPage {
      */
     public void assertLoggedIn() {
         loggedInHeadingAdmin.assertState().displayed();
+    }
+
+    /**
+     * Asserts that the current user is logged out by making sure the login page is displayed.
+     */
+    public void assertLoggedInUser() {
+        loggedInHeadingUser.assertState().displayed();
     }
 
     /**

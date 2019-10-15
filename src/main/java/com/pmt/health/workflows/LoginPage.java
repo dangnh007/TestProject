@@ -164,6 +164,22 @@ public class LoginPage {
     }
 
     /**
+     * Activates the login control for the edited user parameter
+     */
+    public void loginEditedUser() {
+        enterEmail(user.getSearchedUserEmail());
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+        enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSearchedUserSecret()));
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+    }
+
+    /**
      * Types mfa with current parameter
      * @param obtainOath2Key method which converts mfa
      */

@@ -1,5 +1,5 @@
 @feature-mc-4245 @login @pmt @smoke
-Feature: Login and Logout
+Feature: User Management
   As a user
   I want to be login
   So that I can access the site
@@ -29,8 +29,8 @@ Feature: Login and Logout
 
   @mc-4592 @api
   Scenario Outline: Create a user as a System Administrator via API
-    Given I login as System Administrator via API
-    When I create test groups via API
+    Given I create test groups via API
+    When I login as System Administrator via API
     Then I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
 
     Examples:
@@ -41,7 +41,8 @@ Feature: Login and Logout
 
   @mc-4607
   Scenario Outline: Login with created user
-    Given I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
+    Given I create test groups via API
+    And I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>"
     When I login for the first time and set up my credentials
     Then I login as user
 
@@ -74,3 +75,16 @@ Feature: Login and Logout
       | ROLE_MC_PROGRAM_MANAGER | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
       | ROLE_MC_SUPPORT_ADMIN   | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION |                      |
       | ROLE_MC_SITE_MANAGER    | All of Us | TEST AUTOMATION AWARDEE | TEST AUTOMATION ORGANIZATION | TEST AUTOMATION SITE |
+
+  @mc-6471
+  Scenario: Edit user as Program Manager
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I login as user
+    And I am logged in as user
+    And I update user to "Site Manager" role and "Site/hpo-test-automation" org
+    And I logout
+    Then I login as edited user

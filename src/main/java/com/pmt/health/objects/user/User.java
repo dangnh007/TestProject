@@ -7,16 +7,19 @@ public class User {
     protected String firstName;
     protected String lastName;
     protected String secretKey;
+    protected String searchedUserSecret;
     protected String userId;
     protected String participantEmail;
     protected String groupValue;
     protected String hoursOfoperarion;
     protected String authToken;
+    protected String searchedUserEmail;
+    protected String searchedUserPassword;
 
     public User() {
         firstName = "Automation";
         lastName = "user";
-        email = UserUtility.makeRandomUserEmail();
+        email = "";
         password = "";
         secretKey = "";
         userId = "";
@@ -24,6 +27,51 @@ public class User {
         groupValue = "";
         hoursOfoperarion = "";
         authToken = "";
+        searchedUserEmail = "";
+        searchedUserPassword = "";
+        searchedUserSecret = "";
+    }
+
+    /**
+     * Getter
+     */
+    public String getSearchedUserSecret() {
+        return searchedUserSecret;
+    }
+
+    /**
+     * Setter
+     */
+    public void setSearchedUserSecret(String searchedUserSecret) {
+        this.searchedUserSecret = searchedUserSecret;
+    }
+
+    /**
+     * Getter
+     */
+    public String getSearchedUserPassword() {
+        return searchedUserPassword;
+    }
+
+    /**
+     * Setter
+     */
+    public void setSearchedUserPassword(String searchedUserPassword) {
+        this.searchedUserPassword = searchedUserPassword;
+    }
+
+    /**
+     * Getter
+     */
+    public String getSearchedUserEmail() {
+        return searchedUserEmail;
+    }
+
+    /**
+     * Setter
+     */
+    public void setSearchedUserEmail(String searchedUserEmail) {
+        this.searchedUserEmail = searchedUserEmail;
     }
 
     /**
@@ -162,4 +210,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

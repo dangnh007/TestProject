@@ -51,6 +51,7 @@ public class AddUserPage {
      * @param firstName passing first name parameter
      */
     public void enterFirstName(String firstName) {
+        firstNameInput.clear();
         firstNameInput.type(firstName);
         if ("".equals(firstName)) {
             firstNameInput.type("a");
@@ -63,6 +64,7 @@ public class AddUserPage {
      * @param lastName passing last name parameter
      */
     public void enterLastName(String lastName) {
+        lastNameInput.clear();
         lastNameInput.type(lastName);
         if ("".equals(lastName)) {
             lastNameInput.type("a");
@@ -87,6 +89,7 @@ public class AddUserPage {
      * @param role passing user role parameter
      */
     public void selectRole(String role) {
+        rolesInput.type(Keys.DELETE);
         rolesInput.type(role + Keys.ENTER);
         if ("".equals(role)) {
             rolesInput.type("a");

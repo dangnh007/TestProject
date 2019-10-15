@@ -1,6 +1,7 @@
 package com.pmt.health.steps.ui;
 
 import com.pmt.health.objects.user.User;
+import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.AddUserPage;
 import com.pmt.health.workflows.UserAdminPage;
@@ -29,7 +30,7 @@ public class UserAdminSteps {
         this.userAdminPage.addUser();
         this.addUserPage.enterFirstName(user.getFirstName());
         this.addUserPage.enterLastName(user.getLastName());
-        this.addUserPage.enterEmail(user.getEmail());
+        this.addUserPage.enterEmail(UserUtility.makeRandomUserEmail());
         this.addUserPage.selectRole(role);
         this.addUserPage.checkAwardee(org);
         this.addUserPage.saveUser();
@@ -38,5 +39,24 @@ public class UserAdminSteps {
     @Then("^User has been created$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
+    }
+
+    @Then("^I am logged in as user$")
+    public void loggedInAsUser() {
+        this.userAdminPage.assertLoggedInUser();
+    }
+
+    @Then("^I update user to \"([^\"]*)\" role and \"([^\"]*)\" org$")
+    public void navigateToUserAdminPage(String role, String org) {
+        this.userAdminPage.userAdminButtonProgramManager();
+        this.userAdminPage.searchField(user.getSearchedUserEmail());
+        this.userAdminPage.assertSearchedEmail();
+        this.userAdminPage.selectActionDropDown();
+        this.userAdminPage.assertEditUserHeader();
+        this.addUserPage.enterFirstName("Updated User");
+        this.addUserPage.enterLastName("Updated Automation");
+        this.addUserPage.selectRole(role);
+        this.addUserPage.checkAwardee(org);
+        this.addUserPage.saveUser();
     }
 }
