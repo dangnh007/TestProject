@@ -269,9 +269,10 @@ public class HTTP {
             }
         }
     }
+
     private static void setSESSIONToken(HttpURLConnection connection, boolean isSESSIONNotNull, String session) {
         if (isSESSIONNotNull) {
-            connection.addRequestProperty("Cookie", "SESSION=" + session);
+            connection.addRequestProperty("Cookie", "JSESSIONID=" + session);
         }
     }
 
@@ -418,7 +419,7 @@ public class HTTP {
         int status = connection.getResponseCode();
         if (connection.getHeaderFields().containsKey("Set-Cookie")) {
             String setCookie = connection.getHeaderFields().get("Set-Cookie").get(0);
-            if (setCookie.contains("SESSION")) {
+            if (setCookie.contains("JSESSIONID")) {
                 setSESSION(setCookie.split(";", 2)[0].split("=")[1]);
             }
         }
@@ -652,6 +653,7 @@ public class HTTP {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 log.error(e);
+                Thread.currentThread().interrupt();
             }
         }
         long time = (System.currentTimeMillis() / 1000) / 30;

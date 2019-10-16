@@ -59,4 +59,11 @@ public class UserAdminSteps {
         this.addUserPage.checkAwardee(org);
         this.addUserPage.saveUser();
     }
+
+    @Then("^I found created user by searching email$")
+    public void foundCreatedUserBySearchingEmail() {
+        this.userAdminPage.userAdminButtonProgramManager();
+        this.userAdminPage.searchField(user.getSearchedUserEmail());
+        this.userAdminPage.assertSearchedEmail();
+    }
 }

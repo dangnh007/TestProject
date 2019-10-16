@@ -88,3 +88,13 @@ Feature: User Management
     And I update user to "Site Manager" role and "Site/hpo-test-automation" org
     And I logout
     Then I login as edited user
+
+  @mc-6501
+  Scenario: View list user and Search user
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I login as user
+    Then I found created user by searching email
