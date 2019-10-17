@@ -1,4 +1,4 @@
-@feature-mc-4842 @pmt @settings @smoke
+@feature-mc-4842 @pmt @settings @smoke @wip
 Feature: PMT Site Settings
   As a user
   I want to modify Site Settings
