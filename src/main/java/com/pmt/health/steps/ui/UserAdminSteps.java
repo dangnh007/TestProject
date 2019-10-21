@@ -4,6 +4,7 @@ import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.AddUserPage;
+import com.pmt.health.workflows.LoginPage;
 import com.pmt.health.workflows.UserAdminPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -15,12 +16,14 @@ public class UserAdminSteps {
     private final DeviceController deviceController;
     private final UserAdminPage userAdminPage;
     private final AddUserPage addUserPage;
+    private final LoginPage loginPage;
 
     public UserAdminSteps(DeviceController deviceController, User user) {
         this.user = user;
         this.deviceController = deviceController;
         userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
         addUserPage = new AddUserPage(this.deviceController.getApp(), user);
+        loginPage = new LoginPage(this.deviceController.getApp(), user);
     }
 
     @Description("Creating a user with a specific parameters")
@@ -39,6 +42,21 @@ public class UserAdminSteps {
     @Then("^User has been created$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
+    }
+
+    @When("^I reset MFA code for temp user$")
+    public void resetMFACode() {
+        this.loginPage.loadEnvironment();
+        this.loginPage.login();
+        this.userAdminPage.userAdmin();
+        this.userAdminPage.resetMFACode(user.getSearchedUserEmail());
+        this.loginPage.logout();
+    }
+
+    @Then("^I login temp user with new secret key$")
+    public void loginResetMFAUser() {
+        this.loginPage.loginResetMFAUser();
+        this.loginPage.logout();
     }
 
     @Then("^I am logged in as user$")

@@ -216,4 +216,24 @@ public class LoginPage {
         String key = secretKey.get().text();
         user.setSecretKey(key);
     }
+
+    /**
+     * Login for user who has just been reset MFA code
+     */
+    public void loginResetMFAUser() {
+        enterEmail(user.getSearchedUserEmail());
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+        // Set new secret key for Searched User
+        secretKey.waitFor().displayed();
+        String key = secretKey.get().text();
+        user.setSearchedUserSecret(key);
+        // Enter new MFA code with new secret key
+        okButton.click();
+        enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSearchedUserSecret()));
+        getLoginButton().click();
+    }
 }

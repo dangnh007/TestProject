@@ -17,6 +17,8 @@ public class UserAdminPage {
     private final WebbElement userSettingsButton;
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
+    private final WebbElement resetMFAButton;
+    private final WebbElement changedSuccessMessage;
     private final WebbElement userAdminButtonProgramManager;
     private final WebbElement searchField;
     private final WebbElement tableEmailAssert;
@@ -32,10 +34,12 @@ public class UserAdminPage {
         this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
         this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
-        this.userAdminButton = app.newElement(LocatorType.CSS, "ul li:nth-of-type(4) a");
-        this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
+        this.userAdminButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-user \"]");
         this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.resetMFAButton = app.newElement(LocatorType.CSS, "svg[class*=\"shield\"]");
+        this.changedSuccessMessage = app.newElement(LocatorType.CSS, "div[class=\"message animated fade success in\"]");
+        this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
         this.searchField = app.newElement(LocatorType.CSS, "input[placeholder='Search']");
         this.tableEmailAssert = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getSearchedUserEmail() + "\")]");
         this.actionDropdown = app.newElement(LocatorType.CSS, "button[class='action-btn dropdown-toggle btn btn-default']");
@@ -140,6 +144,14 @@ public class UserAdminPage {
         createdSortButton.click();
         createdUser.assertState().displayed();
     }
+
+    /**
+     * Asserts that the created user is present by making sure it's email is present
+     */
+    public void resetMFACode(String email) {
+        searchField.type(email);
+        actionDropdown.click();
+        resetMFAButton.click();
+        changedSuccessMessage.assertState().displayed();
+    }
 }
-
-

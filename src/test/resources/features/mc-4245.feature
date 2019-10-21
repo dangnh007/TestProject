@@ -98,3 +98,13 @@ Feature: User Management
     And I set up my credentials via API
     When I login as user
     Then I found created user by searching email
+
+  @mc-6461
+  Scenario: As Program Manager I want to verify MFA reset function
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I reset MFA code for temp user
+    Then I login temp user with new secret key
