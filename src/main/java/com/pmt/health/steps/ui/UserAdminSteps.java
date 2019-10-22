@@ -2,27 +2,37 @@ package com.pmt.health.steps.ui;
 
 import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
+import com.pmt.health.steps.Configuration;
 import com.pmt.health.steps.DeviceController;
+import com.pmt.health.utilities.Constants;
+import com.pmt.health.utilities.EMailUtility;
+import com.pmt.health.utilities.Property;
 import com.pmt.health.workflows.AddUserPage;
 import com.pmt.health.workflows.LoginPage;
 import com.pmt.health.workflows.UserAdminPage;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.context.annotation.Description;
+
+import java.io.IOException;
 
 public class UserAdminSteps {
 
     private final User user;
     private final DeviceController deviceController;
     private final UserAdminPage userAdminPage;
-    private final AddUserPage addUserPage;
     private final LoginPage loginPage;
+    private final AddUserPage addUserPage;
+    private final EMailUtility emailUtility;
+    private static final String ADMIN_PASS = ".admin.pass";
 
     public UserAdminSteps(DeviceController deviceController, User user) {
         this.user = user;
         this.deviceController = deviceController;
         userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
         addUserPage = new AddUserPage(this.deviceController.getApp(), user);
+        this.emailUtility = new EMailUtility(user, deviceController.getReporter());
         loginPage = new LoginPage(this.deviceController.getApp(), user);
     }
 
@@ -42,6 +52,30 @@ public class UserAdminSteps {
     @Then("^User has been created$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
+    }
+
+    @And("^I reset password for temp user$")
+    public void resetTempUserPassword() {
+        this.loginPage.loadEnvironment();
+        this.loginPage.login();
+        this.userAdminPage.userAdminButtonProgramManager();
+        this.userAdminPage.userAdmin();
+        this.userAdminPage.resetUserPassword(user.getSearchedUserEmail());
+        this.loginPage.logout();
+    }
+
+    @And("^An email notification should be received$")
+    public void assertEmailForResetPassword() throws IOException, InterruptedException {
+        this.emailUtility.assertEmailForUser(Constants.EMAIL_RESET_PASSWORD, user.getSearchedUserEmail());
+    }
+
+    @And("^I login as temp user again by reset password successfully$")
+    public void loginUserResetPassword() throws IOException, InterruptedException {
+        this.emailUtility.getResetPasswordLink(user.getSearchedUserEmail());
+        this.loginPage.loadSpecifyEnvironment(emailUtility.getResetPasswordLink(user.getSearchedUserEmail()));
+        this.loginPage.enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
+        this.loginPage.clickSubmitButton();
+        this.loginPage.firstLoginForResetPassword(user.getSearchedUserEmail());
     }
 
     @When("^I reset MFA code for temp user$")

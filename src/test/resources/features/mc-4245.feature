@@ -22,7 +22,6 @@ Feature: User Management
       | Support Admin   | Organization/TEST_AUTOMATION_ORGANIZATION |
       | Program Manager | Awardee/TEST_AUTOMATION                   |
 
-
   @mc-4448 @api
   Scenario: Admin login via API
     When I login as System Administrator via API
@@ -99,6 +98,17 @@ Feature: User Management
     When I login as user
     Then I found created user by searching email
 
+  @mc-6398
+  Scenario: As Program Manager I want to reset password for another user
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I reset password for temp user
+    Then An email notification should be received
+    And I login as temp user again by reset password successfully
+
   @mc-6431
   Scenario: Program Manager forgot password and reset password successfully
     Given I create test groups via API
@@ -117,4 +127,3 @@ Feature: User Management
     And I set up my credentials via API
     When I reset MFA code for temp user
     Then I login temp user with new secret key
-

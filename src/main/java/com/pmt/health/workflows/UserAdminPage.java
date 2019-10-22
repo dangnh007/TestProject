@@ -17,6 +17,7 @@ public class UserAdminPage {
     private final WebbElement userSettingsButton;
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
+    private final WebbElement userResetPasswordButton;
     private final WebbElement resetMFAButton;
     private final WebbElement changedSuccessMessage;
     private final WebbElement userAdminButtonProgramManager;
@@ -37,6 +38,7 @@ public class UserAdminPage {
         this.userAdminButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-user \"]");
         this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.userResetPasswordButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-sync\"]");
         this.resetMFAButton = app.newElement(LocatorType.CSS, "svg[class*=\"shield\"]");
         this.changedSuccessMessage = app.newElement(LocatorType.CSS, "div[class=\"message animated fade success in\"]");
         this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
@@ -143,6 +145,17 @@ public class UserAdminPage {
         spinner.waitFor().notDisplayed();
         createdSortButton.click();
         createdUser.assertState().displayed();
+    }
+
+    /**
+     * Reset a specify user password
+     */
+    public void resetUserPassword(String userEmail) {
+        searchField.type(userEmail);
+        actionDropdown.click();
+        userResetPasswordButton.click();
+        spinner.waitFor().notDisplayed();
+        changedSuccessMessage.assertState().displayed();
     }
 
     /**

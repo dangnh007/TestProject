@@ -28,6 +28,7 @@ public class LoginPage {
     private final WebbElement passwordSet;
     private final WebbElement submitButton;
     private final WebbElement secretKey;
+    private final WebbElement welcomeMessage;
     private final WebbElement forgotPassword;
     private final WebbElement submitEmailAddress;
     private final WebbElement divMessage;
@@ -51,6 +52,7 @@ public class LoginPage {
         this.secretKey = app.newElement(LocatorType.CSS, "div.scan-qr-code-secret");
         this.passwordSet = app.newElement(LocatorType.CSS, "input[name=password]");
         this.submitButton = app.newElement(LocatorType.CSS, "input.center-block.submit-button.btn.btn-primary");
+        this.welcomeMessage = app.newElement(LocatorType.CSS, "span[class=\"welcome-message\"]");
         this.forgotPassword = app.newElement(LocatorType.CSS, "a[href*='/forgotpassword']");
         this.submitEmailAddress = app.newElement(LocatorType.CSS, "input[value*='Submit']");
         this.divMessage = app.newElement(LocatorType.CSS, "div.initial-pwd-msg.message");
@@ -73,9 +75,26 @@ public class LoginPage {
     }
 
     /**
+     * Activates the login flow for just created user
+     */
+    public void firstLoginForResetPassword(String email) {
+        enterEmail(email);
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+        // Generate MFA code based on saved secret key above
+        enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSearchedUserSecret()));
+        getLoginButton().click();
+        // Check user login successfully
+        welcomeMessage.assertState().displayed();
+    }
+
+    /**
      * Activates the login control for default user "System Administrator"
      */
-    public void loginAdmin() {
+    public void  loginAdmin() {
         enterEmail(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.user"));
         enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
         getLoginButton().waitFor().displayed();
@@ -138,6 +157,25 @@ public class LoginPage {
             app.maximize();
         }
         app.goToURL(app.getSite().toString());
+    }
+
+    /**
+     * Opens the initial web environment, and sets the screensize according to passed in parameters
+     */
+    public void loadSpecifyEnvironment(String url) {
+        if (System.getProperty(SCREEN_SIZE) != null && !"".equals(System.getProperty(SCREEN_SIZE))) {
+            try {
+                int width = Integer.parseInt(System.getProperty(SCREEN_SIZE).split("x")[0]);
+                int height = Integer.parseInt(System.getProperty(SCREEN_SIZE).split("x")[1]);
+                app.resize(width, height);
+            } catch (Exception e) {
+                log.debug(e);
+                app.maximize();
+            }
+        } else {
+            app.maximize();
+        }
+        app.goToURL(url);
     }
 
     /**
@@ -241,25 +279,6 @@ public class LoginPage {
         this.divMessage.waitFor().displayed();
         String message = this.divMessage.get().text();
         Assert.assertTrue(message.contains(Constants.REQUEST_FORGOT_PASSWORD_MESSAGE));
-    }
-
-    /**
-     * Opens the initial web environment, and sets the screensize according to passed in parameters
-     */
-    public void loadSpecifyEnvironment(String url) {
-        if (System.getProperty(SCREEN_SIZE) != null && !"".equals(System.getProperty(SCREEN_SIZE))) {
-            try {
-                int width = Integer.parseInt(System.getProperty(SCREEN_SIZE).split("x")[0]);
-                int height = Integer.parseInt(System.getProperty(SCREEN_SIZE).split("x")[1]);
-                app.resize(width, height);
-            } catch (Exception e) {
-                log.debug(e);
-                app.maximize();
-            }
-        } else {
-            app.maximize();
-        }
-        app.goToURL(url);
     }
 
     /**

@@ -23,13 +23,11 @@ import java.util.regex.Pattern;
  * This utility class will make api calls to Mailtrap.io
  * Retrive data from messages for a given user.
  */
-
 public class EMailUtility {
 
     public static final String API_TOKEN = "8c32b5e812840810d6449c99dcdc9bf7";
     public static final String EMAIL_URL = "https://mailtrap.io";
     public static final String MESSAGES_ENDPOINT = "/api/v1/inboxes//" + Property.getProgramProperty(Configuration.getEnvironment() + ".admin.mailbox") + "/messages";
-
     private final User user;
     protected final Reporter reporter;
 
@@ -140,8 +138,9 @@ public class EMailUtility {
         for (int i = 0; i < size; i++) {
             if (arrayData.get(i).toString().contains(email)) {
                 response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
-
+                //Gets password from the html response
                 String resp = response.getMessage();
+                //Cuts string between two string in the html response
                 Assert.assertTrue(resp.contains(keyword));
                 //generate report
                 generateReport(action, expected, response);
