@@ -9,6 +9,7 @@ public class Constants {
     public static final String METHOD_DELETED = "This method is deleted.";
     public static final String SHOULD_FAIL = "We should have failed: ";
     public static final String THERE_ARE = "There are ";
+    public static final String REQUEST_FORGOT_PASSWORD_MESSAGE = "Request submitted. If the email matches an account, instructions to reset the password will be sent.";
     public static final String PROGRAM_MANAGER_ROLE = "Program Manager";
     public static final String SITE_MANAGER_ROLE = "Site Manager";
     public static final String SUPPORT_ADMIN_ROLE = "Support Admin";

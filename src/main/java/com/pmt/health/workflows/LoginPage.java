@@ -6,9 +6,11 @@ import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.Configuration;
+import com.pmt.health.utilities.Constants;
 import com.pmt.health.utilities.LocatorType;
 import com.pmt.health.utilities.Property;
 import org.openqa.selenium.Keys;
+import org.testng.Assert;
 import org.testng.log4testng.Logger;
 
 public class LoginPage {
@@ -26,6 +28,9 @@ public class LoginPage {
     private final WebbElement passwordSet;
     private final WebbElement submitButton;
     private final WebbElement secretKey;
+    private final WebbElement forgotPassword;
+    private final WebbElement submitEmailAddress;
+    private final WebbElement divMessage;
 
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
@@ -46,6 +51,9 @@ public class LoginPage {
         this.secretKey = app.newElement(LocatorType.CSS, "div.scan-qr-code-secret");
         this.passwordSet = app.newElement(LocatorType.CSS, "input[name=password]");
         this.submitButton = app.newElement(LocatorType.CSS, "input.center-block.submit-button.btn.btn-primary");
+        this.forgotPassword = app.newElement(LocatorType.CSS, "a[href*='/forgotpassword']");
+        this.submitEmailAddress = app.newElement(LocatorType.CSS, "input[value*='Submit']");
+        this.divMessage = app.newElement(LocatorType.CSS, "div.initial-pwd-msg.message");
     }
 
     /**
@@ -181,6 +189,7 @@ public class LoginPage {
 
     /**
      * Types mfa with current parameter
+     *
      * @param obtainOath2Key method which converts mfa
      */
     private void enterMFA(String obtainOath2Key) {
@@ -215,6 +224,42 @@ public class LoginPage {
         secretKey.waitFor().displayed();
         String key = secretKey.get().text();
         user.setSecretKey(key);
+    }
+
+    public void forgotPassword() {
+        this.forgotPassword.waitFor().displayed();
+        this.forgotPassword.click();
+    }
+
+    public void submitEmailAddress() {
+        this.submitEmailAddress.waitFor().displayed();
+        this.submitEmailAddress.click();
+    }
+
+    public void assertForgotPasswordMessage() {
+        this.submitEmailAddress.waitFor().notDisplayed();
+        this.divMessage.waitFor().displayed();
+        String message = this.divMessage.get().text();
+        Assert.assertTrue(message.contains(Constants.REQUEST_FORGOT_PASSWORD_MESSAGE));
+    }
+
+    /**
+     * Opens the initial web environment, and sets the screensize according to passed in parameters
+     */
+    public void loadSpecifyEnvironment(String url) {
+        if (System.getProperty(SCREEN_SIZE) != null && !"".equals(System.getProperty(SCREEN_SIZE))) {
+            try {
+                int width = Integer.parseInt(System.getProperty(SCREEN_SIZE).split("x")[0]);
+                int height = Integer.parseInt(System.getProperty(SCREEN_SIZE).split("x")[1]);
+                app.resize(width, height);
+            } catch (Exception e) {
+                log.debug(e);
+                app.maximize();
+            }
+        } else {
+            app.maximize();
+        }
+        app.goToURL(url);
     }
 
     /**
