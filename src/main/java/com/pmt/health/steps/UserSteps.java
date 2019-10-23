@@ -3,6 +3,7 @@ package com.pmt.health.steps;
 //DO NOT REMOVE THESE OR GHERKIN BUILDER BREAKS!
 
 import com.pmt.health.objects.user.User;
+
 public class UserSteps {
 
     protected DeviceController deviceController;

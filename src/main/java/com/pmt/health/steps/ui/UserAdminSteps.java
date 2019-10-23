@@ -132,7 +132,7 @@ public class UserAdminSteps {
         this.addUserPage.checkAwardee(org);
         this.addUserPage.saveUser();
     }
-    
+
     @And("^Lock user, status of user is Disabled$")
     public void lockSearchedUser() throws InterruptedException {
         this.userAdminPage.userAdmin();
@@ -158,7 +158,7 @@ public class UserAdminSteps {
         this.userAdminPage.enterSearch(user.getSearchedUserEmail());
         this.userAdminPage.assertStatusUser(Constants.ACTIVE_STATUS);
         this.loginPage.logout();
-      //user can log in
+        //user can log in
         this.loginPage.firstLoginSearchedUser(user);
         this.loginPage.assertUserLoginSuccess();
         this.loginPage.logout();

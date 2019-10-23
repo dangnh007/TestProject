@@ -121,9 +121,10 @@ public class UserUtility {
 
     /**
      * Refactored method for reporter
-     * @param action what it does
-     * @param expected values or response
-     * @param response actual response
+     *
+     * @param action      what it does
+     * @param expected    values or response
+     * @param response    actual response
      * @param failMessage massage displayed if there is a failure
      */
     private void reporterPassFailStep(String action, String expected, Response response, String failMessage) {
@@ -207,7 +208,7 @@ public class UserUtility {
         // make the actual call
         Response response = adminHttp.simplePost("/api/userAdmin/user?roleName=ROLE_MC_SYSTEM_ADMINISTRATOR", requestData);
         reporterPassFailStep(action, expected, response, "User has been not created. ");
-        if(user.searchedUserEmail.isEmpty()) {
+        if (user.searchedUserEmail.isEmpty()) {
             user.setSearchedUserEmail(uEmail);
         }
         user.setEmail(uEmail);
@@ -233,7 +234,7 @@ public class UserUtility {
         reporterPassFailStep(action, expected, response, "Failed to find secret key. ");
         //gets secret key from response
         String secretKey = response.getObjectData().get("data").getAsJsonObject().get("secret").getAsString();
-        if(user.searchedUserSecret.isEmpty()) {
+        if (user.searchedUserSecret.isEmpty()) {
             user.setSearchedUserSecret(secretKey);
         }
 

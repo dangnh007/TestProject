@@ -29,6 +29,7 @@ public class AddUserPage {
 
     /**
      * click on the checkbox with parameterised organization/awardee
+     *
      * @param org passing organization value
      */
     public void checkAwardee(String org) {
@@ -48,6 +49,7 @@ public class AddUserPage {
 
     /**
      * input for the first name field
+     *
      * @param firstName passing first name parameter
      */
     public void enterFirstName(String firstName) {
@@ -61,6 +63,7 @@ public class AddUserPage {
 
     /**
      * input for the last name field
+     *
      * @param lastName passing last name parameter
      */
     public void enterLastName(String lastName) {
@@ -74,6 +77,7 @@ public class AddUserPage {
 
     /**
      * input for the email field
+     *
      * @param email passing email parameter
      */
     public void enterEmail(String email) {
@@ -86,6 +90,7 @@ public class AddUserPage {
 
     /**
      * input for the user role field
+     *
      * @param role passing user role parameter
      */
     public void selectRole(String role) {
@@ -96,10 +101,8 @@ public class AddUserPage {
             rolesInput.type(Keys.BACK_SPACE);
         }
     }
-    
-    public void inputUserInfo(String firstName, String lastName, String email, String role, String org)
-    {
-        
+
+    public void inputUserInfo(String firstName, String lastName, String email, String role, String org) {
         enterFirstName(firstName);
         enterLastName(lastName);
         enterEmail(email);

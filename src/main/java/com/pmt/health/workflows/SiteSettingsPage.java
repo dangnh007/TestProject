@@ -112,7 +112,7 @@ public class SiteSettingsPage {
      * checks today's date
      * parsing attribute to set date for a next day
      */
-    public void  selectDate() {
+    public void selectDate() {
         String today = todayDate.get().attribute(DATA_VALUE);
         int tomorrow = Integer.parseInt(today) + 1;
         WebbElement tomorrowDate = app.newElement(LocatorType.XPATH, "//tr/td[@" + DATA_VALUE + "='" + tomorrow + "']");
@@ -162,6 +162,7 @@ public class SiteSettingsPage {
 
     /**
      * types parameterized string into email address field
+     *
      * @param emailAddress string parameter
      */
     public void enterEmailAddress(String emailAddress) {
@@ -174,6 +175,7 @@ public class SiteSettingsPage {
 
     /**
      * types parameter into phone number field
+     *
      * @param phoneNumber long parameter
      */
     public void enterPhoneNumber(String phoneNumber) {
@@ -186,6 +188,7 @@ public class SiteSettingsPage {
 
     /**
      * types parameter into dob field
+     *
      * @param dateOfBirth date parameter
      */
     public void enterDateOfBirth(String dateOfBirth) {
@@ -198,6 +201,7 @@ public class SiteSettingsPage {
 
     /**
      * types parameter into last name field
+     *
      * @param lastName string parameter
      */
     public void enterLastName(String lastName) {
@@ -210,6 +214,7 @@ public class SiteSettingsPage {
 
     /**
      * types parameter into first name field
+     *
      * @param firstName string parameter
      */
     public void enterFirstName(String firstName) {
@@ -237,7 +242,7 @@ public class SiteSettingsPage {
      */
     public void hoFormUpdate() {
         hoFormUpdate.click();
-        if(warning.is().present() && warning.waitFor().displayed()) {
+        if (warning.is().present() && warning.waitFor().displayed()) {
             ignoreWarning.click();
         }
     }
@@ -305,6 +310,7 @@ public class SiteSettingsPage {
 
     /**
      * selects day with parametrized attribute
+     *
      * @param day passing string parameter
      */
     public void appNotice(String day) {
@@ -316,6 +322,7 @@ public class SiteSettingsPage {
 
     /**
      * sets target parameter
+     *
      * @param target target parameter
      */
     public void setTarget(String target) {
@@ -325,6 +332,7 @@ public class SiteSettingsPage {
 
     /**
      * checks if toggle on/off button is true or false to activate or deactivate it
+     *
      * @param toggle toggle on/off button parameter
      */
     public void toggleOnOff(String toggle) {

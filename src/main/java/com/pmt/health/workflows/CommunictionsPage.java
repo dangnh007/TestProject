@@ -502,6 +502,7 @@ public class CommunictionsPage {
 
     /**
      * clicks on the parameter from site dropdown
+     *
      * @param site string parameter
      */
     public void selectSite(String site) {
@@ -512,6 +513,7 @@ public class CommunictionsPage {
 
     /**
      * clicks on the parameter from organization dropdown
+     *
      * @param org string parameter
      */
     public void selectOrganization(String org) {
@@ -522,6 +524,7 @@ public class CommunictionsPage {
 
     /**
      * clicks on the parameter from communication preferences dropdown
+     *
      * @param channel string parameter
      */
     public void selectCommunicationPreference(String channel) {
@@ -775,6 +778,7 @@ public class CommunictionsPage {
     /**
      * clicks on the arg dropdown
      * selects current parameter
+     *
      * @param age passing age value
      */
     public void selectAge(String age) {
@@ -823,6 +827,7 @@ public class CommunictionsPage {
 
     /**
      * clicks on the parametrized value
+     *
      * @param ageRaceGender passing arg option
      */
     public void selectAgeRaceGender(String ageRaceGender) {
@@ -832,6 +837,7 @@ public class CommunictionsPage {
 
     /**
      * clicks on the parametrized value
+     *
      * @param emailFilter passing email filter
      */
     public void selectEmailFilter(String emailFilter) {
@@ -919,6 +925,7 @@ public class CommunictionsPage {
 
     /**
      * select consent in previously clicked dropdown
+     *
      * @param consent parameter of the consent value
      */
     public void selectConsent(String consent) {
@@ -929,6 +936,7 @@ public class CommunictionsPage {
     /**
      * clicks on the segmentation category dropdown
      * select parameter and clicks on to add it
+     *
      * @param group passing group parameter
      */
     public void selectProgramSegmentationCategory(String group) {

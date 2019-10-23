@@ -62,7 +62,7 @@ public class Zephyr {
     }
 
     private String createCycle(String projectId, String version, String cycleName, String cycleDescription, String build,
-                            String environment) throws IOException {
+                               String environment) throws IOException {
         JsonObject cycle = new JsonObject();
         cycle.addProperty("clonedCycleId", "");
         cycle.addProperty(PROJECT, String.valueOf(projectId));
