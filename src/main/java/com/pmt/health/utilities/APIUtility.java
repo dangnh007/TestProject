@@ -221,11 +221,11 @@ public class APIUtility {
         JsonArray timeBlocksArr = new JsonArray();
         JsonObject timeBlocks = new JsonObject();
         timeBlocks.addProperty("concurrentAppointments", 3);
-        timeBlocks.addProperty("endTime", 1_561_669_200);
+        timeBlocks.addProperty("endTime", 1_561_651_200);
         timeBlocks.addProperty(ID, "");
         timeBlocks.addProperty("name", "Update");
         timeBlocks.addProperty("selected", false);
-        timeBlocks.addProperty("startTime", 1_561_640_400);
+        timeBlocks.addProperty("startTime", 1_561_622_400);
         timeBlocks.addProperty(TIME_ZONE, AMERICA_CHICAGO);
         timeBlocksArr.add(timeBlocks);
         defWorkingTimeObj.add("timeBlocks", timeBlocksArr);

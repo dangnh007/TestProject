@@ -1,10 +1,11 @@
-@feature-mc-4842 @pmt @settings @smoke @wip
+@feature-mc-4842 @pmt @settings @smoke
 Feature: PMT Site Settings
   As a user
   I want to modify Site Settings
 
   Background:
-    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    Given I create test groups via API
+    And I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
 
   @mc-4851
   Scenario: I login as Site manager and set up Site Settings
