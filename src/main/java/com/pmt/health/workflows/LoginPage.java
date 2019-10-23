@@ -264,6 +264,15 @@ public class LoginPage {
         user.setSecretKey(key);
     }
 
+    public void loginWithoutMFA(String email) {
+        enterEmail(email);
+        enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+    }
+
     public void forgotPassword() {
         this.forgotPassword.waitFor().displayed();
         this.forgotPassword.click();

@@ -17,6 +17,10 @@ public class UserAdminPage {
     private final WebbElement userSettingsButton;
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
+    private final WebbElement lockActionLink;
+    private final WebbElement divStatusOfUser;
+    private final WebbElement divLoginMessage;
+    private final App app;
     private final WebbElement userResetPasswordButton;
     private final WebbElement resetMFAButton;
     private final WebbElement changedSuccessMessage;
@@ -35,13 +39,17 @@ public class UserAdminPage {
         this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
         this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
-        this.userAdminButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-user \"]");
+        this.userAdminButton = app.newElement(LocatorType.XPATH, "//p[text()='User Admin']/parent::a");
+        this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
         this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.lockActionLink = app.newElement(LocatorType.CSS, "svg[data-icon*='lock']");
+        this.divStatusOfUser = app.newElement(LocatorType.XPATH, "//td[contains(@tabindex,'6')]/div[contains(@class,'cell-container')]");
+        this.divLoginMessage = app.newElement(LocatorType.CSS, "div.login-error-message");
+        this.app = app;
         this.userResetPasswordButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-sync\"]");
         this.resetMFAButton = app.newElement(LocatorType.CSS, "svg[class*=\"shield\"]");
         this.changedSuccessMessage = app.newElement(LocatorType.CSS, "div[class=\"message animated fade success in\"]");
-        this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
         this.searchField = app.newElement(LocatorType.CSS, "input[placeholder='Search']");
         this.tableEmailAssert = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getSearchedUserEmail() + "\")]");
         this.actionDropdown = app.newElement(LocatorType.CSS, "button[class='action-btn dropdown-toggle btn btn-default']");
@@ -145,6 +153,45 @@ public class UserAdminPage {
         spinner.waitFor().notDisplayed();
         createdSortButton.click();
         createdUser.assertState().displayed();
+    }
+
+    public void enterSearch(String searchString) {
+        searchField.waitFor().displayed();
+        searchField.clear();
+        searchField.type(searchString);
+        spinner.waitFor().notDisplayed();
+    }
+
+    public void clickActionButton() {
+        actionDropdown.click();
+    }
+
+    public void clickLockActionLink() {
+        lockActionLink.click();
+    }
+
+    public void assertLockOrUnlockUserSuccess() {
+        changedSuccessMessage.assertState().displayed();
+    }
+
+    public void assertStatusUser(String expectedStatus) {
+        String action = "Assert Status of User";
+        divStatusOfUser.assertState().displayed();
+        if (expectedStatus.equals(divStatusOfUser.get().text())) {
+            app.getReporter().pass(action, expectedStatus, divStatusOfUser.get().text());
+        } else {
+            app.getReporter().fail(action, expectedStatus, divStatusOfUser.get().text());
+        }
+    }
+
+    public void assertLoginByLockedUser(String expectedStatus) {
+        String action = "Assert Login By Locked User";
+        divLoginMessage.assertState().displayed();
+        if (expectedStatus.equals(divLoginMessage.get().text())) {
+            app.getReporter().pass(action, expectedStatus, divLoginMessage.get().text());
+        } else {
+            app.getReporter().fail(action, expectedStatus, divLoginMessage.get().text());
+        }
     }
 
     /**

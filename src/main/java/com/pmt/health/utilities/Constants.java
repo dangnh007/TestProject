@@ -14,6 +14,12 @@ public class Constants {
     public static final String SITE_MANAGER_ROLE = "Site Manager";
     public static final String SUPPORT_ADMIN_ROLE = "Support Admin";
     public static final String RESEARCH_ASSISTANT_ROLE = "Research Assistant";
+    public static final String BANNER_HEALTH_ORG = "Organization/AZ_TUCSON_BANNER_HEALTH";
+    public static final String BANNER_BAYWOOD_MEDICAL_CENTER_SITE = "Site/hpo-site-bannerbaywood";
+    public static final String ACTIVE_STATUS = "Active";
+    public static final String DISABLED_STATUS = "Disabled";
+    public static final String ERROR_WHEN_LOGIN_BY_LOCKED_USER = "For security reasons, your account has been locked. Please contact your administrator to unlock your account.";
+    public static final String LOCK_EMAIL_KEYWORD = "has been locked";
     public static final String EMAIL_RESET_PASSWORD = "reset your password";    //NOSONAR
     public static final String AUTOMATION_AWARDEE = "Awardee/TEST_AUTOMATION";
     public static final String AUTOMATION_SITE = "Site/hpo-test-automation";

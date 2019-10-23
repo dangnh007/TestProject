@@ -98,6 +98,16 @@ Feature: User Management
     When I login as user
     Then I found created user by searching email
 
+  @mc-6220
+  Scenario: Lock user and verify email notification by Program Manager
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I login as user
+    Then I lock user and status of this user should be changed to Disabled and locked user can not login
+
   @mc-6398
   Scenario: As Program Manager I want to reset password for another user
     Given I create test groups via API

@@ -5,11 +5,11 @@ import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.utilities.Constants;
-import com.pmt.health.utilities.EMailUtility;
-import com.pmt.health.utilities.Property;
 import com.pmt.health.workflows.AddUserPage;
 import com.pmt.health.workflows.LoginPage;
 import com.pmt.health.workflows.UserAdminPage;
+import com.pmt.health.utilities.EMailUtility;
+import com.pmt.health.utilities.Property;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -52,6 +52,26 @@ public class UserAdminSteps {
     @Then("^User has been created$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
+    }
+
+    @Then("^I lock user and status of this user should be changed to Disabled and locked user can not login$")
+    public void lockTempUser() throws IOException, InterruptedException {
+        this.userAdminPage.userAdmin();
+        this.userAdminPage.enterSearch(user.getSearchedUserEmail());
+        this.userAdminPage.clickActionButton();
+        this.userAdminPage.clickLockActionLink();
+        this.userAdminPage.assertLockOrUnlockUserSuccess();
+        this.userAdminPage.enterSearch(user.getSearchedUserEmail());
+        this.userAdminPage.assertStatusUser(Constants.DISABLED_STATUS);
+        this.emailUtility.assertEmailForUser(Constants.LOCK_EMAIL_KEYWORD, user.getSearchedUserEmail());
+        loginByLockedUser();
+    }
+
+    private void loginByLockedUser() {
+        this.loginPage.logout();
+        this.loginPage.loadEnvironment();
+        this.loginPage.loginWithoutMFA(user.getSearchedUserEmail());
+        this.userAdminPage.assertLoginByLockedUser(Constants.ERROR_WHEN_LOGIN_BY_LOCKED_USER);
     }
 
     @And("^I reset password for temp user$")

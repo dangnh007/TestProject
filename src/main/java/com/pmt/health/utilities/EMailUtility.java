@@ -109,6 +109,51 @@ public class EMailUtility {
         }
     }
 
+    public String emailGetValue(String userEmail) throws IOException, InterruptedException {
+        String action = "Getting into an inbox and retrieve message via API";
+        String expected = "Successfully get into an inbox and retrieve message via the API";
+        // setup BaseURL
+        HTTP emailAPI = new HTTP(EMAIL_URL, reporter);
+        RequestData requestData = new RequestData();
+        Map<String, String> token = new HashMap<>();
+        token.put("Api-Token", API_TOKEN);
+        emailAPI.addHeaders(token);
+        requestData.setHeaders(token);
+        Response response;
+        JsonArray arrayData;
+        int size;
+        int counter = 0;
+        //string to return password value
+        String password = "";
+        //do-while to check inbox again if email was not found
+        do {
+            // make the actual call
+            response = emailAPI.get(MESSAGES_ENDPOINT, requestData);
+            //Initialize ArrayData from response
+            size = response.getArrayData().size();
+            arrayData = response.getArrayData();
+            //Pauses execution for 3 second
+            Thread.sleep(3000);
+            counter++;
+        } while (!arrayData.toString().contains(userEmail) && counter < 5);
+        //Loop through to get a new response for a valid message
+        for (int i = 0; i < size; i++) {
+            if (arrayData.get(i).toString().contains(userEmail)) {
+                response = emailAPI.get(MESSAGES_ENDPOINT + "/" + arrayData.get(i).getAsJsonObject().get("id") + "/body.html", requestData);
+                //Gets password from the html response
+                String resp = response.getMessage();
+                //Cuts string between two string in the html response
+                password = StringUtils.substringBetween(resp, "Password", "</span>");
+                //generate report
+                generateReport(action, expected, response);
+                break;
+            }
+        }
+        //index where string become valuable and set it into an user object
+        //skips other not valuable characters and spaces until index of needed value
+        return password.substring(11);
+    }
+
     public void assertEmailForUser(String keyword, String email) throws IOException, InterruptedException {
         String action = "Getting into an inbox and retrieve message via API";
         String expected = "Successfully get into an inbox and retrieve message via the API";
