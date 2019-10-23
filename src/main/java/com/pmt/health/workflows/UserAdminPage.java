@@ -7,6 +7,8 @@ import com.pmt.health.utilities.LocatorType;
 
 public class UserAdminPage {
 
+    private final App app;
+
     private final WebbElement addUserButton;
     private final WebbElement loggedInHeadingUserAdministration;
     private final WebbElement loggedInHeadingUser;
@@ -20,7 +22,6 @@ public class UserAdminPage {
     private final WebbElement lockActionLink;
     private final WebbElement divStatusOfUser;
     private final WebbElement divLoginMessage;
-    private final App app;
     private final WebbElement userResetPasswordButton;
     private final WebbElement resetMFAButton;
     private final WebbElement changedSuccessMessage;
@@ -30,14 +31,20 @@ public class UserAdminPage {
     private final WebbElement editUserHeader;
     private final WebbElement actionDropdown;
     private final WebbElement editAction;
+    private final WebbElement unlockActionLink;
+    private final WebbElement divMessageSuccess;
+    private final WebbElement deleteActionLink;
+    private final WebbElement userDeleteConfirmationButton;
+    private static final String DIV_CONTAIN_TEXT_PATTERN_XPATH = "//div[contains(text(),";
 
     public UserAdminPage(App app, User user) {
+        this.app = app;
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
         this.loggedInHeadingUserAdministration = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
         this.loggedInHeadingUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
         this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
-        this.createdUser = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getEmail() + "\")]");
+        this.createdUser = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
         this.userAdminButton = app.newElement(LocatorType.XPATH, "//p[text()='User Admin']/parent::a");
         this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
@@ -46,15 +53,19 @@ public class UserAdminPage {
         this.lockActionLink = app.newElement(LocatorType.CSS, "svg[data-icon*='lock']");
         this.divStatusOfUser = app.newElement(LocatorType.XPATH, "//td[contains(@tabindex,'6')]/div[contains(@class,'cell-container')]");
         this.divLoginMessage = app.newElement(LocatorType.CSS, "div.login-error-message");
-        this.app = app;
         this.userResetPasswordButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-sync\"]");
         this.resetMFAButton = app.newElement(LocatorType.CSS, "svg[class*=\"shield\"]");
         this.changedSuccessMessage = app.newElement(LocatorType.CSS, "div[class=\"message animated fade success in\"]");
         this.searchField = app.newElement(LocatorType.CSS, "input[placeholder='Search']");
-        this.tableEmailAssert = app.newElement(LocatorType.XPATH, "//div[contains(text(), \"" + user.getSearchedUserEmail() + "\")]");
+        this.tableEmailAssert = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getSearchedUserEmail() + "\")]");
         this.actionDropdown = app.newElement(LocatorType.CSS, "button[class='action-btn dropdown-toggle btn btn-default']");
-        this.editUserHeader = app.newElement(LocatorType.XPATH, "//div[contains(text(),'Edit User')]");
-        this.editAction = app.newElement(LocatorType.XPATH, "//li/a[contains(text(),'Edit')]");
+        this.editUserHeader = app.newElement(LocatorType.CSS, "div[class='heading-create_user']");
+        this.editAction = app.newElement(LocatorType.CSS, "a[href*='editUser']");
+        this.unlockActionLink = app.newElement(LocatorType.CSS, "svg[data-icon*='unlock']");
+        this.divMessageSuccess = app.newElement(LocatorType.CSS, "div[class*='message animated fade success in']");
+        this.deleteActionLink = app.newElement(LocatorType.CSS, "svg[class*='trash']");
+        this.userDeleteConfirmationButton = app.newElement(LocatorType.CSS,
+                "button[class='button-warning btn btn-primary']");
     }
 
     public void assertEditUserHeader() {
@@ -126,14 +137,16 @@ public class UserAdminPage {
     }
 
     /**
-     * Asserts that the current user is logged out by making sure the login page is displayed.
+     * Asserts that the current user is logged out by making sure the login page is
+     * displayed.
      */
     public void assertLoggedIn() {
         loggedInHeadingAdmin.assertState().displayed();
     }
 
     /**
-     * Asserts that the current user is logged out by making sure the login page is displayed.
+     * Asserts that the current user is logged out by making sure the login page is
+     * displayed.
      */
     public void assertLoggedInUser() {
         loggedInHeadingUser.assertState().displayed();
@@ -153,35 +166,6 @@ public class UserAdminPage {
         spinner.waitFor().notDisplayed();
         createdSortButton.click();
         createdUser.assertState().displayed();
-    }
-
-    public void enterSearch(String searchString) {
-        searchField.waitFor().displayed();
-        searchField.clear();
-        searchField.type(searchString);
-        spinner.waitFor().notDisplayed();
-    }
-
-    public void clickActionButton() {
-        actionDropdown.click();
-    }
-
-    public void clickLockActionLink() {
-        lockActionLink.click();
-    }
-
-    public void assertLockOrUnlockUserSuccess() {
-        changedSuccessMessage.assertState().displayed();
-    }
-
-    public void assertStatusUser(String expectedStatus) {
-        String action = "Assert Status of User";
-        divStatusOfUser.assertState().displayed();
-        if (expectedStatus.equals(divStatusOfUser.get().text())) {
-            app.getReporter().pass(action, expectedStatus, divStatusOfUser.get().text());
-        } else {
-            app.getReporter().fail(action, expectedStatus, divStatusOfUser.get().text());
-        }
     }
 
     public void assertLoginByLockedUser(String expectedStatus) {
@@ -213,5 +197,60 @@ public class UserAdminPage {
         actionDropdown.click();
         resetMFAButton.click();
         changedSuccessMessage.assertState().displayed();
+    }
+
+    public void assertCreatedUser(String email) {
+        spinner.waitFor().notDisplayed();
+        WebbElement divCreatedUser = app.newElement(LocatorType.XPATH,
+                DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + email + "\")]");
+        divCreatedUser.assertState().displayed();
+    }
+
+    public void enterSearch(String searchString) {
+        searchField.type(searchString);
+    }
+
+    public void clickActionButton() {
+        actionDropdown.click();
+    }
+
+    public void clickLockActionLink() {
+        lockActionLink.click();
+    }
+
+    public void clickUnLockActionLink() {
+        unlockActionLink.click();
+    }
+
+    public void assertLockOrUnlockUserSuccess() throws InterruptedException {
+        Thread.sleep(2000);
+        divMessageSuccess.assertState().displayed();
+        if ("Your changes have been saved.".equals(divMessageSuccess.get().text())) {
+            app.getReporter().pass("Lock/Unlock user success");
+        } else {
+            app.getReporter().fail("Lock/Unlock user failed");
+        }
+    }
+
+    public void assertStatusUser(String expectedStatus) {
+        String action = "Assert Status of User";
+        divStatusOfUser.assertState().displayed();
+        if (expectedStatus.equals(divStatusOfUser.get().text())) {
+            app.getReporter().pass(action, expectedStatus, divStatusOfUser.get().value());
+        } else {
+            app.getReporter().fail(action, expectedStatus, divStatusOfUser.get().value());
+        }
+    }
+
+    public void deleteCreatedUser(String userEmail) throws InterruptedException {
+        Thread.sleep(3000);
+        userAdmin();
+        spinner.waitFor().notDisplayed();
+        searchField.type(userEmail);
+        Thread.sleep(3000);
+        actionDropdown.click();
+        deleteActionLink.click();
+        userDeleteConfirmationButton.click();
+        spinner.waitFor().notDisplayed();
     }
 }

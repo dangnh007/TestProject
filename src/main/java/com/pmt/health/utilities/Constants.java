@@ -24,6 +24,7 @@ public class Constants {
     public static final String AUTOMATION_AWARDEE = "Awardee/TEST_AUTOMATION";
     public static final String AUTOMATION_SITE = "Site/hpo-test-automation";
     public static final String AUTOMATION_ORG = "Organization/TEST_AUTOMATION_ORGANIZATION";
+    public static final String UNLOCK_EMAIL_KEYWORD = "unlock";
 
     private Constants() {
         throw new UnsupportedOperationException("Don't call new on Constants");

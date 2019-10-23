@@ -33,6 +33,9 @@ public class LoginPage {
     private final WebbElement submitEmailAddress;
     private final WebbElement divMessage;
 
+    private static final String PASS = Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS);
+
+
     Logger log = Logger.getLogger(LoginPage.class);
     private User user;
 
@@ -71,6 +74,30 @@ public class LoginPage {
         setKey();
         okButton.click();
         enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
+        getLoginButton().click();
+    }
+    
+    public void setLoginUser(User user) {
+        enterEmail(user.getEmail());
+        enterPassword(user.getPassword());
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+        setKey(user);
+        okButton.click();
+        enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
+        getLoginButton().click();
+    }
+
+    public void setLoginSearchedUser(User user) {
+        enterEmail(user.getSearchedUserEmail());
+        enterPassword(PASS);
+        getLoginButton().waitFor().displayed();
+        if (getLoginButton().is().enabled()) {
+            getLoginButton().click();
+        }
+        enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSearchedUserSecret()));
         getLoginButton().click();
     }
 
@@ -308,5 +335,38 @@ public class LoginPage {
         okButton.click();
         enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSearchedUserSecret()));
         getLoginButton().click();
+    }
+
+    public void setKey(User user) {
+        secretKey.waitFor().displayed();
+        String key = secretKey.get().text();
+        user.setSecretKey(key);
+    }
+
+    public void setKeySearchedUser(User user) {
+        secretKey.waitFor().displayed();
+        String key = secretKey.get().text();
+        user.setSearchedUserSecret(key);
+    }
+
+    public void userFirstLogin() {
+        // first login
+        loadEnvironment();
+        setLogin();
+        typeNewPassword();
+        clickSubmitButton();
+        deleteCookie();
+        // log in again
+        loadEnvironment();
+        login();
+    }
+
+    public void firstLoginSearchedUser(User user) {
+        loadEnvironment();
+        setLoginSearchedUser(user);
+    }
+
+    public void assertUserLoginSuccess() {
+        welcomeMessage.assertState().displayed();
     }
 }

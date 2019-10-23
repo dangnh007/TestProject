@@ -96,6 +96,16 @@ public class AddUserPage {
             rolesInput.type(Keys.BACK_SPACE);
         }
     }
+    
+    public void inputUserInfo(String firstName, String lastName, String email, String role, String org)
+    {
+        
+        enterFirstName(firstName);
+        enterLastName(lastName);
+        enterEmail(email);
+        selectRole(role);
+        checkAwardee(org);
+    }
 }
 
 

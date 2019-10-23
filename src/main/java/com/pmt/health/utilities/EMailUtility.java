@@ -51,7 +51,6 @@ public class EMailUtility {
         generateReport(action, expected, response);
         return response;
     }
-
     public void emailGetValue() throws IOException, InterruptedException {
         String action = "Getting into an inbox and retrieve message via API";
         String expected = "Successfully get into an inbox and retrieve message via the API";
@@ -98,7 +97,6 @@ public class EMailUtility {
             user.setSearchedUserPassword(password.substring(11));
         }
         user.setPassword(password.substring(11));
-
     }
 
     private void generateReport(String action, String expected, Response response) {

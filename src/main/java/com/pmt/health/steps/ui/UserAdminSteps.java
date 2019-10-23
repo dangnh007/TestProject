@@ -1,5 +1,7 @@
 package com.pmt.health.steps.ui;
 
+import org.springframework.context.annotation.Description;
+
 import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
@@ -13,7 +15,6 @@ import com.pmt.health.utilities.Property;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.springframework.context.annotation.Description;
 
 import java.io.IOException;
 
@@ -130,6 +131,37 @@ public class UserAdminSteps {
         this.addUserPage.selectRole(role);
         this.addUserPage.checkAwardee(org);
         this.addUserPage.saveUser();
+    }
+    
+    @And("^Lock user, status of user is Disabled$")
+    public void lockSearchedUser() throws InterruptedException {
+        this.userAdminPage.userAdmin();
+        this.userAdminPage.enterSearch(user.getSearchedUserEmail());
+        this.userAdminPage.assertCreatedUser(user.getSearchedUserEmail());
+        this.userAdminPage.clickActionButton();
+        this.userAdminPage.clickLockActionLink();
+        this.userAdminPage.assertLockOrUnlockUserSuccess();
+        this.userAdminPage.enterSearch(user.getSearchedUserEmail());
+        this.userAdminPage.assertStatusUser(Constants.DISABLED_STATUS);
+    }
+
+    @Then("^I unlock that user$")
+    public void unlockSearchedUser() {
+        this.userAdminPage.clickActionButton();
+        this.userAdminPage.clickUnLockActionLink();
+    }
+
+    @And("^User is unlock successfully and can log into system successfully$")
+    public void unlockSearchedUserSuccessfully() throws InterruptedException, IOException {
+        this.userAdminPage.assertLockOrUnlockUserSuccess();
+        this.emailUtility.assertEmailForUser(Constants.UNLOCK_EMAIL_KEYWORD, user.getSearchedUserEmail());
+        this.userAdminPage.enterSearch(user.getSearchedUserEmail());
+        this.userAdminPage.assertStatusUser(Constants.ACTIVE_STATUS);
+        this.loginPage.logout();
+      //user can log in
+        this.loginPage.firstLoginSearchedUser(user);
+        this.loginPage.assertUserLoginSuccess();
+        this.loginPage.logout();
     }
 
     @Then("^I found created user by searching email$")

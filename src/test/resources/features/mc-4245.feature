@@ -116,8 +116,8 @@ Feature: User Management
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I set up my credentials via API
     When I reset password for temp user
-    Then An email notification should be received
-    And I login as temp user again by reset password successfully
+    And An email notification should be received
+    Then I login as temp user again by reset password successfully
 
   @mc-6431
   Scenario: Program Manager forgot password and reset password successfully
@@ -125,8 +125,8 @@ Feature: User Management
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I set up my credentials via API
     When User login page, select Forgot Password and submit email address
-    Then User should receive reset password email
-    And User should reset password and login successfully
+    And User should receive reset password email
+    Then User should reset password and login successfully
 
   @mc-6461
   Scenario: As Program Manager I want to verify MFA reset function
@@ -137,3 +137,16 @@ Feature: User Management
     And I set up my credentials via API
     When I reset MFA code for temp user
     Then I login temp user with new secret key
+
+  @mc-6099
+  Scenario: Unlock User
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I login as user
+    And I am logged in as user
+    And Lock user, status of user is Disabled
+    And I unlock that user
+    Then User is unlock successfully and can log into system successfully
