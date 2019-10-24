@@ -118,7 +118,7 @@ Feature: User Management
     When I reset password for temp user
     And An email notification should be received
     Then I login as temp user again by reset password successfully
-    
+
   @mc-6216
   Scenario: As Program Manager I want to verify Cancel delete user
     Given I create test groups via API
@@ -137,11 +137,11 @@ Feature: User Management
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I set up my credentials via API
     When I delete that temp user
-    Then The temp user should be removed 
+    Then The temp user should be removed
 
   @mc-6184
   Scenario: As Program Manager I want to verify delete user message
-  Given I create test groups via API
+    Given I create test groups via API
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I set up my credentials via API
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
@@ -160,7 +160,7 @@ Feature: User Management
 
   @mc-6398
   Scenario: As Program Manager I want to reset password for another user
-  Given I create test groups via API
+    Given I create test groups via API
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I set up my credentials via API
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""

@@ -76,7 +76,7 @@ public class LoginPage {
         enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
         getLoginButton().click();
     }
-    
+
     public void setLoginUser(User user) {
         enterEmail(user.getEmail());
         enterPassword(user.getPassword());
@@ -121,7 +121,7 @@ public class LoginPage {
     /**
      * Activates the login control for default user "System Administrator"
      */
-    public void  loginAdmin() {
+    public void loginAdmin() {
         enterEmail(Property.getProgramProperty(Configuration.getEnvironment() + ".admin.user"));
         enterPassword(Property.getProgramProperty(Configuration.getEnvironment() + ADMIN_PASS));
         getLoginButton().waitFor().displayed();

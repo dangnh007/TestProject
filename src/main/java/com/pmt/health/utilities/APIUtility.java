@@ -364,20 +364,20 @@ public class APIUtility {
                 nodesAwardee = jsonArray.get(i).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
+
         for (int j = 0; j < nodesAwardee.size() && !awardee.isEmpty(); j++) {
-            if (nodesAwardee.size() < 10) {
-                reporter.fail("List is not retrieved. ");
-            }
             if (nodesAwardee.get(j).toString().contains(awardee)) {
                 nodesOrg = nodesAwardee.get(j).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
+
         for (int k = 0; k < nodesOrg.size() && !org.isEmpty(); k++) {
             if (nodesOrg.get(k).toString().contains(org)) {
                 orgId = nodesOrg.get(k).getAsJsonObject().get(ID).getAsString();
                 nodesSite = nodesOrg.get(k).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
+
         for (int b = 0; b < nodesSite.size() && !site.isEmpty(); b++) {
             if (nodesSite.get(b).toString().contains(site)) {
                 siteId = nodesSite.get(b).getAsJsonObject().get(ID).getAsString();

@@ -191,6 +191,7 @@ public class UserUtility {
         createUser.addProperty(EMAIL, uEmail);
         createUser.addProperty("firstName", user.getFirstName());
         createUser.addProperty("lastName", user.getLastName());
+        createUser.addProperty("isInternalAccount", true);
         //some of the fields in the body has array parameter
         JsonArray roles = new JsonArray();
         roles.add(role);

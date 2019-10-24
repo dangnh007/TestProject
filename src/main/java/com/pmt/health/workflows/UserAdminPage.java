@@ -242,7 +242,7 @@ public class UserAdminPage {
         searchField.type(userEmail);
         actionDropdown.assertState().notDisplayed();
     }
-      
+
     /**
      * Reset a specify user password
      */
