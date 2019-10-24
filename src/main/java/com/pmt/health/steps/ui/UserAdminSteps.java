@@ -55,6 +55,47 @@ public class UserAdminSteps {
         this.userAdminPage.assertCreatedUser();
     }
 
+    @Then("^I try to delete that temp user$")
+    public void tryDeleteUser() {
+        this.loginPage.loadEnvironment();
+        this.loginPage.login();
+        this.userAdminPage.userAdminButtonProgramManager();
+        this.userAdminPage.tryDeleteTempUser(user.getSearchedUserEmail());
+    }
+
+    @And("^The alert message is displayed with options Delete User and Cancel$")
+    public void verifyDeleteAlertMessage() {
+        this.userAdminPage.verifyDeleteAlertMessage();
+        this.loginPage.logout();
+    }
+
+    @When("^I try to delete that temp user but choose Cancel button$")
+    public void tryDeleteButClickCancel() {
+        this.loginPage.loadEnvironment();
+        this.loginPage.login();
+        this.userAdminPage.userAdminButtonProgramManager();
+        this.userAdminPage.tryDeleteButClickCancel(user.getSearchedUserEmail());
+    }
+
+    @Then("^The temp user still be persistent$")
+    public void assertTempUserPersistent() {
+        this.userAdminPage.assertUserPersistent(user.getSearchedUserEmail());
+        this.loginPage.logout();
+    }
+
+    @When("^I delete that temp user$")
+    public void deleteTempUser() {
+        this.loginPage.loadEnvironment();
+        this.loginPage.login();
+        this.userAdminPage.userAdminButtonProgramManager();
+        this.userAdminPage.deleteUser(user.getSearchedUserEmail());
+    }
+
+    @Then("^The temp user should be removed$")
+    public void assertTempUserRemoved() {
+        this.userAdminPage.assertUserRemoved(user.getSearchedUserEmail());
+    }
+
     @Then("^I lock user and status of this user should be changed to Disabled and locked user can not login$")
     public void lockTempUser() throws IOException, InterruptedException {
         this.userAdminPage.userAdmin();

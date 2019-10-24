@@ -118,6 +118,36 @@ Feature: User Management
     When I reset password for temp user
     And An email notification should be received
     Then I login as temp user again by reset password successfully
+    
+  @mc-6216
+  Scenario: As Program Manager I want to verify Cancel delete user
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I try to delete that temp user but choose Cancel button
+    Then The temp user still be persistent
+
+  @mc-6217
+  Scenario: As Program Manager I want to verify Delete user successfully
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I delete that temp user
+    Then The temp user should be removed 
+
+  @mc-6184
+  Scenario: As Program Manager I want to verify delete user message
+  Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I try to delete that temp user
+    Then The alert message is displayed with options Delete User and Cancel
 
   @mc-6431
   Scenario: Program Manager forgot password and reset password successfully
@@ -127,6 +157,17 @@ Feature: User Management
     When User login page, select Forgot Password and submit email address
     And User should receive reset password email
     Then User should reset password and login successfully
+
+  @mc-6398
+  Scenario: As Program Manager I want to reset password for another user
+  Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I reset password for temp user
+    Then An email notification should be received
+    And I login as temp user again by reset password successfully
 
   @mc-6461
   Scenario: As Program Manager I want to verify MFA reset function

@@ -19,6 +19,7 @@ public class UserAdminPage {
     private final WebbElement userSettingsButton;
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
+    private final WebbElement userDeleteCancelButton;
     private final WebbElement lockActionLink;
     private final WebbElement divStatusOfUser;
     private final WebbElement divLoginMessage;
@@ -46,7 +47,9 @@ public class UserAdminPage {
         this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
         this.createdUser = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
-        this.userAdminButton = app.newElement(LocatorType.XPATH, "//p[text()='User Admin']/parent::a");
+        this.userAdminButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-user \"]");
+        this.userDeleteConfirmationButton = app.newElement(LocatorType.CSS, "button[class=\"button-warning btn btn-primary\"]");
+        this.userDeleteCancelButton = app.newElement(LocatorType.CSS, "button[class=\"button-warning btn btn-secondary\"]");
         this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
         this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
@@ -64,8 +67,6 @@ public class UserAdminPage {
         this.unlockActionLink = app.newElement(LocatorType.CSS, "svg[data-icon*='unlock']");
         this.divMessageSuccess = app.newElement(LocatorType.CSS, "div[class*='message animated fade success in']");
         this.deleteActionLink = app.newElement(LocatorType.CSS, "svg[class*='trash']");
-        this.userDeleteConfirmationButton = app.newElement(LocatorType.CSS,
-                "button[class='button-warning btn btn-primary']");
     }
 
     public void assertEditUserHeader() {
@@ -96,6 +97,7 @@ public class UserAdminPage {
      * Clicks on the "User Admin" button
      */
     public void userAdmin() {
+        userAdminButton.assertState().enabled();
         userAdminButton.click();
         addUserButton.hover();
     }
@@ -178,6 +180,69 @@ public class UserAdminPage {
         }
     }
 
+    /**
+     * Try to delete Temp user without confirmation
+     */
+    public void tryDeleteTempUser(String tempUser) {
+        searchField.type(tempUser);
+        actionDropdown.click();
+        deleteActionLink.click();
+    }
+
+    /**
+     * Verify Delete alert message. It should have two options: Delete User and Cancel
+     */
+    public void verifyDeleteAlertMessage() {
+        userDeleteConfirmationButton.assertState().displayed();
+        userDeleteCancelButton.assertState().displayed();
+        userDeleteCancelButton.click();
+    }
+
+    /**
+     * Delete specify user
+     */
+    public void deleteUser(String userEmail) {
+        userAdmin();
+        spinner.waitFor().notDisplayed();
+        searchField.type(userEmail);
+        actionDropdown.click();
+        deleteActionLink.click();
+        userDeleteConfirmationButton.click();
+        spinner.waitFor().notDisplayed();
+    }
+
+    /**
+     * Try to delete user but click Cancel button
+     */
+    public void tryDeleteButClickCancel(String userEmail) {
+        spinner.waitFor().notDisplayed();
+        searchField.type(userEmail);
+        actionDropdown.click();
+        deleteActionLink.click();
+        userDeleteCancelButton.click();
+        spinner.waitFor().notDisplayed();
+    }
+
+    /**
+     * Assert a user that is available when searching
+     */
+    public void assertUserPersistent(String userEmail) {
+        userAdmin();
+        spinner.waitFor().notDisplayed();
+        searchField.type(userEmail);
+        actionDropdown.assertState().displayed();
+    }
+
+    /**
+     * Assert a user that was removed
+     */
+    public void assertUserRemoved(String userEmail) {
+        userAdmin();
+        spinner.waitFor().notDisplayed();
+        searchField.type(userEmail);
+        actionDropdown.assertState().notDisplayed();
+    }
+      
     /**
      * Reset a specify user password
      */
