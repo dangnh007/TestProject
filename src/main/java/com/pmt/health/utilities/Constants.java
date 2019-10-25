@@ -10,6 +10,10 @@ public class Constants {
     public static final String SHOULD_FAIL = "We should have failed: ";
     public static final String THERE_ARE = "There are ";
     public static final String REQUEST_FORGOT_PASSWORD_MESSAGE = "Request submitted. If the email matches an account, instructions to reset the password will be sent.";
+
+    public static final String SYSTEM_ADMINISTRATOR_ROLE = "System Administrator";
+    public static final String ADMINISTRATOR_ROLE = "Administrator";
+    public static final String NIH_ROLE = "NIH";
     public static final String PROGRAM_MANAGER_ROLE = "Program Manager";
     public static final String RESEARCH_ASSISTANT_ROLE = "Research Assistant";
     public static final String BANNER_BAYWOOD_MEDICAL_CENTER_SITE = "Site/hpo-site-bannerbaywood";
@@ -21,10 +25,12 @@ public class Constants {
     public static final String ERROR_WHEN_LOGIN_BY_LOCKED_USER = "For security reasons, your account has been locked. Please contact your administrator to unlock your account.";
     public static final String LOCK_EMAIL_KEYWORD = "has been locked";
     public static final String EMAIL_RESET_PASSWORD = "reset your password";    //NOSONAR
+    public static final String MULTI_ROLES_ADMIN_ROLE = "Multi Roles";
     public static final String AUTOMATION_AWARDEE = "Awardee/TEST_AUTOMATION";
     public static final String AUTOMATION_SITE = "Site/hpo-test-automation";
     public static final String AUTOMATION_ORG = "Organization/TEST_AUTOMATION_ORGANIZATION";
     public static final String UNLOCK_EMAIL_KEYWORD = "unlock";
+    public static final String BANNER_BOSWELL_MEDICAL_CENTER_SITE = "Site/hpo-site-bannerboswell";
 
     private Constants() {
         throw new UnsupportedOperationException("Don't call new on Constants");

@@ -2,6 +2,7 @@ package com.pmt.health.objects.user;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.pmt.health.exceptions.VibrentException;
 import com.pmt.health.exceptions.VibrentIOException;
 import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
@@ -17,7 +18,7 @@ import java.util.*;
 
 public class UserUtility {
 
-    private static final String PASSWORD = "password";//NOSONAR
+    private static final String PASSWORD = "password";
     private static final String MFA = "mfaCode";
     private static final String EMAIL = "email";
     private static final String OAUTH_ENDPOINT = "/api/oauth/token";
@@ -358,5 +359,70 @@ public class UserUtility {
         reporterPassFailStep(action, expected, response, "Not successfully get access token via API");
         String authToken = response.getObjectData().get("access_token").getAsString();
         user.setAuthToken("Bearer " + authToken);
+    }
+    
+    public static String convertRoleName (String roleNameSystem) throws VibrentException
+    {
+        String roleNameInput = "";
+        switch (roleNameSystem) {
+        case "ROLE_MC_NIH":
+            roleNameInput = "NIH";
+            break;
+        case "ROLE_MC_SITE_MANAGER":
+            roleNameInput = "Site Manager";
+            break;
+        case "ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER":
+            roleNameInput = "Communications & Engagement Manager";
+            break;
+        case "ROLE_MC_ADMINISTRATOR":
+            roleNameInput = "Administrator";
+            break;
+        case "ROLE_MC_PROGRAM_COORDINATOR":
+            roleNameInput = "Program Coordinator";
+            break;
+        case "ROLE_MC_PROGRAM_MANAGER":
+            roleNameInput = "Program Manager";
+            break;
+        case "ROLE_MC_RESEARCH_ASSISTANT":
+            roleNameInput = "Research Assistant";
+            break;
+        case "ROLE_MC_SUPPORT_ADMIN":
+            roleNameInput = "Support Admin";
+            break;
+        case "ROLE_MC_SYSTEM_ADMINISTRATOR":
+            roleNameInput = "System Administrator";
+            break;
+        case "ROLE_MC_HIERARCHY_MANAGER":
+            roleNameInput = "Hierarchy Manager";
+            break;
+        case "ROLE_MC_SUPPORT_STAFF":
+            roleNameInput = "Support Staff";
+            break;
+        default:
+            throw new VibrentException("System doesn't support this role " + roleNameSystem);
+        }
+
+        return roleNameInput;
+    }
+    
+    
+    public static String convertTestGroupName (String testGroupName) throws VibrentException
+    {
+        String testGroupId = "";
+        switch (testGroupName) {
+        case "TEST AUTOMATION AWARDEE":
+            testGroupId = "Awardee/TEST_AUTOMATION";
+            break;
+        case "TEST AUTOMATION ORGANIZATION":
+            testGroupId = "Organization/TEST_AUTOMATION_ORGANIZATION";
+            break;
+        case "TEST AUTOMATION SITE":
+            testGroupId = "Site/hpo-test-automation";
+            break;
+        default:
+            throw new VibrentException("System doesn't support this Test Group Name " + testGroupName);
+        }
+
+        return testGroupId;
     }
 }

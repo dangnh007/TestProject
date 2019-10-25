@@ -1,5 +1,9 @@
 package com.pmt.health.workflows;
 
+import org.openqa.selenium.Keys;
+import org.testng.Assert;
+import org.testng.log4testng.Logger;
+
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.Element;
 import com.pmt.health.interactions.element.selenified.WebbElement;
@@ -9,9 +13,6 @@ import com.pmt.health.steps.Configuration;
 import com.pmt.health.utilities.Constants;
 import com.pmt.health.utilities.LocatorType;
 import com.pmt.health.utilities.Property;
-import org.openqa.selenium.Keys;
-import org.testng.Assert;
-import org.testng.log4testng.Logger;
 
 public class LoginPage {
 
@@ -140,6 +141,7 @@ public class LoginPage {
      * @param username username value
      */
     public void enterEmail(String username) {
+        emailInput.waitFor().displayed();
         emailInput.type(username);
         if ("".equals(username)) {
             emailInput.type("a");

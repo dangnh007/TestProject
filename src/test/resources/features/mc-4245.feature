@@ -191,7 +191,7 @@ Feature: User Management
     When I reset MFA code for temp user
     Then I login temp user with new secret key
 
-  @mc-6099
+  @mc-6099 @mc-6222 @mc-6223
   Scenario: Unlock User
     Given I create test groups via API
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
@@ -203,3 +203,34 @@ Feature: User Management
     And Lock user, status of user is Disabled
     And I unlock that user
     Then User is unlock successfully and can log into system successfully
+
+  @mc-6095 @mc-6242
+  Scenario: Program Manager can edit first name, last name of user
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I login as user
+    Then I edit First Name and Last Name of created user
+    And First Name and Last Name of user should be updated successfully
+
+  @mc-6095 @mc-6613
+  Scenario: Program Manager can change role of user successfully
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I login as user
+    And I change role of user from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_PROGRAM_COORDINATOR" and "TEST AUTOMATION ORGANIZATION" successfully
+
+  @mc-6095 @mc-6614
+  Scenario: Program Manager can edit group of user successfully
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    When I login as user
+    And I change role of user from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_RESEARCH_ASSISTANT" and group of user from "TEST AUTOMATION ORGANIZATION" to "TEST AUTOMATION SITE" successfully

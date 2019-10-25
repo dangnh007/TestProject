@@ -16,6 +16,7 @@ public class UserAdminPage {
     private final WebbElement loggedInHeadingUser;
     private final WebbElement loggedInHeadingAdmin;
     private final WebbElement loggedInHeadingSiteManagerUser;
+    private final WebbElement loggedInHeadingProgramManagerUser;
     private final WebbElement createdUser;
     private final WebbElement userAdminButton;
     private final WebbElement userSettingsButton;
@@ -60,10 +61,12 @@ public class UserAdminPage {
     public UserAdminPage(App app, User user) {
         this.app = app;
         this.addUserButton = app.newElement(LocatorType.CLASSNAME, "add-user-button");
-        this.loggedInHeadingUserAdministration = app.newElement(LocatorType.XPATH, "//h1[text()='User Administration']");
+        this.loggedInHeadingUserAdministration = app.newElement(LocatorType.XPATH,
+                "//h1[text()='User Administration']");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
         this.loggedInHeadingUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
         this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
+        this.loggedInHeadingProgramManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
         this.createdUser = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
         this.userAdminButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-user \"]");
@@ -104,6 +107,7 @@ public class UserAdminPage {
 
     public void assertEditUserHeader() {
         editUserHeader.assertState().displayed();
+        editUserHeader.assertContains().text("Edit User");
     }
 
     public void selectActionDropDown() {
@@ -136,6 +140,13 @@ public class UserAdminPage {
     }
 
     /**
+     * Wait the "User Admin" button display
+     */
+    public void waitUserAdminButtonDisplay() {
+        userAdminButton.waitFor().displayed();
+    }
+
+    /**
      * Clicks on the "User Settings " button
      */
     public void userSettings() {
@@ -144,9 +155,11 @@ public class UserAdminPage {
 
     /**
      * Clicks on the "Add User" button
+     * @throws InterruptedException 
      */
     public void addUser() {
         spinner.waitFor().notDisplayed();
+        addUserButton.waitFor().enabled();
         addUserButton.click();
     }
 
@@ -190,8 +203,12 @@ public class UserAdminPage {
     /**
      * Waits for the header to be displayed.
      */
-    public void assertLoggedInSiteManager() {
-        loggedInHeadingSiteManagerUser.assertState().displayed();
+    public void assertLoggedInAdministrator() {
+        loggedInHeadingUserAdministration.assertState().displayed();
+    }
+
+    public void assertLoggedInProgramManager() {
+        loggedInHeadingProgramManagerUser.assertState().displayed();
     }
 
     /**
@@ -421,8 +438,12 @@ public class UserAdminPage {
         }
     }
 
+    public void clickEditActionLink() {
+        editAction.click();
+    }
+
     public void deleteCreatedUser(String userEmail) throws InterruptedException {
-        Thread.sleep(3000);
+        waitUserAdminButtonDisplay();
         userAdmin();
         spinner.waitFor().notDisplayed();
         searchField.type(userEmail);
@@ -431,5 +452,13 @@ public class UserAdminPage {
         deleteActionLink.click();
         userDeleteConfirmationButton.click();
         spinner.waitFor().notDisplayed();
+    }
+
+    public void goToEditUserPage(String email) {
+        waitUserAdminButtonDisplay();
+        userAdmin();
+        enterSearch(email);
+        clickActionButton();
+        clickEditActionLink();
     }
 }
