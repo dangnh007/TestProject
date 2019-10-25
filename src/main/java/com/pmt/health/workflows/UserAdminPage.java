@@ -4,6 +4,8 @@ import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.utilities.LocatorType;
+import org.openqa.selenium.Keys;
+import org.testng.Assert;
 
 public class UserAdminPage {
 
@@ -32,8 +34,25 @@ public class UserAdminPage {
     private final WebbElement editUserHeader;
     private final WebbElement actionDropdown;
     private final WebbElement editAction;
+    private final WebbElement editButton;
+    private final WebbElement rolesInput;
+    private final WebbElement firstNameEmptyError;
+    private final WebbElement lastNameEmptyError;
+    private final WebbElement roleEmptyError;
+    private final WebbElement groupEmptyError;
+    private final WebbElement emailInput;
+    private final WebbElement firstNameInput;
+    private final WebbElement lastNameInput;
+    private final WebbElement selectedRoles;
+    private final WebbElement firstGroup;
+    private final WebbElement cancelButton;
+    private String firstNameBeforeEdit = "";
+    private String lastNameBeforeEdit = "";
+    private String userEmailBeforeEdit = "";
+    private final String invalidName;
+    private final AddUserPage addUserPage;
+    private final User user;
     private final WebbElement unlockActionLink;
-    private final WebbElement divMessageSuccess;
     private final WebbElement deleteActionLink;
     private final WebbElement userDeleteConfirmationButton;
     private static final String DIV_CONTAIN_TEXT_PATTERN_XPATH = "//div[contains(text(),";
@@ -62,10 +81,24 @@ public class UserAdminPage {
         this.searchField = app.newElement(LocatorType.CSS, "input[placeholder='Search']");
         this.tableEmailAssert = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getSearchedUserEmail() + "\")]");
         this.actionDropdown = app.newElement(LocatorType.CSS, "button[class='action-btn dropdown-toggle btn btn-default']");
+        this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
+        this.editButton = app.newElement(LocatorType.CSS, "a[href*='/userAdmin/editUser/']");
+        this.user = user;
+        addUserPage = new AddUserPage(app, user);
+        this.firstNameEmptyError = app.newElement(LocatorType.CSS, "input[name=firstName] + span.help-block");
+        this.lastNameEmptyError = app.newElement(LocatorType.CSS, "input[name=lastName] + span.help-block");
+        this.roleEmptyError = app.newElement(LocatorType.CSS, "div.Select.is-searchable.Select--multi + span.help-block");
+        this.groupEmptyError = app.newElement(LocatorType.CSS, "div[class*='container-content-right'] span[class='help-block']");
+        this.firstNameInput = app.newElement(LocatorType.NAME, "firstName");
+        this.emailInput = app.newElement(LocatorType.NAME, "email");
+        this.lastNameInput = app.newElement(LocatorType.NAME, "lastName");
+        this.invalidName = "qwertyuiopasdfghjklzxcvbnmpoquqjskvbcndmfnrrcffcrree";
+        this.selectedRoles = app.newElement(LocatorType.CSS, "span.Select-value-label");
+        this.firstGroup = app.newElement(LocatorType.XPATH, "(//input[@name='groupIds'])[1]");
+        this.cancelButton = app.newElement(LocatorType.CSS, "input[value='Cancel']");
         this.editUserHeader = app.newElement(LocatorType.CSS, "div[class='heading-create_user']");
         this.editAction = app.newElement(LocatorType.CSS, "a[href*='editUser']");
         this.unlockActionLink = app.newElement(LocatorType.CSS, "svg[data-icon*='unlock']");
-        this.divMessageSuccess = app.newElement(LocatorType.CSS, "div[class*='message animated fade success in']");
         this.deleteActionLink = app.newElement(LocatorType.CSS, "svg[class*='trash']");
     }
 
@@ -170,6 +203,91 @@ public class UserAdminPage {
         createdUser.assertState().displayed();
     }
 
+    public void enterSearch(String searchString) {
+        searchField.clear();
+        searchField.type(searchString);
+        spinner.waitFor().notDisplayed();
+    }
+
+    public void waitForSpinnerDisappear() {
+        spinner.waitFor().notDisplayed();
+    }
+
+    public void clickEditButton() {
+        editButton.click();
+    }
+
+    public void verifyEmailFieldIsUnEditable() {
+        userEmailBeforeEdit = emailInput.get().value();
+        emailInput.assertState().notEditable();
+    }
+
+    public void validateEditWithEmptyFirstName() {
+        firstNameBeforeEdit = firstNameInput.get().value();
+        firstNameInput.clear();
+        this.addUserPage.saveUser();
+        firstNameEmptyError.assertState().displayed();
+        firstNameInput.type(firstNameBeforeEdit);
+    }
+
+    public void validateEditWithEmptyLastName() {
+        lastNameBeforeEdit = lastNameInput.get().value();
+        lastNameInput.clear();
+        this.addUserPage.saveUser();
+        lastNameEmptyError.assertState().displayed();
+        lastNameInput.type(lastNameBeforeEdit);
+    }
+
+    public void validateEditWithInvalidFirstName() {
+        firstNameInput.clear();
+        firstNameInput.type(invalidName);
+        this.addUserPage.saveUser();
+        firstNameEmptyError.assertState().displayed();
+        firstNameInput.clear();
+        firstNameInput.type(firstNameBeforeEdit);
+    }
+
+    public void validateEditWithInvalidLastName() {
+        lastNameInput.clear();
+        lastNameInput.type(invalidName);
+        this.addUserPage.saveUser();
+        lastNameEmptyError.assertState().displayed();
+        lastNameInput.clear();
+        lastNameInput.type(lastNameBeforeEdit);
+    }
+
+    public void validateEditWithEmptyRoleAndGroup() {
+        int selectedRoleNumber = selectedRoles.getWebElements().size();
+        for (int i = 1; i <= selectedRoleNumber; i++) {
+            rolesInput.type(Keys.BACK_SPACE);
+        }
+        this.addUserPage.saveUser();
+        roleEmptyError.assertState().displayed();
+        this.addUserPage.selectRole("Program Manager");
+        groupEmptyError.assertState().displayed();
+        firstGroup.click();
+    }
+
+    public void changeNameAndClickCancelButton() {
+        String newName = "New Name";
+        firstNameInput.clear();
+        firstNameInput.type(newName);
+        lastNameInput.clear();
+        lastNameInput.type(newName);
+        cancelButton.click();
+    }
+
+    public void assertUserInfoAfterCancelEditing() {
+        spinner.waitFor().notDisplayed();
+        searchField.type(userEmailBeforeEdit);
+        spinner.waitFor().notDisplayed();
+        clickActionButton();
+        clickEditButton();
+        waitForSpinnerDisappear();
+        Assert.assertEquals(firstNameBeforeEdit, firstNameInput.get().value());
+        Assert.assertEquals(lastNameBeforeEdit, lastNameInput.get().value());
+    }
+
     public void assertLoginByLockedUser(String expectedStatus) {
         String action = "Assert Login By Locked User";
         divLoginMessage.assertState().displayed();
@@ -271,10 +389,6 @@ public class UserAdminPage {
         divCreatedUser.assertState().displayed();
     }
 
-    public void enterSearch(String searchString) {
-        searchField.type(searchString);
-    }
-
     public void clickActionButton() {
         actionDropdown.click();
     }
@@ -289,8 +403,8 @@ public class UserAdminPage {
 
     public void assertLockOrUnlockUserSuccess() throws InterruptedException {
         Thread.sleep(2000);
-        divMessageSuccess.assertState().displayed();
-        if ("Your changes have been saved.".equals(divMessageSuccess.get().text())) {
+        changedSuccessMessage.assertState().displayed();
+        if ("Your changes have been saved.".equals(changedSuccessMessage.get().text())) {
             app.getReporter().pass("Lock/Unlock user success");
         } else {
             app.getReporter().fail("Lock/Unlock user failed");

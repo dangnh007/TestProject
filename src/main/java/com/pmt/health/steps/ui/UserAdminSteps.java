@@ -160,6 +160,11 @@ public class UserAdminSteps {
         this.userAdminPage.assertLoggedInUser();
     }
 
+    @Then("^I am logged in as System Administrator$")
+    public void loggedInAsSystemAdministrator() {
+        this.userAdminPage.assertLoggedIn();
+    }
+
     @Then("^I update user to \"([^\"]*)\" role and \"([^\"]*)\" org$")
     public void navigateToUserAdminPage(String role, String org) {
         this.userAdminPage.userAdminButtonProgramManager();
@@ -173,6 +178,28 @@ public class UserAdminSteps {
         this.addUserPage.checkAwardee(org);
         this.addUserPage.saveUser();
     }
+
+    @When("^I edit that user and validate negative editing cases$")
+    public void editUserAndValidateNegativeEditingCases() {
+        this.userAdminPage.userAdmin();
+        this.userAdminPage.enterSearch(user.getSearchedUserEmail());
+        this.userAdminPage.waitForSpinnerDisappear();
+        this.userAdminPage.clickActionButton();
+        this.userAdminPage.clickEditButton();
+        this.userAdminPage.waitForSpinnerDisappear();
+        this.userAdminPage.verifyEmailFieldIsUnEditable();
+        this.userAdminPage.validateEditWithEmptyFirstName();
+        this.userAdminPage.validateEditWithEmptyLastName();
+        this.userAdminPage.validateEditWithInvalidFirstName();
+        this.userAdminPage.validateEditWithInvalidLastName();
+        this.userAdminPage.validateEditWithEmptyRoleAndGroup();
+        this.userAdminPage.changeNameAndClickCancelButton();
+    }
+
+    @Then("^User info should be unchanged$")
+    public void assertUserInfoAfterCancelEditing() {
+        this.userAdminPage.assertUserInfoAfterCancelEditing();
+	  }
 
     @And("^Lock user, status of user is Disabled$")
     public void lockSearchedUser() throws InterruptedException {

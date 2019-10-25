@@ -11,11 +11,11 @@ public class Constants {
     public static final String THERE_ARE = "There are ";
     public static final String REQUEST_FORGOT_PASSWORD_MESSAGE = "Request submitted. If the email matches an account, instructions to reset the password will be sent.";
     public static final String PROGRAM_MANAGER_ROLE = "Program Manager";
+    public static final String RESEARCH_ASSISTANT_ROLE = "Research Assistant";
+    public static final String BANNER_BAYWOOD_MEDICAL_CENTER_SITE = "Site/hpo-site-bannerbaywood";
     public static final String SITE_MANAGER_ROLE = "Site Manager";
     public static final String SUPPORT_ADMIN_ROLE = "Support Admin";
-    public static final String RESEARCH_ASSISTANT_ROLE = "Research Assistant";
     public static final String BANNER_HEALTH_ORG = "Organization/AZ_TUCSON_BANNER_HEALTH";
-    public static final String BANNER_BAYWOOD_MEDICAL_CENTER_SITE = "Site/hpo-site-bannerbaywood";
     public static final String ACTIVE_STATUS = "Active";
     public static final String DISABLED_STATUS = "Disabled";
     public static final String ERROR_WHEN_LOGIN_BY_LOCKED_USER = "For security reasons, your account has been locked. Please contact your administrator to unlock your account.";

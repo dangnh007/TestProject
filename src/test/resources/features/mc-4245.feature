@@ -98,6 +98,18 @@ Feature: User Management
     When I login as user
     Then I found created user by searching email
 
+  @mc-6273
+  Scenario: Edit user as a System Administrator
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_SYSTEM_ADMINISTRATOR" and "All of Us", "", "", ""
+    And I set up my credentials via API
+    And I login as user
+    And I am logged in as System Administrator
+    When I edit that user and validate negative editing cases
+    Then User info should be unchanged
+
   @mc-6220
   Scenario: Lock user and verify email notification by Program Manager
     Given I create test groups via API
