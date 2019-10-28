@@ -98,6 +98,16 @@ Feature: User Management
     When I login as user
     Then I found created user by searching email
 
+  @mc-6171
+  Scenario: Create users with the role belongs to Program Manager
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I login as user
+    And I am logged in as user
+    When I create user with the role belongs to "Program Manager"
+    Then Users have been created
+
   @mc-6273
   Scenario: Edit user as a System Administrator
     Given I create test groups via API

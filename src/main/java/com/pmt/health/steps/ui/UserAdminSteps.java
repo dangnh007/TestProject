@@ -15,7 +15,9 @@ import com.pmt.health.utilities.Property;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.io.IOException;
 
 
@@ -25,9 +27,11 @@ public class UserAdminSteps {
     private final DeviceController deviceController;
     private final UserAdminPage userAdminPage;
     private final LoginPage loginPage;
+    private List<String> createdUserList = new ArrayList<>();
     private final AddUserPage addUserPage;
     private final EMailUtility emailUtility;
     private static final String ADMIN_PASS = ".admin.pass";
+
 
     public UserAdminSteps(DeviceController deviceController, User user) {
         this.user = user;
@@ -54,6 +58,66 @@ public class UserAdminSteps {
     @Then("^User has been created$")
     public void assertCreatedUser() {
         this.userAdminPage.assertCreatedUser();
+    }
+
+    @Description("Creating a user by User Role")
+    @When("^I create user with the role belongs to \"([^\"]*)\"$")
+    public void createUserByProgramManager(String userRole) {
+        User createUser;
+        List<String> roles = new ArrayList<>();
+        List<String> orgs = new ArrayList<>();
+        String testAutomationOrg = "Organization/TEST_AUTOMATION_ORGANIZATION";
+        String testAutomationSite = "Site/hpo-test-automation";
+        switch (userRole) {
+            case "Program Manager":
+                roles = Arrays.asList("Site manager", "Communications & Engagement Manager", "Program Coordinator", "Program Manager", "Research Assistant", "Support Admin", "Support Staff");
+                orgs = Arrays.asList(testAutomationSite, testAutomationOrg, testAutomationOrg, testAutomationOrg, testAutomationSite, testAutomationOrg, testAutomationOrg);
+                break;
+            case "Site Manager":
+                //add role belong to Site Manager Role
+                break;
+            default:
+                break;
+        }
+
+        this.userAdminPage.assertRolesProgramManagerCanCreate();
+
+        for (int i = 0; i < roles.size(); i++) {
+            if (i > 0) {
+                this.loginPage.loadEnvironment();
+            }
+            createUser = new User();
+            String email = createUser.getParticipantEmail();
+            createUserSteps(createUser.getFirstName(), createUser.getLastName(), email, roles.get(i), orgs.get(i));
+            createdUserList.add(email);
+            this.userAdminPage.waitForSpinnerDisappear();
+        }
+    }
+
+    @Then("^Users have been created")
+    public void assertCreatedUserByUserRole() {
+        this.loginPage.loadEnvironment();
+        for (String email : createdUserList
+        ) {
+            this.userAdminPage.userAdmin();
+            this.userAdminPage.waitForSpinnerDisappear();
+            this.userAdminPage.enterSearch(email);
+            this.userAdminPage.assertCreatedUser(email);
+        }
+    }
+
+    private void createUserSteps(String firstName, String lastName, String email, String role, String org) {
+        this.userAdminPage.waitForSpinnerDisappear();
+        this.userAdminPage.userAdmin();
+        this.userAdminPage.addUser();
+        this.userAdminPage.waitForSpinnerDisappear();
+        this.addUserPage.enterFirstName(firstName);
+        this.addUserPage.enterLastName(lastName);
+        this.addUserPage.enterEmail(email);
+        this.addUserPage.selectRole(role);
+        this.addUserPage.checkAwardee(org);
+        this.addUserPage.saveUser();
+        this.userAdminPage.waitForMessageOfChange();
     }
 
     @Then("^I try to delete that temp user$")

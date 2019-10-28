@@ -29,7 +29,7 @@ public class LoginSteps {
     }
 
     @When("^I (try to)?login as System Administrator$")
-    public void loginAsAdministrator(String attempt) {
+    public void loginAsSystemAdministrator(String attempt) {
         this.loginPage.loadEnvironment();
         this.loginPage.loginAdmin();
         if (!"try to ".equals(attempt)) {
@@ -62,24 +62,11 @@ public class LoginSteps {
         this.userAdminPage.assertLoggedIn();
     }
 
-    @When("^I login as Program Manager$")
-    public void loginProgramManager() throws IOException, InterruptedException {
-        this.eMailUtility.emailInbox();
-        this.eMailUtility.emailGetValue();
-        //first login
-        this.loginPage.setLogin();
-        this.loginPage.typeNewPassword();
-        this.loginPage.clickSubmitButton();
-        this.loginPage.deleteCookie();
-        //log in
-        this.loginPage.loadEnvironment();
-        this.loginPage.login();
-    }
-
     @Then("^I login as edited user$")
     public void loginAsEditedUser() {
         loginPage.loadEnvironment();
         loginPage.loginEditedUser();
+
     }
 
     @When("^User login page, select Forgot Password and submit email address$")

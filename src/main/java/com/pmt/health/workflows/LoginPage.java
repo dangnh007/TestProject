@@ -29,6 +29,7 @@ public class LoginPage {
     private final WebbElement passwordSet;
     private final WebbElement submitButton;
     private final WebbElement secretKey;
+    private final WebbElement backToProgramManagementToolkit;
     private final WebbElement welcomeMessage;
     private final WebbElement forgotPassword;
     private final WebbElement submitEmailAddress;
@@ -56,6 +57,7 @@ public class LoginPage {
         this.secretKey = app.newElement(LocatorType.CSS, "div.scan-qr-code-secret");
         this.passwordSet = app.newElement(LocatorType.CSS, "input[name=password]");
         this.submitButton = app.newElement(LocatorType.CSS, "input.center-block.submit-button.btn.btn-primary");
+        this.backToProgramManagementToolkit = app.newElement(LocatorType.CSS, "a[href*='/logout?support=true']");
         this.welcomeMessage = app.newElement(LocatorType.CSS, "span[class=\"welcome-message\"]");
         this.forgotPassword = app.newElement(LocatorType.CSS, "a[href*='/forgotpassword']");
         this.submitEmailAddress = app.newElement(LocatorType.CSS, "input[value*='Submit']");
@@ -318,7 +320,7 @@ public class LoginPage {
         String message = this.divMessage.get().text();
         Assert.assertTrue(message.contains(Constants.REQUEST_FORGOT_PASSWORD_MESSAGE));
     }
-
+  
     /**
      * Login for user who has just been reset MFA code
      */
@@ -337,6 +339,13 @@ public class LoginPage {
         okButton.click();
         enterMFA(HTTP.obtainOath2KeyCreatedUser(user.getSearchedUserSecret()));
         getLoginButton().click();
+    }
+
+    /**
+     * Log out Support Tool
+     */
+    public void goToProgramManagementToolkit() {
+        backToProgramManagementToolkit.click();
     }
 
     public void setKey(User user) {

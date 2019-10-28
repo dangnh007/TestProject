@@ -3,6 +3,7 @@ package com.pmt.health.workflows;
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
+import com.pmt.health.utilities.Constants;
 import com.pmt.health.utilities.LocatorType;
 import org.openqa.selenium.Keys;
 import org.testng.Assert;
@@ -19,9 +20,28 @@ public class UserAdminPage {
     private final WebbElement loggedInHeadingProgramManagerUser;
     private final WebbElement createdUser;
     private final WebbElement userAdminButton;
+    private final WebbElement reportButton;
+    private final WebbElement dashboardButton;
+    private final WebbElement schedulingButton;
+    private final WebbElement capacityManagementButton;
+    private final WebbElement searchButton;
+    private final WebbElement callContactLogButton;
+    private final WebbElement engagementHistoryButton;
+    private final WebbElement communicationsButton;
     private final WebbElement userSettingsButton;
     private final WebbElement spinner;
     private final WebbElement createdSortButton;
+    private final WebbElement leftMenu;
+    private final WebbElement divSelectRole;
+    private final WebbElement rolesInput;
+    private final WebbElement divSelectNoResults;
+    private final WebbElement roleSelectOption;
+    private static final int ADMINISTRATOR_MENU_ITEM_NUMBER = 1;
+    private static final int NIH_MENU_ITEM_NUMBER = 5;
+    private static final int PROGRAM_MANAGER_MENU_ITEM_NUMBER = 9;
+    private static final int SITE_MANAGER_MENU_ITEM_NUMBER = 4;
+    private static final int SUPPORT_ADMIN_MENU_ITEM_NUMBER = 1;
+    private static final int PROGRAM_MANAGER_ROLE_NUMBER = 7;
     private final WebbElement userDeleteCancelButton;
     private final WebbElement lockActionLink;
     private final WebbElement divStatusOfUser;
@@ -36,7 +56,6 @@ public class UserAdminPage {
     private final WebbElement actionDropdown;
     private final WebbElement editAction;
     private final WebbElement editButton;
-    private final WebbElement rolesInput;
     private final WebbElement firstNameEmptyError;
     private final WebbElement lastNameEmptyError;
     private final WebbElement roleEmptyError;
@@ -69,12 +88,25 @@ public class UserAdminPage {
         this.loggedInHeadingProgramManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
         this.createdUser = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
+        this.reportButton = app.newElement(LocatorType.XPATH, "//p[text()='Report']/parent::a");
+        this.schedulingButton = app.newElement(LocatorType.XPATH, "//p[text()='Scheduling']/parent::a");
+        this.dashboardButton = app.newElement(LocatorType.XPATH, "//p[text()='Dashboard']/parent::a");
+        this.capacityManagementButton = app.newElement(LocatorType.XPATH, "//p[text()='Capacity Management']/parent::a");
+        this.searchButton = app.newElement(LocatorType.XPATH, "//p[text()='Search']/parent::a");
+        this.callContactLogButton = app.newElement(LocatorType.XPATH, "//p[text()='Call/Contact Log']/parent::a");
+        this.engagementHistoryButton = app.newElement(LocatorType.XPATH, "//p[text()='Engagement History']/parent::a");
+        this.communicationsButton = app.newElement(LocatorType.XPATH, "//p[text()='Communications']/parent::a");
         this.userAdminButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-user \"]");
         this.userDeleteConfirmationButton = app.newElement(LocatorType.CSS, "button[class=\"button-warning btn btn-primary\"]");
         this.userDeleteCancelButton = app.newElement(LocatorType.CSS, "button[class=\"button-warning btn btn-secondary\"]");
         this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
         this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.leftMenu = app.newElement(LocatorType.XPATH, "//span[text()='Expand Menu']/parent::a/parent::li/following-sibling::li[not(contains(@class,'hidden'))]");
+        this.divSelectRole = app.newElement(LocatorType.CSS, "div.Select-placeholder");
+        this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
+        this.divSelectNoResults = app.newElement(LocatorType.CSS, "div.Select-noresults");
+        this.roleSelectOption = app.newElement(LocatorType.CSS, "div.Select-option");
         this.lockActionLink = app.newElement(LocatorType.CSS, "svg[data-icon*='lock']");
         this.divStatusOfUser = app.newElement(LocatorType.XPATH, "//td[contains(@tabindex,'6')]/div[contains(@class,'cell-container')]");
         this.divLoginMessage = app.newElement(LocatorType.CSS, "div.login-error-message");
@@ -84,7 +116,6 @@ public class UserAdminPage {
         this.searchField = app.newElement(LocatorType.CSS, "input[placeholder='Search']");
         this.tableEmailAssert = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getSearchedUserEmail() + "\")]");
         this.actionDropdown = app.newElement(LocatorType.CSS, "button[class='action-btn dropdown-toggle btn btn-default']");
-        this.rolesInput = app.newElement(LocatorType.CSS, "input[role*=combobox]");
         this.editButton = app.newElement(LocatorType.CSS, "a[href*='/userAdmin/editUser/']");
         this.user = user;
         addUserPage = new AddUserPage(app, user);
@@ -316,6 +347,97 @@ public class UserAdminPage {
     }
 
     /**
+     * Asserts that the current user is logged out by making sure the login page is displayed.
+     */
+    public void assertLoggedInAsAdministrator() {
+        userAdminButton.assertState().displayed();
+        int actualNumber = leftMenu.getWebElements().size();
+        Assert.assertEquals(actualNumber, ADMINISTRATOR_MENU_ITEM_NUMBER);
+    }
+
+    /**
+     * Asserts that the current user is logged out by making sure the login page is displayed.
+     */
+    public void assertLoggedInAsNIH() {
+        dashboardButton.assertState().displayed();
+        schedulingButton.assertState().displayed();
+        reportButton.assertState().displayed();
+        userAdminButton.assertState().displayed();
+        capacityManagementButton.assertState().displayed();
+        int actualNumber = leftMenu.getWebElements().size();
+        Assert.assertEquals(actualNumber, NIH_MENU_ITEM_NUMBER);
+    }
+
+    /**
+     * Asserts that the current user is logged out by making sure the login page is displayed.
+     */
+    public void assertLoggedInAsProgramManager() {
+        dashboardButton.assertState().displayed();
+        schedulingButton.assertState().displayed();
+        searchButton.assertState().displayed();
+        reportButton.assertState().displayed();
+        callContactLogButton.assertState().displayed();
+        engagementHistoryButton.assertState().displayed();
+        communicationsButton.assertState().displayed();
+        userAdminButton.assertState().displayed();
+        capacityManagementButton.assertState().displayed();
+        int actualNumber = leftMenu.getWebElements().size();
+        Assert.assertEquals(actualNumber, PROGRAM_MANAGER_MENU_ITEM_NUMBER);
+    }
+
+    /**
+     * Asserts that the current user is logged out by making sure the login page is displayed.
+     */
+    public void assertLoggedInAsSiteManager() {
+        schedulingButton.assertState().displayed();
+        searchButton.assertState().displayed();
+        reportButton.assertState().displayed();
+        userAdminButton.assertState().displayed();
+        int actualNumber = leftMenu.getWebElements().size();
+        Assert.assertEquals(actualNumber, SITE_MANAGER_MENU_ITEM_NUMBER);
+    }
+
+    /**
+     * Asserts that the current user is logged out by making sure the login page is displayed.
+     */
+    public void assertLoggedInAsSupportAdmin() {
+        userAdminButton.assertState().displayed();
+        int actualNumber = leftMenu.getWebElements().size();
+        Assert.assertEquals(actualNumber, SUPPORT_ADMIN_MENU_ITEM_NUMBER);
+    }
+
+    private void assertRoleNumberCanCreate(String role) {
+        divSelectRole.click();
+        if (Constants.PROGRAM_MANAGER_ROLE.equals(role)) {
+            roleSelectOption.waitFor().displayed();
+            int actualNumber = roleSelectOption.getWebElements().size();
+            Assert.assertEquals(actualNumber, PROGRAM_MANAGER_ROLE_NUMBER);
+        }
+    }
+
+    private void assertCannotCreateWithRole(String role) {
+        userAdmin();
+        addUser();
+        rolesInput.type(role + Keys.ENTER);
+        divSelectNoResults.assertState().displayed();
+    }
+
+    public void assertRolesProgramManagerCanCreate() {
+        String[] roles = {"NIH", "System Administrator", "Administrator", "Hierarchy Manager"};
+        userAdmin();
+        addUser();
+        assertRoleNumberCanCreate(Constants.PROGRAM_MANAGER_ROLE);
+        for (String role : roles
+        ) {
+            assertCannotCreateWithRole(role);
+        }
+    }
+
+    public void waitForMessageOfChange() {
+        changedSuccessMessage.waitFor().displayed();
+    }
+
+    /**
      * Try to delete Temp user without confirmation
      */
     public void tryDeleteTempUser(String tempUser) {
@@ -440,18 +562,6 @@ public class UserAdminPage {
 
     public void clickEditActionLink() {
         editAction.click();
-    }
-
-    public void deleteCreatedUser(String userEmail) throws InterruptedException {
-        waitUserAdminButtonDisplay();
-        userAdmin();
-        spinner.waitFor().notDisplayed();
-        searchField.type(userEmail);
-        Thread.sleep(3000);
-        actionDropdown.click();
-        deleteActionLink.click();
-        userDeleteConfirmationButton.click();
-        spinner.waitFor().notDisplayed();
     }
 
     public void goToEditUserPage(String email) {
