@@ -70,4 +70,19 @@ public class SiteSettingsSteps {
         siteSettingsPage.scheduleAppointment();
         siteSettingsPage.assertSuccessAppointmentMessage();
     }
+
+    @When("^I see edited site settings toggle \"([^\"]*)\", target \"([^\"]*)\", goal \"([^\"]*)\", days \"([^\"]*)\"$")
+    public void iSeeEditedSiteSettingsToggleTargetGoalDays(String toggle, String target, String goal, String days) {
+        userAdminPage.userSettings();
+        if (("on").equals(toggle)) {
+            siteSettingsPage.assertToggleAcceptingAppointments(true);
+        }
+        siteSettingsPage.editPage();
+        siteSettingsPage.assertDailyGoal(goal);
+        siteSettingsPage.assertDailyTarget(target);
+        siteSettingsPage.assertDefaultFullEnrollment();
+        siteSettingsPage.assertDefaultPMB();
+        siteSettingsPage.assertMinimumAppointmentNotice(days);
+        siteSettingsPage.assertCustomHoursOfOperations();
+    }
 }

@@ -48,6 +48,7 @@ public class SiteSettingsPage {
     private final WebbElement warning;
     private final WebbElement ignoreWarning;
 
+
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
 
@@ -374,6 +375,43 @@ public class SiteSettingsPage {
     public void assertMessage() {
         messageOfChanges.waitFor().displayed();
         messageOfChanges.assertState().displayed();
+    }
+
+    public void assertToggleAcceptingAppointments(Boolean onOff) {
+        WebbElement toggle = app.newElement(LocatorType.CSS, "input[" + DATA_VALUE + "=" + onOff + "]");
+        toggle.assertState().present();
+    }
+
+    public void assertDailyGoal(String goalNumber) {
+        WebbElement goal = app.newElement(LocatorType.XPATH, "//input[@class='edit-goal form-control' and @value='" + goalNumber + "']");
+        goal.assertState().present();
+    }
+
+    public void assertDailyTarget(String targetNumber) {
+        WebbElement target = app.newElement(LocatorType.XPATH, "//input[@class='edit-target form-control' and @value='" + targetNumber + "']");
+        target.assertState().present();
+    }
+
+    public void assertDefaultPMB() {
+        WebbElement pmB = app.newElement(LocatorType.XPATH, "//input[@class='input-duration form-control' and @value='0:30']");
+        pmB.assertState().present();
+    }
+
+    public void assertDefaultFullEnrollment() {
+        WebbElement fullEnrolment = app.newElement(LocatorType.XPATH, "//input[@class='input-duration form-control' and @value='1:30']");
+        fullEnrolment.assertState().present();
+    }
+
+    public void assertMinimumAppointmentNotice(String days) {
+        appointmentNotice.click();
+        WebbElement appNoticeSelection = app.newElement(LocatorType.CSS, "div[aria-label='" + days + "']");
+        appNoticeSelection.assertState().present();
+    }
+
+    public void assertCustomHoursOfOperations() {
+        hoursOfOperation.click();
+        WebbElement customHrSelection = app.newElement(LocatorType.CSS, "div[title=Custom]");
+        customHrSelection.assertState().present();
     }
 }
 

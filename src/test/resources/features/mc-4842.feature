@@ -36,3 +36,11 @@ Feature: PMT Site Settings
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
     When I create new appointment for prospect via API
     Then I set default Site Settings with toggle "off", target "0", goal "0", days "3" via API
+
+  @mc-6637
+  Scenario: Single Site Settings - View
+    Given I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    When I login as user
+    And I see edited site settings toggle "on", target "15", goal "5", days "+ 1 Day"
+    Then I set default Site Settings with toggle "off", target "0", goal "0", days "3" via API
