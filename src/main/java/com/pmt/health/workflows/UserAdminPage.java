@@ -228,6 +228,7 @@ public class UserAdminPage {
      * displayed.
      */
     public void assertLoggedInUser() {
+        loggedInHeadingUser.waitFor().displayed();
         loggedInHeadingUser.assertState().displayed();
     }
 
@@ -570,5 +571,10 @@ public class UserAdminPage {
         enterSearch(email);
         clickActionButton();
         clickEditActionLink();
+    }
+
+    public void clickCapacityManagementButton() {
+        capacityManagementButton.waitFor().displayed();
+        capacityManagementButton.click();
     }
 }

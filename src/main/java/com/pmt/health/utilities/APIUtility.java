@@ -345,6 +345,7 @@ public class APIUtility {
         Response response = http.get(GROUPS_ENDPOINT, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully get a group value via API. ");
         String programId = "";
+        String awardeeId = "";
         String orgId = "";
         String siteId = "";
         //Empty jsonArrays to go through the json respond
@@ -367,6 +368,7 @@ public class APIUtility {
 
         for (int j = 0; j < nodesAwardee.size() && !awardee.isEmpty(); j++) {
             if (nodesAwardee.get(j).toString().contains(awardee)) {
+                awardeeId = nodesAwardee.get(j).getAsJsonObject().get(ID).getAsString();
                 nodesOrg = nodesAwardee.get(j).getAsJsonObject().get(NODE_MEMBER).getAsJsonArray();
             }
         }
@@ -383,49 +385,37 @@ public class APIUtility {
                 siteId = nodesSite.get(b).getAsJsonObject().get(ID).getAsString();
             }
         }
-        setGroupValueOfUser(role, programId, siteId, orgId);
+        setGroupValueOfUser(role, programId, awardeeId, siteId, orgId);
     }
 
-    private void setGroupValueOfUser(String role, String programId, String siteId, String orgId) {
+    private void setGroupValueOfUser(String role, String programId, String awardeeId, String siteId, String orgId) {
         // Sets group value depending on the role
-        if ("ROLE_MC_NIH".equals(role)) {
+        if ("ROLE_MC_NIH".equals(role) || "ROLE_MC_SYSTEM_ADMINISTRATOR".equals(role)
+                || "ROLE_MC_HIERARCHY_MANAGER".equals(role)) {
             user.setGroupValue(programId);
-        } else if ("ROLE_MC_SITE_MANAGER".equals(role)) {
+        } else if (("ROLE_MC_SUPPORT_ADMIN".equals(role) || "ROLE_MC_SUPPORT_STAFF".equals(role)
+                || "ROLE_MC_PROGRAM_COORDINATOR".equals(role)) && (!"".equals(orgId))) {
+            user.setGroupValue(orgId);
+        } else if ("ROLE_MC_SITE_MANAGER".equals(role) || "ROLE_MC_RESEARCH_ASSISTANT".equals(role)) {
             user.setGroupValue(siteId);
         } else if ("ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER".equals(role)) {
             if (!"".equals(orgId)) {
                 user.setGroupValue(orgId);
-            }
-            if (!"".equals(programId)) {
+            } else if (!"".equals(programId)) {
                 user.setGroupValue(programId);
             }
         } else if ("ROLE_MC_ADMINISTRATOR".equals(role)) {
             if (!"".equals(siteId)) {
                 user.setGroupValue(siteId);
-            }
-            if (!"".equals(orgId)) {
-                user.setGroupValue(orgId);
-            }
-        } else if ("ROLE_MC_PROGRAM_COORDINATOR".equals(role)) {
-            if (!"".equals(orgId)) {
+            } else if (!"".equals(orgId)) {
                 user.setGroupValue(orgId);
             }
         } else if ("ROLE_MC_PROGRAM_MANAGER".equals(role)) {
-            if (!"".equals(orgId)) {
+            if (!"".equals(awardeeId)) {
+                user.setGroupValue(awardeeId);
+            } else if (!"".equals(orgId)) {
                 user.setGroupValue(orgId);
             }
-        } else if ("ROLE_MC_RESEARCH_ASSISTANT".equals(role)) {
-            user.setGroupValue(siteId);
-        } else if ("ROLE_MC_SUPPORT_ADMIN".equals(role)) {
-            if (!"".equals(orgId)) {
-                user.setGroupValue(orgId);
-            }
-        } else if ("ROLE_MC_SYSTEM_ADMINISTRATOR".equals(role)) {
-            user.setGroupValue(programId);
-        } else if ("ROLE_MC_HIERARCHY_MANAGER".equals(role)) {
-            user.setGroupValue(programId);
-        } else if ("ROLE_MC_SUPPORT_STAFF".equals(role) && (!"".equals(orgId))) {
-            user.setGroupValue(orgId);
         }
     }
 

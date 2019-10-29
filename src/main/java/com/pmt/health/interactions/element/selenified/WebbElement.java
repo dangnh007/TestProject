@@ -451,4 +451,32 @@ public class WebbElement extends Element {
             reporter.pass(action, expected, TYPTED + text + IN + prettyOutput());
         }
     }
+    /**
+     * Double clicks on the element, but only if the element is present and displayed. If
+     * those conditions are not met, the hover action will be logged, but skipped
+     * and the test will continue.
+     */
+    public void doubleClick() {
+        String cantDoubleClick = "Unable to double click";
+        String action = "Double clicking " + prettyOutput();
+        String expected = prettyOutput() + " is present, and displayed to be double clicked";
+        // wait for element to be present
+        if (!isPresent(action, expected, cantDoubleClick)) {
+            return;
+        }
+        // wait for element to be displayed
+        if (!isDisplayed(action, expected, cantDoubleClick)) {
+            return;
+        }
+        try {
+            Actions selAction = new Actions(driver);
+            WebElement webElement = getWebElement();
+            selAction.doubleClick(webElement).perform();
+        } catch (Exception e) {
+            log.error(e);
+            reporter.fail(action, expected, cantDoubleClick + prettyOutput() + ". " + e.getMessage());
+            return;
+        }
+        reporter.pass(action, expected, "Double clicked " + prettyOutput());
+    }
 }
