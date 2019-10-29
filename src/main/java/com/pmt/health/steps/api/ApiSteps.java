@@ -107,6 +107,28 @@ public class ApiSteps {
     }
 
     /**
+     * Does login via API, creates new user based on parameters and gets values using emailUtility.
+     *
+     * @param role    - sets the role for user/roleName endpoint.
+     * @param program - sets program for user/groupName endpoint.
+     * @param awardee - sets awardee for user/groupName endpoint.
+     * @param org     - sets organization for user/groupName endpoint.
+     * @param site    - sets site for user/groupName endpoint.
+     * @param name    - sets firstname and lastname for user.
+     * @throws IOException          signals that an I/O exception of some sort has occurred.
+     * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied.
+     */
+    @When("^I create user \"([^\"]*)\" with \"([^\"]*)\" and \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\", \"([^\"]*)\"$")
+    public void createUserAPIDisabledVibrentAccount(String name, String role, String program, String awardee, String org, String site) throws IOException, InterruptedException {
+        userUtility.apiLoginAdmin();
+        userUtility.apiLoginAdminMFA();
+        apiUtility.getSiteGroupValue(role, program, awardee, org, site);
+        userUtility.apiCreateSpecifiedUserVibrentAccountDisabled(name, role);
+        eMailUtility.emailInbox();
+        eMailUtility.emailGetValue();
+    }
+
+    /**
      * Logs in as newly created user via API
      * Several methods were chained together for this implementation.
      *

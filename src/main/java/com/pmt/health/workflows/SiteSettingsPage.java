@@ -47,6 +47,12 @@ public class SiteSettingsPage {
     private final WebbElement messageOfSuccessAppointment;
     private final WebbElement warning;
     private final WebbElement ignoreWarning;
+    private final WebbElement assignToDropDownBtn;
+    private final WebbElement hamburgerMenu;
+    private final WebbElement myAppointmentCheckBox;
+    private final WebbElement appointmentEventBlock;
+    private final WebbElement nextDayButton;
+    private final WebbElement spinner;
 
 
     Logger log = Logger.getLogger(SiteSettingsPage.class);
@@ -86,6 +92,12 @@ public class SiteSettingsPage {
         this.messageOfSuccessAppointment = app.newElement(LocatorType.XPATH, "//div[contains(text(), 'Appointment successfully created.')]");
         this.warning = app.newElement(LocatorType.CSS, "p[class='warning-text']");
         this.ignoreWarning = app.newElement(LocatorType.CSS, "button[class='btn-ghost btn-ghost-primary btn btn-default']");
+        this.assignToDropDownBtn = app.newElement(LocatorType.XPATH, "//label[text()=\"Assign to\"]/..//span[@class=\"Select-arrow-zone\"]");
+        this.hamburgerMenu = app.newElement(LocatorType.CSS, "svg[class*=\"sliders\"]");
+        this.myAppointmentCheckBox = app.newElement(LocatorType.CSS, "span[class*=\"user-appointments\"] span[class=\"colored-checkbox-checkmark\"]");
+        this.appointmentEventBlock = app.newElement(LocatorType.CSS, "div[class=\"event-block \"]");
+        this.nextDayButton = app.newElement(LocatorType.CSS, "button[class*=calendarSwitcher-navigation-index__right]");
+        this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
     }
 
     /**
@@ -277,6 +289,7 @@ public class SiteSettingsPage {
         days.add("Friday");
         for (String day : days) {
             WebbElement dayCheck = app.newElement(LocatorType.XPATH, pContains + "\"" + day + "\")]/../../../../..//span");
+            dayCheck.assertState().enabled();
             dayCheck.click();
             WebbElement addBlockButton = app.newElement(LocatorType.XPATH, pContains + "\"" + day + "\")]/following::button[contains(text(), 'Add Block')][1]");
             addBlockButton.click();
@@ -377,6 +390,38 @@ public class SiteSettingsPage {
         messageOfChanges.assertState().displayed();
     }
 
+    /**
+     * Assign appointment to a user
+     */
+    public void assignToUser(String assignedUser) {
+        WebbElement assignedToUser = app.newElement(LocatorType.XPATH, "//div[@class=\"Select-option\" and contains(text(), \"" + assignedUser + "\")]");
+        assignToDropDownBtn.click();
+        assignedToUser.click();
+    }
+
+    /**
+     * Enable the checkbox "Show My Appointment"
+     */
+    public void showMyAppointment() {
+        hamburgerMenu.click();
+        myAppointmentCheckBox.click();
+    }
+
+    /**
+     * Click forward arrow to go to next day
+     */
+    public void goToNextDay() {
+        nextDayButton.click();
+        spinner.waitFor().notPresent();
+    }
+
+    /**
+     * Assert "Show My Appointment" function
+     */
+    public void assertShowMyAppointment() {
+        appointmentEventBlock.assertState().displayed();
+    }
+  
     public void assertToggleAcceptingAppointments(Boolean onOff) {
         WebbElement toggle = app.newElement(LocatorType.CSS, "input[" + DATA_VALUE + "=" + onOff + "]");
         toggle.assertState().present();

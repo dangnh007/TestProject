@@ -18,7 +18,7 @@ import java.util.*;
 
 public class UserUtility {
 
-    private static final String PASSWORD = "password";
+    private static final String PASSWORD = "password";  //NOSONAR
     private static final String MFA = "mfaCode";
     private static final String EMAIL = "email";
     private static final String OAUTH_ENDPOINT = "/api/oauth/token";
@@ -192,7 +192,45 @@ public class UserUtility {
         createUser.addProperty(EMAIL, uEmail);
         createUser.addProperty("firstName", user.getFirstName());
         createUser.addProperty("lastName", user.getLastName());
-        createUser.addProperty("isInternalAccount", true);
+        //some of the fields in the body has array parameter
+        JsonArray roles = new JsonArray();
+        roles.add(role);
+        JsonArray groups = new JsonArray();
+        groups.add(user.groupValue);
+        createUser.add("roles", roles);
+        createUser.add("groups", groups);
+        //Set headers and body
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_CREATE_USER);
+        RequestData requestData = new RequestData();
+        adminHttp.addHeaders(referer);
+        requestData.setJSON(createUser);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = adminHttp.simplePost("/api/userAdmin/user?roleName=ROLE_MC_SYSTEM_ADMINISTRATOR", requestData);
+        reporterPassFailStep(action, expected, response, "User has been not created. ");
+        if (user.searchedUserEmail.isEmpty()) {
+            user.setSearchedUserEmail(uEmail);
+        }
+        user.setEmail(uEmail);
+        return response;
+    }
+
+    /**
+     * Creates user with reusable parameters
+     */
+    public Response apiCreateSpecifiedUserVibrentAccountDisabled(String name, String role) throws IOException {
+        // Set property email.domain that doesn't contains "vibrent" string
+        System.setProperty("email.domain", "example.com");
+        // Generate email with domain as example.com
+        String uEmail = UserUtility.makeRandomUserEmail();
+        String action = "Create user via the API";
+        String expected = "Successfully created user via the API";
+        //setup our body for creating user
+        JsonObject createUser = new JsonObject();
+        createUser.addProperty(EMAIL, uEmail);
+        createUser.addProperty("firstName", name);
+        createUser.addProperty("lastName", name);
         //some of the fields in the body has array parameter
         JsonArray roles = new JsonArray();
         roles.add(role);

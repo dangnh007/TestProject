@@ -49,7 +49,6 @@ public class SiteSettingsSteps {
         siteSettingsPage.saveChanges();
         siteSettingsPage.editPage();
         siteSettingsPage.customHoursOfOperationDelete();
-
     }
 
     @When("^I create new appointment for prospect$")
@@ -71,6 +70,37 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertSuccessAppointmentMessage();
     }
 
+    @When("^I create new appointment for prospect and assign to \"([^\"]*)\"$")
+    public void createNewAppointmentAndAssignUser(String assignedUser) {
+        siteSettingsPage.addNewAppointment();
+        siteSettingsPage.enterFirstName(user.getFirstName());
+        siteSettingsPage.enterLastName(user.getLastName());
+        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.selectLanguage();
+        siteSettingsPage.completeParticipantInfo();
+        siteSettingsPage.assignToUser(assignedUser);
+        siteSettingsPage.addAppointmentNotes();
+        siteSettingsPage.completeAppointmentDetails();
+        siteSettingsPage.selectDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.completeAppointmentDetails();
+        siteSettingsPage.selectDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.scheduleAppointment();
+        siteSettingsPage.assertSuccessAppointmentMessage();
+    }
+
+    @When("^I am on Hamburger menu and I check \"Show My Appointment\"")
+    public void showMyAppointment() {
+        siteSettingsPage.goToNextDay();
+        siteSettingsPage.showMyAppointment();
+    }
+
+    @Then("^I can see Appointment showing up")
+    public void assertShowMyAppointment() {
+        siteSettingsPage.assertShowMyAppointment();
+    }
+      
     @When("^I see edited site settings toggle \"([^\"]*)\", target \"([^\"]*)\", goal \"([^\"]*)\", days \"([^\"]*)\"$")
     public void iSeeEditedSiteSettingsToggleTargetGoalDays(String toggle, String target, String goal, String days) {
         userAdminPage.userSettings();
