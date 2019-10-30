@@ -9,12 +9,14 @@ import com.pmt.health.interactions.services.Response;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
+import org.testng.log4testng.Logger;
 
 import java.io.IOException;
 import java.util.*;
 
 public class APIUtility {
 
+    private static final Logger log = Logger.getLogger(APIUtility.class);
     private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #" + UserUtility.generateUUID(5);
     private static final String VALUE_LIST = "valueList";
     private static final String AUTHORIZATION = "Authorization";
@@ -196,10 +198,23 @@ public class APIUtility {
         requestData.setHeaders(referer);
         requestData.setJSON(hoursOfOperations);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
-        // make the actual call
-        Response response = http.simplePut(ENDPOINT_HRS_OF_OPERATIONS, requestData);
-        //generate report
-        reporterPassFailStep(action, expected, response, "Hours of operations was created not successfully. ");
+        Response response = null;
+        try {
+            // make the actual call
+            response = http.simplePut(ENDPOINT_HRS_OF_OPERATIONS, requestData);
+            //generate report
+            reporterPassFailStep(action, expected, response, "Hours of operations was created not successfully. ");
+        } catch (Exception e) {
+            log.info(e);
+            // check if Custom Hour of Operations existed, we will remove it
+            if (e.toString().contains("406")) {
+                deleteCustomForm();
+                // Re-create Custom Hour of Operations if it was failed in previous step
+                response = http.simplePut(ENDPOINT_HRS_OF_OPERATIONS, requestData);
+                //generate report
+                reporterPassFailStep(action, expected, response, "Hours of operations was created not successfully. ");
+            }
+        }
         return response;
     }
 
