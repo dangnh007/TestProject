@@ -15,8 +15,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class APIUtility {
-
-    private static final Logger log = Logger.getLogger(APIUtility.class);
+    
     private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #" + UserUtility.generateUUID(5);
     private static final String VALUE_LIST = "valueList";
     private static final String AUTHORIZATION = "Authorization";
@@ -61,6 +60,7 @@ public class APIUtility {
     protected Reporter reporter;
     private HTTP http;
     private User user;
+    protected static final Logger log = Logger.getLogger(APIUtility.class);
 
     public APIUtility(Reporter reporter, User user) {
         this.user = user;
@@ -179,7 +179,7 @@ public class APIUtility {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
         hoursOfOperations.addProperty("effectiveDate", calendar.getTimeInMillis() / 1000);
-        calendar.add(Calendar.DAY_OF_MONTH, 7);
+        calendar.add(Calendar.DAY_OF_MONTH, 30);
         hoursOfOperations.addProperty("effectiveEndDate", calendar.getTimeInMillis() / 1000);
         //create json array for defaultWorkingTimes property
         JsonArray defWorkingTimesArr = new JsonArray();

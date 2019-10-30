@@ -2,8 +2,10 @@ package com.pmt.health.steps.ui;
 
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
+import com.pmt.health.workflows.SearchPage;
 import com.pmt.health.workflows.SiteSettingsPage;
 import com.pmt.health.workflows.UserAdminPage;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -13,12 +15,14 @@ public class SiteSettingsSteps {
     private final DeviceController deviceController;
     private final SiteSettingsPage siteSettingsPage;
     private final UserAdminPage userAdminPage;
+    private final SearchPage searchPage;
 
     public SiteSettingsSteps(DeviceController deviceController, User user) {
         this.user = user;
         this.deviceController = deviceController;
         siteSettingsPage = new SiteSettingsPage(this.deviceController.getApp(), user);
         userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
+        searchPage = new SearchPage(this.deviceController.getApp(), user);
     }
 
     @Then("^I set new Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", days \"([^\"]*)\"$")
@@ -114,5 +118,45 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertDefaultPMB();
         siteSettingsPage.assertMinimumAppointmentNotice(days);
         siteSettingsPage.assertCustomHoursOfOperations();
+    }
+
+    @And("^I am on Calendar page \"([^\"]*)\" view and appointment Scheduler site is selected as \"([^\"]*)\"$")
+    public void assertCalendarPage(String viewType, String site) {
+        if ("Week".equals(viewType)) {
+            siteSettingsPage.switchCalendarToWeekView();
+        }
+        siteSettingsPage.assertCalendarPage(viewType);
+        siteSettingsPage.assertSchedulerSite(site);
+    }
+
+    @When("^I create new appointment for prospect from first available future time block$")
+    public void createNewAppointmentOnTimeBlock() {
+        siteSettingsPage.switchToFindFirstAvailableTimeBlock();
+        siteSettingsPage.doubleClickOnTimeBlockToCreateNewAppointment();
+        siteSettingsPage.enterFirstName(user.getFirstName());
+        siteSettingsPage.enterLastName(user.getLastName());
+        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.selectLanguage();
+        siteSettingsPage.completeParticipantInfo();
+        siteSettingsPage.addAppointmentNotes();
+        siteSettingsPage.completeAppointmentDetails();
+        siteSettingsPage.selectActiveDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.completeAppointmentDetails();
+        siteSettingsPage.selectActiveDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.scheduleAppointment();
+    }
+
+    @Then("^I see scheduled appointment message$")
+    public void assertAppointmentScheduledMessage() {
+        siteSettingsPage.assertSuccessAppointmentMessage();
+    }
+
+    @Then("^Appointment should be created for prospect started from selected time and I can search prospect by email$")
+    public void assertCreatedAppointment() {
+        siteSettingsPage.assertCreatedAppointment();
+        searchPage.searchAppointment();
+        searchPage.assertSearchedAppointment();
     }
 }

@@ -577,4 +577,12 @@ public class UserAdminPage {
         capacityManagementButton.waitFor().displayed();
         capacityManagementButton.click();
     }
+
+    /**
+     * Asserts that the current user is logged out by making sure the login page is
+     * displayed.
+     */
+    public void assertLoggedInSiteManager() {
+        loggedInHeadingSiteManagerUser.assertState().displayed();
+    }
 }

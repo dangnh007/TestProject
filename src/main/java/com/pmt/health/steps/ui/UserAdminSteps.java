@@ -303,4 +303,9 @@ public class UserAdminSteps {
         this.userAdminPage.searchField(user.getSearchedUserEmail());
         this.userAdminPage.assertSearchedEmail();
     }
+
+    @Then("^I am logged in as Site Manager$")
+    public void loggedInAsSiteManager() {
+        this.userAdminPage.assertLoggedInSiteManager();
+    }
 }

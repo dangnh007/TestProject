@@ -471,6 +471,7 @@ public class WebbElement extends Element {
         try {
             Actions selAction = new Actions(driver);
             WebElement webElement = getWebElement();
+            webElement.click();
             selAction.doubleClick(webElement).perform();
         } catch (Exception e) {
             log.error(e);

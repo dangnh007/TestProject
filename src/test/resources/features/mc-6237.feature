@@ -26,3 +26,16 @@ Feature: Scheduling
     When I am on Hamburger menu and I check "Show My Appointment"
     Then I can see Appointment showing up
     And I set default Site Settings with toggle "off", target "0", goal "0", days "3" via API
+
+  @mc-6644 @mc-6439
+  Scenario: Initiate and scheduling from Calendar page Week view
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I am logged in as Site Manager
+    And I am on Calendar page "Week" view and appointment Scheduler site is selected as "Site/hpo-test-automation"
+    When I create new appointment for prospect from first available future time block
+    Then I see scheduled appointment message
+    And Appointment should be created for prospect started from selected time and I can search prospect by email
+    And I set default Site Settings with toggle "off", target "0", goal "0", days "1" via API
