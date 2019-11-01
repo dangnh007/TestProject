@@ -425,6 +425,7 @@ public class SiteSettingsPage {
      */
     public void showMyAppointment() {
         hamburgerMenu.click();
+        myAppointmentCheckBox.waitFor().displayed();
         myAppointmentCheckBox.click();
     }
 
