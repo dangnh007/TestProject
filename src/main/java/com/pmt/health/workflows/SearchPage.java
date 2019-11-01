@@ -12,6 +12,8 @@ public class SearchPage {
     private final WebbElement emailSearchField;
     private final WebbElement searchedParticipantEmail;
     private final WebbElement searchButton;
+    private final WebbElement createButtonFromSearchResult;
+    private final WebbElement spinner;
 
     public SearchPage(App app, User user) {
         this.user = user;
@@ -19,6 +21,8 @@ public class SearchPage {
         this.emailSearchField = app.newElement(LocatorType.CSS, "input[name=emailAddress]");
         this.searchedParticipantEmail = app.newElement(LocatorType.CSS, "div[class=participant-emailAddress] div");
         this.searchButton = app.newElement(LocatorType.CSS, "button[class*=btn-primary]");
+        this.createButtonFromSearchResult = app.newElement(LocatorType.CSS, "div[class=\"react-bs-table-container\"] button[class=\"button button-primary btn btn-primary\"]");
+        this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
     }
 
     /**
@@ -36,5 +40,13 @@ public class SearchPage {
      */
     public void assertSearchedAppointment() {
         searchedParticipantEmail.assertEquals().text(user.getParticipantEmail());
+    }
+
+    /**
+     * Click Create button from search result to create new appointment
+     */
+    public void clickCreateButton() {
+        createButtonFromSearchResult.click();
+        spinner.waitFor().notPresent();
     }
 }

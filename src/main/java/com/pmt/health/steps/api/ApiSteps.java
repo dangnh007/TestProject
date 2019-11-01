@@ -240,4 +240,15 @@ public class ApiSteps {
         userUtility.getAccessToken();
         apiUtility.addTestingGroups();
     }
+
+    /**
+     * Create a prospect account
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^I create a prospect account$")
+    public void createProspectAccount() throws IOException {
+        apiUtility.scheduleProspectAppointment();
+        apiUtility.cancelProspectAppointment();
+    }
 }

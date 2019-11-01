@@ -53,6 +53,8 @@ public class SiteSettingsPage {
     private final WebbElement appointmentEventBlock;
     private final WebbElement nextDayButton;
     private final WebbElement spinner;
+    private final WebbElement selectLocationDropDownBtn;
+    private final WebbElement locationTestAutomationSite;
     private final WebbElement calendarMode;
     private final WebbElement calendarSwitcherRight;
     private final WebbElement firstTimeBlock;
@@ -64,9 +66,6 @@ public class SiteSettingsPage {
     private final WebbElement calendarWeekMode;
     private final WebbElement prospectEmail;
     private String calendarViewType;
-
-
-
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
 
@@ -117,6 +116,8 @@ public class SiteSettingsPage {
         this.myAppointmentCheckBox = app.newElement(LocatorType.CSS, "span[class*=\"user-appointments\"] span[class=\"colored-checkbox-checkmark\"]");
         this.appointmentEventBlock = app.newElement(LocatorType.CSS, "div[class=\"event-block \"]");
         this.nextDayButton = app.newElement(LocatorType.CSS, "button[class*=calendarSwitcher-navigation-index__right]");
+        this.selectLocationDropDownBtn = app.newElement(LocatorType.XPATH, "//span[text()=\"Select a Location\"]/../../..//span[@class=\"Select-arrow-zone\"]");
+        this.locationTestAutomationSite = app.newElement(LocatorType.CSS, "div[aria-label=\"TEST AUTOMATION SITE\"]");
         this.calendarWeekMode = app.newElement(LocatorType.CSS, "div[aria-label='Week']");
         this.calendarModeDropDown = app.newElement(LocatorType.CSS, "div[class*='calendar-mode-selector'] span[class='Select-arrow-zone']");
         this.prospectEmail = app.newElement(LocatorType.CSS, "div[class=\"existing-participant-email\"]");
@@ -185,6 +186,14 @@ public class SiteSettingsPage {
      */
     public void completeAppointmentDetails() {
         if (backButton.is().present())
+            nextButton.click();
+    }
+
+    /**
+     * checks if the back button is present
+     * and if it is, clicks on the next button
+     */
+    public void nextForAppointmentDetails() {
             nextButton.click();
     }
 
@@ -425,7 +434,7 @@ public class SiteSettingsPage {
      */
     public void showMyAppointment() {
         hamburgerMenu.click();
-        myAppointmentCheckBox.waitFor().displayed();
+        myAppointmentCheckBox.waitFor().enabled();
         myAppointmentCheckBox.click();
     }
 
@@ -530,5 +539,11 @@ public class SiteSettingsPage {
         calendarMode.waitFor().displayed();
         calendarMode.assertEquals().text(viewType);
     }
-}
 
+    public void selectLocation() {
+        selectLocationDropDownBtn.waitFor().enabled();
+        selectLocationDropDownBtn.click();
+        locationTestAutomationSite.click();
+        spinner.waitFor().notPresent();
+    }
+}

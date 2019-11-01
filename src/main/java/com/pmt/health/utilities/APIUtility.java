@@ -15,7 +15,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class APIUtility {
-    
+
+    private static final Logger log = Logger.getLogger(APIUtility.class);
     private static final String CAMPAIGN_NAME_RANDOM = "Test Automation via API #" + UserUtility.generateUUID(5);
     private static final String VALUE_LIST = "valueList";
     private static final String AUTHORIZATION = "Authorization";
@@ -44,12 +45,15 @@ public class APIUtility {
     private static final String ENDPOINT_SITE = "/api/schedule/siteDetail";
     private static final String ENDPOINT_TARGET_AND_GOAL = "/api/capacity/saveTargetAndGoal";
     private static final String SITE_ID_TEST_AUTOMATION = "Site/hpo-test-automation";
+    private static final String APPOINTMENT_ID = "appointmentId";
     private static final String ENDPOINT_MINIMUM_APPOINTMENT_NOTICE = "/api/schedule/saveMinimumAppointmentNotice";
     private static final String REFERER_SCHEDULE = MAIN_URL + "/settings/scheduling?role=ROLE_MC_SITE_MANAGER";
     private static final String ENDPOINT_HRS_OF_OPERATIONS = "/api/schedule/weeklyHoursOfOperation";
+    private static final String REFERER_CANCEL_APPOINTMENT = MAIN_URL + "/scheduling/calendar/scheduler?role=ROLE_MC_PROGRAM_MANAGER";
     private static final String ENDPOINT_CALENDARS = "/api/schedule/calendars";
     private static final String REFERER_SCHEDULE_APPOINTMENT = MAIN_URL + "/scheduling/calendar/scheduler?role=ROLE_MC_SITE_MANAGER";
     private static final String ENDPOINT_SCHEDULE_APPOINTMENT = "/api/schedule/scheduleMCAppointment";
+    private static final String ENDPOINT_CANCEL_APPOINTMENT = "/api/schedule/cancelMCAppointment";
     private static final String GROUPS_ENDPOINT = "/api/userAdmin/getGroups";
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
     private static final String REFERER_CAMPAIGN = MAIN_URL + "/communications/campaigns?role=ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER";
@@ -57,10 +61,10 @@ public class APIUtility {
     private static final String ENDPOINT_CAMPAIGN = "/api/communications/campaign";
     private static final String ENDPOINT_SEGMENTATION = "/api/communications/segment";
 
+
     protected Reporter reporter;
     private HTTP http;
     private User user;
-    protected static final Logger log = Logger.getLogger(APIUtility.class);
 
     public APIUtility(Reporter reporter, User user) {
         this.user = user;
@@ -337,7 +341,34 @@ public class APIUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = http.simplePost(ENDPOINT_SCHEDULE_APPOINTMENT, requestData);
+        if (response.getCode() == 201 && response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString() != null) {
+            String appointmentId = response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString();
+            user.setAppointmentId(appointmentId);
+        }
         reporterPassFailStep(action, expected, response, "Not successfully schedule appointment for prospect via API. ");
+        return response;
+    }
+
+    /**
+     * Cancel appointment for prospect
+     * @throws IOException
+     */
+    public Response cancelProspectAppointment() throws IOException {
+        String action = "I cancel appointment for prospect via API";
+        String expected = "Successfully cancel appointment for prospect via API";
+        //add headers and parameters
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
+        jsonObject.addProperty(APPOINTMENT_ID, user.getAppointmentId());
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_CANCEL_APPOINTMENT);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+        requestData.setHeaders(referer);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simpleDelete(ENDPOINT_CANCEL_APPOINTMENT, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully cancel appointment for prospect via API. ");
         return response;
     }
 

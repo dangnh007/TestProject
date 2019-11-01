@@ -100,7 +100,7 @@ public class SiteSettingsSteps {
         siteSettingsPage.showMyAppointment();
     }
 
-    @Then("^I can see Appointment showing up")
+    @When("^I see Appointment showing up")
     public void assertShowMyAppointment() {
         siteSettingsPage.assertShowMyAppointment();
     }

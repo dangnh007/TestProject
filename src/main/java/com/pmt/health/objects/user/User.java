@@ -15,6 +15,7 @@ public class User {
     protected String authToken;
     protected String searchedUserEmail;
     protected String searchedUserPassword;
+    protected String appointmentId;
 
     public User() {
         firstName = "Automation";
@@ -30,6 +31,7 @@ public class User {
         searchedUserEmail = "";
         searchedUserPassword = "";
         searchedUserSecret = "";
+        appointmentId = "";
     }
 
     /**
@@ -211,4 +213,17 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * Getter
+     */
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+
+    /**
+     * Setter
+     */
+    public void setAppointmentId(String appointmentId) {
+        this.appointmentId = appointmentId;
+    }
 }
