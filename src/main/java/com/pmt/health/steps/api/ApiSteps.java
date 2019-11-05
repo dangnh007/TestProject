@@ -11,8 +11,11 @@ import com.pmt.health.utilities.EMailUtility;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import com.pmt.health.interactions.services.Response;
 
 import java.io.IOException;
+
+import org.testng.Assert;
 
 /**
  * Step definition class for API calls.
@@ -240,8 +243,7 @@ public class ApiSteps {
         userUtility.getAccessToken();
         apiUtility.addTestingGroups();
     }
-
-    /**
+   /**
      * Create a prospect account
      *
      * @throws IOException signals that an I/O exception of some sort has occurred.
@@ -250,5 +252,28 @@ public class ApiSteps {
     public void createProspectAccount() throws IOException {
         apiUtility.scheduleProspectAppointment();
         apiUtility.cancelProspectAppointment();
+    }
+
+    /**
+     * Cancel Appointment 
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @When("^I cancel that appointment via API$")
+    public void cancelAppointment() throws IOException {
+        apiUtility.cancelProspectAppointment();
+    }
+
+    /**
+     * Verify Appointment is cancelled successfully
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^Appointment change status to cancel successfully$")
+    public void verifyStatusAppointmentIsCancel() throws IOException {
+        Response response = apiUtility.getAppointment(user.getAppointmentId());
+        Assert.assertEquals(response.getCode(), 200);
+        String isCancelled = response.getObjectData().get("isCancelled").getAsString();
+        Assert.assertEquals(isCancelled, "true");
     }
 }

@@ -233,7 +233,7 @@ Feature: User Management
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I set up my credentials via API
     When I login as user
-    And I change role of user from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_PROGRAM_COORDINATOR" and "TEST AUTOMATION ORGANIZATION" successfully
+    Then I change role of user from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_PROGRAM_COORDINATOR" and "TEST AUTOMATION ORGANIZATION" successfully
 
   @mc-6095 @mc-6614
   Scenario: Program Manager can edit group of user successfully
@@ -243,4 +243,4 @@ Feature: User Management
     And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I set up my credentials via API
     When I login as user
-    And I change role of user from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_RESEARCH_ASSISTANT" and group of user from "TEST AUTOMATION ORGANIZATION" to "TEST AUTOMATION SITE" successfully
+    Then I change role of user from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_RESEARCH_ASSISTANT" and group of user from "TEST AUTOMATION ORGANIZATION" to "TEST AUTOMATION SITE" successfully

@@ -40,20 +40,22 @@ public class APIUtility {
     private static final String TIME_ZONE = "timeZone";
     private static final String AMERICA_CHICAGO = "America/Chicago";
     private static final String SITE_ID = "siteId";
+    private static final String APPOINTMENT_ID = "appointmentId";
     private static final String REFERER = "Referer";
     private static final String MAIN_URL = Property.getProgramProperty(Configuration.getEnvironment() + ".url.mc");
     private static final String ENDPOINT_SITE = "/api/schedule/siteDetail";
     private static final String ENDPOINT_TARGET_AND_GOAL = "/api/capacity/saveTargetAndGoal";
     private static final String SITE_ID_TEST_AUTOMATION = "Site/hpo-test-automation";
-    private static final String APPOINTMENT_ID = "appointmentId";
     private static final String ENDPOINT_MINIMUM_APPOINTMENT_NOTICE = "/api/schedule/saveMinimumAppointmentNotice";
     private static final String REFERER_SCHEDULE = MAIN_URL + "/settings/scheduling?role=ROLE_MC_SITE_MANAGER";
     private static final String ENDPOINT_HRS_OF_OPERATIONS = "/api/schedule/weeklyHoursOfOperation";
     private static final String REFERER_CANCEL_APPOINTMENT = MAIN_URL + "/scheduling/calendar/scheduler?role=ROLE_MC_PROGRAM_MANAGER";
     private static final String ENDPOINT_CALENDARS = "/api/schedule/calendars";
     private static final String REFERER_SCHEDULE_APPOINTMENT = MAIN_URL + "/scheduling/calendar/scheduler?role=ROLE_MC_SITE_MANAGER";
+    private static final String REFERER_GET_APPOINTMENT = MAIN_URL + "/scheduling/calendar/scheduler?role=ROLE_MC_PROGRAM_MANAGER";
     private static final String ENDPOINT_SCHEDULE_APPOINTMENT = "/api/schedule/scheduleMCAppointment";
     private static final String ENDPOINT_CANCEL_APPOINTMENT = "/api/schedule/cancelMCAppointment";
+    private static final String ENDPOINT_GET_APPOINTMENT = "/api/schedule/getAppointmentInfo";
     private static final String GROUPS_ENDPOINT = "/api/userAdmin/getGroups";
     private static final String REFERER_CREATE_USER = MAIN_URL + "/userAdmin/createUser/ROLE_MC_SYSTEM_ADMINISTRATOR?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
     private static final String REFERER_CAMPAIGN = MAIN_URL + "/communications/campaigns?role=ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER";
@@ -368,6 +370,29 @@ public class APIUtility {
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = http.simpleDelete(ENDPOINT_CANCEL_APPOINTMENT, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully cancel appointment for prospect via API. ");
+        return response;
+    }
+
+    /**
+     * Get appointment
+     * @throws IOException 
+     */
+    public Response getAppointment(String appointmentId) throws IOException {
+        String action = "I get appointment for prospect via API";
+        String expected = "Successfully get appointment for prospect via API";
+        //add headers and parameters
+        
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(ID, appointmentId);
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_GET_APPOINTMENT);
+        RequestData requestData = new RequestData();
+        requestData.setHeaders(referer);
+        requestData.setParams(parameters);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.get(ENDPOINT_GET_APPOINTMENT, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully cancel appointment for prospect via API. ");
         return response;
     }

@@ -583,6 +583,6 @@ public class UserAdminPage {
      * displayed.
      */
     public void assertLoggedInSiteManager() {
-        loggedInHeadingSiteManagerUser.assertState().displayed();
+        waitForLoginLoadSiteManager();
     }
 }
