@@ -32,7 +32,6 @@ public class SearchPage {
         searchMenu.click();
         emailSearchField.type(user.getParticipantEmail());
         searchButton.click();
-        searchedParticipantEmail.assertEquals().text(user.getParticipantEmail());
     }
 
     /**

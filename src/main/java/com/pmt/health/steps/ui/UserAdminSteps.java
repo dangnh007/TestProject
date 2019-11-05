@@ -225,6 +225,11 @@ public class UserAdminSteps {
         this.userAdminPage.assertLoggedInUser();
     }
 
+    @Then("^I am logged in as Site Manager$")
+    public void loggedInAsSiteManager() {
+        this.userAdminPage.assertLoggedInSiteManager();
+    }
+
     @Then("^I am logged in as System Administrator$")
     public void loggedInAsSystemAdministrator() {
         this.userAdminPage.assertLoggedIn();
@@ -302,10 +307,5 @@ public class UserAdminSteps {
         this.userAdminPage.userAdminButtonProgramManager();
         this.userAdminPage.searchField(user.getSearchedUserEmail());
         this.userAdminPage.assertSearchedEmail();
-    }
-
-    @Then("^I am logged in as Site Manager$")
-    public void loggedInAsSiteManager() {
-        this.userAdminPage.assertLoggedInSiteManager();
     }
 }

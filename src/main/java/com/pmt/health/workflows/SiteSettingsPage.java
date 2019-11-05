@@ -6,8 +6,10 @@ import com.pmt.health.objects.user.User;
 import com.pmt.health.utilities.LocatorType;
 import org.openqa.selenium.Keys;
 import org.testng.log4testng.Logger;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SiteSettingsPage {
@@ -41,7 +43,6 @@ public class SiteSettingsPage {
     private final WebbElement backButton;
     private final WebbElement languagesDropDown;
     private final WebbElement appointmentNotes;
-    private final WebbElement todayDate;
     private final WebbElement time8am;
     private final WebbElement scheduleButton;
     private final WebbElement messageOfSuccessAppointment;
@@ -62,9 +63,9 @@ public class SiteSettingsPage {
     private final WebbElement eventBlock;
     private final WebbElement activeDate;
     private final WebbElement showDetailBtn;
+    private final WebbElement prospectEmail;
     private final WebbElement calendarModeDropDown;
     private final WebbElement calendarWeekMode;
-    private final WebbElement prospectEmail;
     private String calendarViewType;
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -97,7 +98,6 @@ public class SiteSettingsPage {
         this.backButton = app.newElement(LocatorType.CSS, "button[class='btn-back btn btn-default']");
         this.languagesDropDown = app.newElement(LocatorType.CSS, "div[class='language-control']");
         this.appointmentNotes = app.newElement(LocatorType.CSS, "textarea[name='notes']");
-        this.todayDate = app.newElement(LocatorType.CSS, "tr > td > div.rdtDay.rdtToday");
         this.activeDate = app.newElement(LocatorType.CSS, "tr > td > div.rdtDay.rdtActive");
         this.time8am = app.newElement(LocatorType.XPATH, "//div[contains(text(),'08:00 AM')]");
         this.scheduleButton = app.newElement(LocatorType.CSS, "button[class='btn btn-default btn-schedule pull-right btn btn-default']");
@@ -149,8 +149,10 @@ public class SiteSettingsPage {
      * parsing attribute to set date for a next day
      */
     public void selectDate() {
-        String today = todayDate.get().attribute(DATA_VALUE);
-        int tomorrow = Integer.parseInt(today) + 1;
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 1);
+        int tomorrow = Integer.parseInt(sdf.format(calendar.getTime()).substring(0,2));
         WebbElement tomorrowDate = app.newElement(LocatorType.XPATH, "//tr/td[@" + DATA_VALUE + "='" + tomorrow + "']");
         tomorrowDate.click();
     }
@@ -420,6 +422,14 @@ public class SiteSettingsPage {
         messageOfChanges.waitFor().displayed();
     }
 
+    public void assertSchedulerSite(String site) {
+        selectedSchedulerSite.assertEquals().value(site);
+    }
+
+    public void doubleClickOnTimeBlockToCreateNewAppointment() {
+        firstTimeBlock.doubleClick();
+    }
+
     /**
      * Assign appointment to a user
      */
@@ -452,7 +462,7 @@ public class SiteSettingsPage {
     public void assertShowMyAppointment() {
         appointmentEventBlock.assertState().displayed();
     }
-  
+
     public void assertToggleAcceptingAppointments(Boolean onOff) {
         WebbElement toggle = app.newElement(LocatorType.CSS, "input[" + DATA_VALUE + "=" + onOff + "]");
         toggle.assertState().present();
@@ -490,16 +500,8 @@ public class SiteSettingsPage {
         customHrSelection.assertState().present();
     }
 
-    public void assertSchedulerSite(String site) {
-        selectedSchedulerSite.assertEquals().value(site);
-    }
-
     private void switchRightOnCalendar() {
         calendarSwitcherRight.click();
-    }
-
-    public void doubleClickOnTimeBlockToCreateNewAppointment() {
-        firstTimeBlock.doubleClick();
     }
 
     public void switchToFindFirstAvailableTimeBlock() {

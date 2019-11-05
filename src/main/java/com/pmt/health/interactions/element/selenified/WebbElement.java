@@ -451,6 +451,7 @@ public class WebbElement extends Element {
             reporter.pass(action, expected, TYPTED + text + IN + prettyOutput());
         }
     }
+
     /**
      * Double clicks on the element, but only if the element is present and displayed. If
      * those conditions are not met, the hover action will be logged, but skipped

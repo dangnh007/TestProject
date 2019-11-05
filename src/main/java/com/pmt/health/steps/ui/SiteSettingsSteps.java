@@ -14,8 +14,8 @@ public class SiteSettingsSteps {
     private final User user;
     private final DeviceController deviceController;
     private final SiteSettingsPage siteSettingsPage;
-    private final UserAdminPage userAdminPage;
     private final SearchPage searchPage;
+    private final UserAdminPage userAdminPage;
 
     public SiteSettingsSteps(DeviceController deviceController, User user) {
         this.user = user;
@@ -74,6 +74,25 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertSuccessAppointmentMessage();
     }
 
+    @When("^I create new appointment for prospect from first available future time block$")
+    public void createNewAppointmentOnTimeBlock() {
+        siteSettingsPage.switchToFindFirstAvailableTimeBlock();
+        siteSettingsPage.doubleClickOnTimeBlockToCreateNewAppointment();
+        siteSettingsPage.enterFirstName(user.getFirstName());
+        siteSettingsPage.enterLastName(user.getLastName());
+        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.selectLanguage();
+        siteSettingsPage.completeParticipantInfo();
+        siteSettingsPage.addAppointmentNotes();
+        siteSettingsPage.completeAppointmentDetails();
+        siteSettingsPage.selectActiveDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.completeAppointmentDetails();
+        siteSettingsPage.selectActiveDate();
+        siteSettingsPage.selectTime();
+        siteSettingsPage.scheduleAppointment();
+    }
+
     @When("^I create new appointment for prospect and assign to \"([^\"]*)\"$")
     public void createNewAppointmentAndAssignUser(String assignedUser) {
         siteSettingsPage.addNewAppointment();
@@ -94,6 +113,18 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertSuccessAppointmentMessage();
     }
 
+    @Then("^I see scheduled appointment message$")
+    public void assertAppointmentScheduledMessage() {
+        siteSettingsPage.assertSuccessAppointmentMessage();
+    }
+
+    @Then("^Appointment should be created for prospect started from selected time and I can search prospect by email$")
+    public void assertCreatedAppointment() {
+        siteSettingsPage.assertCreatedAppointment();
+        searchPage.searchAppointment();
+        searchPage.assertSearchedAppointment();
+    }
+
     @When("^I am on Hamburger menu and I check \"Show My Appointment\"")
     public void showMyAppointment() {
         siteSettingsPage.goToNextDay();
@@ -104,7 +135,7 @@ public class SiteSettingsSteps {
     public void assertShowMyAppointment() {
         siteSettingsPage.assertShowMyAppointment();
     }
-      
+
     @When("^I see edited site settings toggle \"([^\"]*)\", target \"([^\"]*)\", goal \"([^\"]*)\", days \"([^\"]*)\"$")
     public void iSeeEditedSiteSettingsToggleTargetGoalDays(String toggle, String target, String goal, String days) {
         userAdminPage.userSettings();
@@ -127,36 +158,5 @@ public class SiteSettingsSteps {
         }
         siteSettingsPage.assertCalendarPage(viewType);
         siteSettingsPage.assertSchedulerSite(site);
-    }
-
-    @When("^I create new appointment for prospect from first available future time block$")
-    public void createNewAppointmentOnTimeBlock() {
-        siteSettingsPage.switchToFindFirstAvailableTimeBlock();
-        siteSettingsPage.doubleClickOnTimeBlockToCreateNewAppointment();
-        siteSettingsPage.enterFirstName(user.getFirstName());
-        siteSettingsPage.enterLastName(user.getLastName());
-        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
-        siteSettingsPage.selectLanguage();
-        siteSettingsPage.completeParticipantInfo();
-        siteSettingsPage.addAppointmentNotes();
-        siteSettingsPage.completeAppointmentDetails();
-        siteSettingsPage.selectActiveDate();
-        siteSettingsPage.selectTime();
-        siteSettingsPage.completeAppointmentDetails();
-        siteSettingsPage.selectActiveDate();
-        siteSettingsPage.selectTime();
-        siteSettingsPage.scheduleAppointment();
-    }
-
-    @Then("^I see scheduled appointment message$")
-    public void assertAppointmentScheduledMessage() {
-        siteSettingsPage.assertSuccessAppointmentMessage();
-    }
-
-    @Then("^Appointment should be created for prospect started from selected time and I can search prospect by email$")
-    public void assertCreatedAppointment() {
-        siteSettingsPage.assertCreatedAppointment();
-        searchPage.searchAppointment();
-        searchPage.assertSearchedAppointment();
     }
 }
