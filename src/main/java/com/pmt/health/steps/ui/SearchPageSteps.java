@@ -5,6 +5,7 @@ import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.LoginPage;
 import com.pmt.health.workflows.SearchPage;
 import com.pmt.health.workflows.SiteSettingsPage;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -47,4 +48,13 @@ public class SearchPageSteps {
         siteSettingsPage.scheduleAppointment();
         siteSettingsPage.assertSuccessAppointmentMessage();
     }
+
+    @And("^I am on Search page. I can search prospect by email and view future appointment details$")
+    public void searchProspectAndViewFutureAppointmentDetails() {
+        searchPage.searchAppointment();
+        searchPage.assertSearchedAppointment();
+        searchPage.clickViewButton();
+        searchPage.assertViewAppointmentDetailPage();
+    }
+
 }

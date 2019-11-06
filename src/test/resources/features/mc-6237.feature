@@ -69,6 +69,20 @@ Feature: Scheduling
     And Appointment should be created for prospect started from selected time and I can search prospect by email
     And I set default Site Settings with toggle "off", target "0", goal "0", days "1" via API
 
+  @mc-6718
+  Scenario: Edit Prospect's future appointment details
+    Given I create user "mc-6542" with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create new appointment for prospect via API
+    And I login as user
+    And I am logged in as Program Manager
+    And I am on Search page. I can search prospect by email and view future appointment details
+    When I edit, I can increase duration, assign to "mc-6542", select "No Show" outcome, add notes and I save changes
+    Then I should see a message
+    And I set default Site Settings with toggle "off", target "0", goal "0", days "1" via API
+
   @mc-6661 @mc-6665
   Scenario: Cancel appointment
     Given I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
@@ -78,3 +92,4 @@ Feature: Scheduling
     When I cancel that appointment via API
     Then Appointment change status to cancel successfully
     And I set default Site Settings with toggle "off", target "0", goal "0", days "3" via API
+

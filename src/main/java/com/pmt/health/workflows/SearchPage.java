@@ -14,6 +14,8 @@ public class SearchPage {
     private final WebbElement searchButton;
     private final WebbElement createButtonFromSearchResult;
     private final WebbElement spinner;
+    private final WebbElement viewButton;
+    private final WebbElement viewAppointmentDetailsText;
 
     public SearchPage(App app, User user) {
         this.user = user;
@@ -23,6 +25,8 @@ public class SearchPage {
         this.searchButton = app.newElement(LocatorType.CSS, "button[class*=btn-primary]");
         this.createButtonFromSearchResult = app.newElement(LocatorType.CSS, "div[class=\"react-bs-table-container\"] button[class=\"button button-primary btn btn-primary\"]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.viewButton = app.newElement(LocatorType.XPATH, "//strong[text()='View']/parent::button");
+        this.viewAppointmentDetailsText = app.newElement(LocatorType.XPATH, "//h5[text()='Future Appointment Details']");
     }
 
     /**
@@ -47,5 +51,14 @@ public class SearchPage {
     public void clickCreateButton() {
         createButtonFromSearchResult.click();
         spinner.waitFor().notPresent();
+    }
+
+    public void clickViewButton() {
+        viewButton.click();
+        spinner.waitFor().notPresent();
+    }
+
+    public void assertViewAppointmentDetailPage() {
+        viewAppointmentDetailsText.assertState().displayed();
     }
 }

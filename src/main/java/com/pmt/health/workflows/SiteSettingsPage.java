@@ -66,6 +66,11 @@ public class SiteSettingsPage {
     private final WebbElement prospectEmail;
     private final WebbElement calendarModeDropDown;
     private final WebbElement calendarWeekMode;
+    private final WebbElement editAppointmentDetailButton;
+    private final WebbElement increaseDurationButton;
+    private final WebbElement outComeDropDownBtn;
+    private final WebbElement saveEditedAppointmentButton;
+    private final WebbElement prospectNameDiv;
     private String calendarViewType;
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -121,6 +126,11 @@ public class SiteSettingsPage {
         this.calendarWeekMode = app.newElement(LocatorType.CSS, "div[aria-label='Week']");
         this.calendarModeDropDown = app.newElement(LocatorType.CSS, "div[class*='calendar-mode-selector'] span[class='Select-arrow-zone']");
         this.prospectEmail = app.newElement(LocatorType.CSS, "div[class=\"existing-participant-email\"]");
+        this.editAppointmentDetailButton = app.newElement(LocatorType.CSS, "button[class*='edit-btn']");
+        this.increaseDurationButton = app.newElement(LocatorType.CSS, "svg[class*='svg-inline--fa fa-plus']");
+        this.outComeDropDownBtn = app.newElement(LocatorType.CSS, "div[class*='appointment-status-selector'] span[class='Select-arrow-zone']");
+        this.saveEditedAppointmentButton = app.newElement(LocatorType.CSS, "button[class*='btn-schedule__save__edit']");
+        this.prospectNameDiv = app.newElement(LocatorType.CSS, "div[class*='name']");
     }
 
     /**
@@ -196,7 +206,7 @@ public class SiteSettingsPage {
      * and if it is, clicks on the next button
      */
     public void nextForAppointmentDetails() {
-            nextButton.click();
+        nextButton.click();
     }
 
     /**
@@ -434,8 +444,10 @@ public class SiteSettingsPage {
      * Assign appointment to a user
      */
     public void assignToUser(String assignedUser) {
-        WebbElement assignedToUser = app.newElement(LocatorType.XPATH, "//div[@class=\"Select-option\" and contains(text(), \"" + assignedUser + "\")]");
+        WebbElement assignedToUser = app.newElement(LocatorType.CSS, "div[aria-label*='" + assignedUser + "']");
+        assignToDropDownBtn.waitFor().displayed();
         assignToDropDownBtn.click();
+        assignedToUser.waitFor().displayed();
         assignedToUser.click();
     }
 
@@ -521,7 +533,7 @@ public class SiteSettingsPage {
     public void assertCreatedAppointment() {
         eventBlock.waitFor().displayed();
         eventBlock.doubleClick();
-        if("Week".equals(calendarViewType)) {
+        if ("Week".equals(calendarViewType)) {
             spinner.waitFor().notDisplayed();
             eventBlock.doubleClick();
         }
@@ -547,5 +559,33 @@ public class SiteSettingsPage {
         selectLocationDropDownBtn.click();
         locationTestAutomationSite.click();
         spinner.waitFor().notPresent();
+    }
+
+    public void clickEditAppointmentDetail() {
+        editAppointmentDetailButton.click();
+        spinner.waitFor().notPresent();
+    }
+
+    public void increaseDuration() {
+        increaseDurationButton.click();
+    }
+
+    public void selectOutComeStatus(String outCome) {
+        WebbElement selectStatus = app.newElement(LocatorType.CSS, "div[aria-label*='" + outCome + "']");
+        outComeDropDownBtn.waitFor().displayed();
+        outComeDropDownBtn.click();
+        selectStatus.waitFor().displayed();
+        selectStatus.click();
+    }
+
+    public void saveEditedAppointment() {
+        saveEditedAppointmentButton.click();
+        spinner.waitFor().notPresent();
+    }
+
+    public void assertMessageAfterSaveChanges() {
+        String prospectName = prospectNameDiv.get().text();
+        WebbElement message = app.newElement(LocatorType.XPATH, "//div[text()='The appointment details for " + prospectName + " have been updated.']");
+        message.waitFor().displayed();
     }
 }

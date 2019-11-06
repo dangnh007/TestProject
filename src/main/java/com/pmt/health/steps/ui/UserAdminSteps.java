@@ -308,4 +308,9 @@ public class UserAdminSteps {
         this.userAdminPage.searchField(user.getSearchedUserEmail());
         this.userAdminPage.assertSearchedEmail();
     }
+
+    @And("^I am logged in as Program Manager$")
+    public void loggedInAsProgramManager() {
+        this.userAdminPage.assertLoggedInProgramManager();
+    }
 }

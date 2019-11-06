@@ -159,4 +159,19 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertCalendarPage(viewType);
         siteSettingsPage.assertSchedulerSite(site);
     }
+
+    @When("^I edit, I can increase duration, assign to \"([^\"]*)\", select \"([^\"]*)\" outcome, add notes and I save changes$")
+    public void editFutureAppointment(String assignedUser, String outCome) {
+        siteSettingsPage.clickEditAppointmentDetail();
+        siteSettingsPage.increaseDuration();
+        siteSettingsPage.assignToUser(assignedUser);
+        siteSettingsPage.selectOutComeStatus(outCome);
+        siteSettingsPage.addAppointmentNotes();
+        siteSettingsPage.saveEditedAppointment();
+    }
+
+    @And("^I should see a message$")
+    public void assertMessageAfterSaveChanges() {
+        siteSettingsPage.assertMessageAfterSaveChanges();
+    }
 }
