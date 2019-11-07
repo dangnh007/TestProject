@@ -79,7 +79,7 @@ public class UserAdminPage {
         this.userAdminButton = app.newElement(LocatorType.CSS, "svg[class*=\"fa-user \"]");
         this.userDeleteConfirmationButton = app.newElement(LocatorType.CSS, "button[class=\"button-warning btn btn-primary\"]");
         this.userDeleteCancelButton = app.newElement(LocatorType.CSS, "button[class=\"button-warning btn btn-secondary\"]");
-        this.userAdminButtonProgramManager = app.newElement(LocatorType.XPATH, "(//a[@role='button'])[9]");
+        this.userAdminButtonProgramManager = app.newElement(LocatorType.CSS, "a[id='icon-User']");
         this.userSettingsButton = app.newElement(LocatorType.XPATH, "//a[contains(text(), 'Settings')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
         this.divSelectRole = app.newElement(LocatorType.CSS, "div.Select-placeholder");

@@ -255,7 +255,7 @@ public class ApiSteps {
     }
 
     /**
-     * Cancel Appointment 
+     * Cancel Appointment
      *
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
@@ -275,5 +275,17 @@ public class ApiSteps {
         Assert.assertEquals(response.getCode(), 200);
         String isCancelled = response.getObjectData().get("isCancelled").getAsString();
         Assert.assertEquals(isCancelled, "true");
+    }
+
+    /**
+     * Retrieves access token and updates toggle feature
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^I toggle communication feature via API$")
+    public void toggleCommunication() throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.getSiteGroupValue("ROLE_MC_PROGRAM_COORDINATOR", "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "");
+        apiUtility.toggleCommunicationViaAPI();
     }
 }

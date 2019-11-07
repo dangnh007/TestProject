@@ -11,8 +11,8 @@ Feature: User Management
 
   @mc-4309
   Scenario Outline: Create a user as a System Administrator
-    Given I login as System Administrator
-    And I create test groups via API
+    Given I create test groups via API
+    And I login as System Administrator
     When I create user with "<role>" and "<org>" level
     Then User has been created
 
@@ -53,7 +53,8 @@ Feature: User Management
 
   @mc-4718 @api
   Scenario Outline: Verify email for created user
-    Given I login as System Administrator via API
+    Given I create test groups via API
+    And I login as System Administrator via API
     When I create user with "<role>" and "<program>", "<awardee>", "<org>", "<site>" via API
     Then I verify email and get its id
 
@@ -244,3 +245,9 @@ Feature: User Management
     And I set up my credentials via API
     When I login as user
     Then I change role of user from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_RESEARCH_ASSISTANT" and group of user from "TEST AUTOMATION ORGANIZATION" to "TEST AUTOMATION SITE" successfully
+
+  @mc-6776 @api
+  Scenario: Communication Toggle API
+    Given I create test groups via API
+    When I login as System Administrator via API
+    Then I toggle communication feature via API

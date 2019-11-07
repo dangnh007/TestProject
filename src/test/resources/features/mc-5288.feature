@@ -75,7 +75,3 @@ Feature: Post-Enrollment Communication
   Scenario: As a user I want to create new segmentation via API
     When I login as user via API
     Then I create new segmentation with Email channel via API
-
-
-
-

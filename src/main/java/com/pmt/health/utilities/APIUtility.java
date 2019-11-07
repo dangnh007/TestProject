@@ -62,6 +62,8 @@ public class APIUtility {
     private static final String REFERER_SEGMENTATION = MAIN_URL + "/communications/segmentation?role=ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER";
     private static final String ENDPOINT_CAMPAIGN = "/api/communications/campaign";
     private static final String ENDPOINT_SEGMENTATION = "/api/communications/segment";
+    private static final String REFERER_TOGGLE = MAIN_URL + "/programMaintenance?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
+    private static final String ENDPOINT_TOGGLE = "/api/feature-group/toggle";
 
 
     protected Reporter reporter;
@@ -700,6 +702,9 @@ public class APIUtility {
         return categoryListObj;
     }
 
+    /**
+     * PUT call to update current organization's table with testing org
+     */
     public Response addTestingGroups() throws IOException {
         String action = "I add testing groups via API";
         String expected = "Successfully add testing groups via API";
@@ -736,6 +741,36 @@ public class APIUtility {
         // make the actual call
         Response response = test.simplePut(ENDPOINT_TEST_GROUPS, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully add testing groups via API. ");
+        return response;
+    }
+
+    /**
+     * PUT call to update communication toggle endpoint
+     */
+    public Response toggleCommunicationViaAPI() throws IOException {
+        String action = "I toggle communication feature via API";
+        String expected = "I toggle communication feature via API";
+        //add headers and parameters
+        Map<String, String> headers = new HashMap<>();
+        headers.put(AUTHORIZATION,user.getAuthToken());
+        headers.put(REFERER, REFERER_TOGGLE);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("programId", 2);
+        jsonObject.addProperty("featureId", 2);
+        JsonArray jsonArray = new JsonArray();
+        //String manipulation to get previous group id
+        String endLevel = user.getGroupValue();
+        int previousLevel = Integer.parseInt(endLevel) - 1;
+        jsonArray.add(previousLevel+"");
+        jsonArray.add(endLevel);
+        jsonObject.add("groups",jsonArray);
+        http.addHeaders(headers);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simplePut(ENDPOINT_TOGGLE, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully toggle communication feature via API. ");
         return response;
     }
 }
