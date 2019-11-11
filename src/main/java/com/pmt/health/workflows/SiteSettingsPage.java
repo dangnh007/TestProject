@@ -6,6 +6,7 @@ import com.pmt.health.objects.user.User;
 import com.pmt.health.utilities.LocatorType;
 import org.openqa.selenium.Keys;
 import org.testng.log4testng.Logger;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +67,10 @@ public class SiteSettingsPage {
     private final WebbElement prospectEmail;
     private final WebbElement calendarModeDropDown;
     private final WebbElement calendarWeekMode;
+    private final WebbElement viewButtonInSearchResult;
+    private final WebbElement reScheduledButton;
+    private final WebbElement dateAndTime;
+    private final WebbElement successfulMessage;
     private final WebbElement editAppointmentDetailButton;
     private final WebbElement increaseDurationButton;
     private final WebbElement outComeDropDownBtn;
@@ -115,7 +120,7 @@ public class SiteSettingsPage {
         this.selectedSchedulerSite = app.newElement(LocatorType.CSS, "input[name='site']");
         this.eventBlock = app.newElement(LocatorType.CSS, "button[class*='event-block-content']");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
-        this.showDetailBtn = app.newElement(LocatorType.XPATH, "//button[text()='Show Details']");
+        this.showDetailBtn = app.newElement(LocatorType.CSS, "button[class*=show-button]");
         this.assignToDropDownBtn = app.newElement(LocatorType.XPATH, "//label[text()=\"Assign to\"]/..//span[@class=\"Select-arrow-zone\"]");
         this.hamburgerMenu = app.newElement(LocatorType.CSS, "svg[class*=\"sliders\"]");
         this.myAppointmentCheckBox = app.newElement(LocatorType.CSS, "span[class*=\"user-appointments\"] span[class=\"colored-checkbox-checkmark\"]");
@@ -126,6 +131,10 @@ public class SiteSettingsPage {
         this.calendarWeekMode = app.newElement(LocatorType.CSS, "div[aria-label='Week']");
         this.calendarModeDropDown = app.newElement(LocatorType.CSS, "div[class*='calendar-mode-selector'] span[class='Select-arrow-zone']");
         this.prospectEmail = app.newElement(LocatorType.CSS, "div[class=\"existing-participant-email\"]");
+        this.viewButtonInSearchResult = app.newElement(LocatorType.CSS, "div[class=\"react-bs-container-body\"] button[class*=\"btn\"]");
+        this.reScheduledButton = app.newElement(LocatorType.CSS, "button[class*=\"reschedule-btn\"]");
+        this.dateAndTime = app.newElement(LocatorType.XPATH, "//label[text()=\"Date & Time\"]/../../div[2]/p");
+        this.successfulMessage = app.newElement(LocatorType.CSS, "div[class=\"message animated fade success in\"]");
         this.editAppointmentDetailButton = app.newElement(LocatorType.CSS, "button[class*='edit-btn']");
         this.increaseDurationButton = app.newElement(LocatorType.CSS, "svg[class*='svg-inline--fa fa-plus']");
         this.outComeDropDownBtn = app.newElement(LocatorType.CSS, "div[class*='appointment-status-selector'] span[class='Select-arrow-zone']");
@@ -561,6 +570,26 @@ public class SiteSettingsPage {
         spinner.waitFor().notPresent();
     }
 
+    public void reScheduledAppointment(String time) {
+        // Re-scheduled appointment
+        viewButtonInSearchResult.click();
+        reScheduledButton.waitFor().enabled();
+        reScheduledButton.click();
+        // Select another time slot
+        WebbElement specifiedTime = app.newElement(LocatorType.XPATH, "//div[contains(text(),'" + time + "')]");
+        specifiedTime.waitFor().enabled();
+        specifiedTime.click();
+        scheduleButton.click();
+    }
+
+    public void assertRescheduledAppointmentInfo(String time) {
+        successfulMessage.waitFor().displayed();
+        successfulMessage.waitFor().notDisplayed();
+        showDetailBtn.click();
+        prospectEmail.assertContains().text(user.getParticipantEmail());
+        dateAndTime.assertContains().text(time);
+    }
+
     public void clickEditAppointmentDetail() {
         editAppointmentDetailButton.click();
         spinner.waitFor().notPresent();
@@ -580,10 +609,10 @@ public class SiteSettingsPage {
 
     public void saveEditedAppointment() {
         saveEditedAppointmentButton.click();
-        spinner.waitFor().notPresent();
     }
 
     public void assertMessageAfterSaveChanges() {
+        prospectNameDiv.waitFor().displayed();
         String prospectName = prospectNameDiv.get().text();
         WebbElement message = app.newElement(LocatorType.XPATH, "//div[text()='The appointment details for " + prospectName + " have been updated.']");
         message.waitFor().displayed();

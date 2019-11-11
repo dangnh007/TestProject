@@ -113,13 +113,9 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertSuccessAppointmentMessage();
     }
 
-    @Then("^I see scheduled appointment message$")
-    public void assertAppointmentScheduledMessage() {
-        siteSettingsPage.assertSuccessAppointmentMessage();
-    }
-
-    @Then("^Appointment should be created for prospect started from selected time and I can search prospect by email$")
+    @Then("^I can search created appointment by email that was started from selected time$")
     public void assertCreatedAppointment() {
+        siteSettingsPage.assertSuccessAppointmentMessage();
         siteSettingsPage.assertCreatedAppointment();
         searchPage.searchAppointment();
         searchPage.assertSearchedAppointment();
@@ -151,7 +147,7 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertCustomHoursOfOperations();
     }
 
-    @And("^I am on Calendar page \"([^\"]*)\" view and appointment Scheduler site is selected as \"([^\"]*)\"$")
+    @And("^I am on Calendar \"([^\"]*)\" view and Scheduler site is selected as \"([^\"]*)\"$")
     public void assertCalendarPage(String viewType, String site) {
         if ("Week".equals(viewType)) {
             siteSettingsPage.switchCalendarToWeekView();
@@ -160,7 +156,17 @@ public class SiteSettingsSteps {
         siteSettingsPage.assertSchedulerSite(site);
     }
 
-    @When("^I edit, I can increase duration, assign to \"([^\"]*)\", select \"([^\"]*)\" outcome, add notes and I save changes$")
+    @When("^I re-scheduled appointment at \"([^\"]*)\"$")
+    public void reScheduledAppointment(String time) {
+        siteSettingsPage.reScheduledAppointment(time);
+    }
+
+    @When("^Details information of re-scheduled appointment is displayed and placed at \"([^\"]*)\"$")
+    public void assertRescheduledAppointmentInfo(String time) {
+        siteSettingsPage.assertRescheduledAppointmentInfo(time);
+    }
+
+    @When("^I edit by increasing duration, assign to \"([^\"]*)\", select \"([^\"]*)\" outcome and add notes$")
     public void editFutureAppointment(String assignedUser, String outCome) {
         siteSettingsPage.clickEditAppointmentDetail();
         siteSettingsPage.increaseDuration();
