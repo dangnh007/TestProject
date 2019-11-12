@@ -251,3 +251,13 @@ Feature: User Management
     Given I create test groups via API
     When I login as System Administrator via API
     Then I toggle communication feature via API
+
+  @mc-6696 @api
+  Scenario: Edit User - API
+    Given I create test groups via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I set up my credentials via API
+    And I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    When I login as user via API
+    And I edit user and change its role from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_SITE_MANAGER" via API
+    Then I login as edited user via API

@@ -140,10 +140,10 @@ public class ApiSteps {
     @Then("^I login as user via API$")
     public void loginAsUserViaAPI() throws IOException {
         userUtility.retrieveAndSetUserSecretKey();
-        userUtility.apiLoginUserMFA();
+        userUtility.apiLoginUserMFA(user.getSecretKey());
         userUtility.apiSetPassword();
-        userUtility.apiLoginUser();
-        userUtility.apiLoginUserMFA();
+        userUtility.apiLoginUser(user.getEmail());
+        userUtility.apiLoginUserMFA(user.getSecretKey());
     }
 
     /**
@@ -154,7 +154,7 @@ public class ApiSteps {
     @Then("^I set up my credentials via API$")
     public void setUpMyCredentialsViaAPI() throws IOException {
         userUtility.retrieveAndSetUserSecretKey();
-        userUtility.apiLoginUserMFA();
+        userUtility.apiLoginUserMFA(user.getSecretKey());
         userUtility.apiSetPassword();
     }
 
@@ -243,7 +243,8 @@ public class ApiSteps {
         userUtility.getAccessToken();
         apiUtility.addTestingGroups();
     }
-   /**
+
+    /**
      * Create a prospect account
      *
      * @throws IOException signals that an I/O exception of some sort has occurred.
@@ -287,5 +288,30 @@ public class ApiSteps {
         userUtility.getAuthorizationToken();
         apiUtility.getSiteGroupValue("ROLE_MC_PROGRAM_COORDINATOR", "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "");
         apiUtility.toggleCommunicationViaAPI();
+    }
+
+    /**
+     * Logs in as edited user via API
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @When("^I login as edited user via API$")
+    public void loginAsEditedUserViaAPI() throws IOException {
+        userUtility.apiLoginUser(user.getSearchedUserEmail());
+        userUtility.apiLoginUserMFA(user.getSearchedUserSecret());
+    }
+
+    /**
+     * Retrieves access token and updates groups
+     *
+     * @param currentRole sets current role
+     * @param editedRole  sets role to update
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @When("^I edit user and change its role from \"([^\"]*)\" to \"([^\"]*)\" via API$")
+    public void getUserIdAndEditUser(String currentRole, String editedRole) throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.getUserId();
+        apiUtility.editUserViaApi(currentRole, editedRole);
     }
 }

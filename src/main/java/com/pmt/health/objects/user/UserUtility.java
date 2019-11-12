@@ -284,15 +284,15 @@ public class UserUtility {
     /**
      * Logs as user in via the API.
      */
-    public void apiLoginUser() throws IOException {
-        String action = LOGIN_MESSAGE;
-        String expected = "Successfully login in as user via the API";
-        // setup our user credentials
-        JsonObject credentials = new JsonObject();
-        credentials.addProperty(EMAIL, user.getEmail());
-        credentials.addProperty(PASSWORD, PASS);
-        RequestData requestData = new RequestData();
-        requestData.setJSON(credentials);
+    public void apiLoginUser(String userEmail) throws IOException {
+            String action = LOGIN_MESSAGE;
+            String expected = "Successfully login in as user via the API";
+            // setup our user credentials
+            JsonObject credentials = new JsonObject();
+            credentials.addProperty(EMAIL, userEmail);
+            credentials.addProperty(PASSWORD, PASS);
+            RequestData requestData = new RequestData();
+            requestData.setJSON(credentials);
         action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
         // make the actual call
         Response response = adminHttp.simplePost(LOGIN_ENDPOINT, requestData);
@@ -304,12 +304,12 @@ public class UserUtility {
      * Pass authenticator code
      * sets userId in the User object
      */
-    public void apiLoginUserMFA() throws IOException {
+    public void apiLoginUserMFA(String userSecretKey) throws IOException {
         StringBuilder action = new StringBuilder(LOGIN_MESSAGE);
         String expected = "Successfully pass authenticator code for user via the API";
         // setup our user mfa
         JsonObject mfa = new JsonObject();
-        mfa.addProperty(MFA, HTTP.obtainOath2KeyCreatedUser(user.getSecretKey()));
+        mfa.addProperty(MFA, HTTP.obtainOath2KeyCreatedUser(userSecretKey));
         RequestData requestData = new RequestData();
         requestData.setJSON(mfa);
         action.append(Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD));
@@ -398,7 +398,7 @@ public class UserUtility {
         String authToken = response.getObjectData().get("access_token").getAsString();
         user.setAuthToken("Bearer " + authToken);
     }
-    
+
     public static String convertRoleName (String roleNameSystem) throws VibrentException
     {
         String roleNameInput = "";
@@ -442,8 +442,8 @@ public class UserUtility {
 
         return roleNameInput;
     }
-    
-    
+
+
     public static String convertTestGroupName (String testGroupName) throws VibrentException
     {
         String testGroupId = "";

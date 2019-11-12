@@ -64,6 +64,10 @@ public class APIUtility {
     private static final String ENDPOINT_SEGMENTATION = "/api/communications/segment";
     private static final String REFERER_TOGGLE = MAIN_URL + "/programMaintenance?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
     private static final String ENDPOINT_TOGGLE = "/api/feature-group/toggle";
+    private static final String ENDPOINT_USERS = "/api/userAdmin/users";
+    private static final String REFERER_USERS = MAIN_URL + "/userAdmin?role=ROLE_MC_PROGRAM_MANAGER";
+    private static final String REFERER_EDIT_USER = "/userAdmin/editUser/" + "/ROLE_MC_PROGRAM_MANAGER?role=ROLE_MC_PROGRAM_MANAGER";
+    private static final String ENDPOINT_EDIT_USER = "/api/userAdmin/user";
 
 
     protected Reporter reporter;
@@ -353,6 +357,7 @@ public class APIUtility {
 
     /**
      * Cancel appointment for prospect
+     *
      * @throws IOException
      */
     public Response cancelProspectAppointment() throws IOException {
@@ -376,13 +381,14 @@ public class APIUtility {
 
     /**
      * Get appointment
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public Response getAppointment(String appointmentId) throws IOException {
         String action = "I get appointment for prospect via API";
         String expected = "Successfully get appointment for prospect via API";
         //add headers and parameters
-        
+
         Map<String, String> parameters = new HashMap<>();
         parameters.put(ID, appointmentId);
         Map<String, String> referer = new HashMap<>();
@@ -750,7 +756,7 @@ public class APIUtility {
         String expected = "I toggle communication feature via API";
         //add headers and parameters
         Map<String, String> headers = new HashMap<>();
-        headers.put(AUTHORIZATION,user.getAuthToken());
+        headers.put(AUTHORIZATION, user.getAuthToken());
         headers.put(REFERER, REFERER_TOGGLE);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("programId", 2);
@@ -759,9 +765,9 @@ public class APIUtility {
         //String manipulation to get previous group id
         String endLevel = user.getGroupValue();
         int previousLevel = Integer.parseInt(endLevel) - 1;
-        jsonArray.add(previousLevel+"");
+        jsonArray.add(previousLevel + "");
         jsonArray.add(endLevel);
-        jsonObject.add("groups",jsonArray);
+        jsonObject.add("groups", jsonArray);
         http.addHeaders(headers);
         RequestData requestData = new RequestData();
         requestData.setJSON(jsonObject);
@@ -770,5 +776,72 @@ public class APIUtility {
         Response response = http.simplePut(ENDPOINT_TOGGLE, requestData);
         reporterPassFailStep(action, expected, response, "Not successfully toggle communication feature via API. ");
         return response;
+    }
+
+    /**
+     * Edits user via API
+     */
+    public void editUserViaApi(String currentRole, String editedRole) throws IOException {
+        String action = "I edit user via API";
+        String expected = "Successfully edit user via API";
+        //Add headers and parameters
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("roleName", currentRole);
+        Map<String, String> headers = new HashMap<>();
+        headers.put(AUTHORIZATION, user.getAuthToken());
+        //string manipulation to add userId inside of referer
+        headers.put(REFERER, MAIN_URL + REFERER_EDIT_USER.substring(0, 20) + user.getUserId() + REFERER_EDIT_USER.substring(20, REFERER_EDIT_USER.length() - 1));
+        http.addHeaders(headers);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("userId", user.getUserId());
+        jsonObject.addProperty("firstName", "Edited user via API");
+        jsonObject.addProperty("lastName", "Edited user via API");
+        jsonObject.addProperty("email", user.getSearchedUserEmail());
+        jsonObject.addProperty("isInternalAccount", true);
+        JsonArray role = new JsonArray();
+        role.add(editedRole);
+        JsonArray group = new JsonArray();
+        int siteLevel = Integer.parseInt(user.getGroupValue()) + 2;
+        group.add(siteLevel);
+        jsonObject.add("roles", role);
+        jsonObject.add("groups", group);
+        RequestData requestData = new RequestData();
+        requestData.setParams(parameters);
+        requestData.setJSON(jsonObject);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simplePut(ENDPOINT_EDIT_USER, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully edit user via API. ");
+    }
+
+    /**
+     * Gets user id from users endpoint
+     */
+    public void getUserId() throws IOException {
+        String action = "I get user id via API";
+        String expected = "Successfully get user id via API";
+        //Add headers and parameters
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("roleName", "ROLE_MC_PROGRAM_MANAGER");
+        Map<String, String> headers = new HashMap<>();
+        headers.put(AUTHORIZATION, user.getAuthToken());
+        headers.put(REFERER, REFERER_USERS);
+        http.addHeaders(headers);
+        RequestData requestData = new RequestData();
+        requestData.setParams(parameters);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.get(ENDPOINT_USERS, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully get user id via API. ");
+        JsonArray jsonArray = response.getArrayData();
+        //initialize jsonBody as array and sets its size
+        int size = response.getArrayData().size();
+        String userId = "";
+        for (int i = 0; i < size; i++) {
+            if (jsonArray.get(i).toString().contains(user.getSearchedUserEmail())) {
+                userId = jsonArray.get(i).getAsJsonObject().get("id").getAsString();
+            }
+        }
+        user.setUserId(userId);
     }
 }

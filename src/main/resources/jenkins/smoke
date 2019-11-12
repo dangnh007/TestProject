@@ -133,8 +133,9 @@ try {
                             parallel(
                                     runDockerTests(
                                             testBranch: webBranch,
-                                            framework : "PMTAutomationFramework",
-                                            other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com",
+                                            framework: "PMTAutomationFramework",
+                                            other: "-Dautomation.url.mc=https://missioncontrol-${stackName}.qak8s.vibrenthealth.com " +
+                                                    "-Dautomation.url.sub=https://sub-${stackName}.qak8s.vibrenthealth.com",
                                             jira: "Nightly ${Tags.substring(1).capitalize()} Tests",
                                             extraReportName: reportName,
                                             platforms: [
