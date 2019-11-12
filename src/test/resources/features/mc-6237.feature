@@ -18,7 +18,7 @@ Feature: Scheduling
     Then I can search created appointment by email that was started from selected time
 
   @mc-6645
-  Scenario: Create prospects and verify My appointment
+  Scenario: Create prospects and verify My appointment from Search result
     Given I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I login as user via API
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
@@ -27,7 +27,7 @@ Feature: Scheduling
     Then I see appointment displays in Search Result
 
   @mc-6626
-  Scenario: Create prospects and verify My appointment
+  Scenario: Create prospects and verify My appointment from Hamburger menu
     Given I create user "mc-6438" with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
     And I login as user via API
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
@@ -96,3 +96,13 @@ Feature: Scheduling
     And I create new appointment for prospect via API
     When I cancel that appointment via API
     Then Appointment change status to cancel successfully
+
+  @mc-6763
+  Scenario: Edit Prospect's details
+    Given I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create new appointment for prospect via API
+    When I am on Search page and search prospect by email
+    And I can view full appointment details
+    Then I can edit information of prospect

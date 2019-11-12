@@ -463,4 +463,21 @@ public class UserUtility {
 
         return testGroupId;
     }
+
+    /**
+     * Generates String number by size from input
+     *
+     * @return A String containing a random string number depending on size provided.
+     */
+    public static String generateStringNumber(int size) {
+        r.setSeed(r.nextInt() * System.currentTimeMillis());
+        int guidLength = size;
+        char[] myGuid = new char[guidLength];
+        char[] letterSet = "0123456789".toCharArray();
+        for (int i = 0; i < guidLength; i++) {
+            char c = letterSet[r.nextInt(letterSet.length)];
+            myGuid[i] = c;
+        }
+        return new String(myGuid);
+    }
 }

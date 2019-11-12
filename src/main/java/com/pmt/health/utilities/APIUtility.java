@@ -215,13 +215,11 @@ public class APIUtility {
         } catch (Exception e) {
             log.info(e);
             // check if Custom Hour of Operations existed, we will remove it
-            if (e.toString().contains("406")) {
-                deleteCustomForm();
-                // Re-create Custom Hour of Operations if it was failed in previous step
-                response = http.simplePut(ENDPOINT_HRS_OF_OPERATIONS, requestData);
-                //generate report
-                reporterPassFailStep(action, expected, response, "Hours of operations was created not successfully. ");
-            }
+            deleteCustomForm();
+            // Re-create Custom Hour of Operations if it was failed in previous step
+            response = http.simplePut(ENDPOINT_HRS_OF_OPERATIONS, requestData);
+            // generate report
+            reporterPassFailStep(action, expected, response, "Hours of operations was created not successfully. ");
         }
         return response;
     }
