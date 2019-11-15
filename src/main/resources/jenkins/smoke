@@ -77,7 +77,7 @@ try {
         }
     }
 
-    ["safe"].each {
+    ["safe", "unsafe"].each {
         def threadsValue = 15
         def tagsValue = ""
         def reportName = ""
@@ -91,8 +91,8 @@ try {
                 reportName = "-Unsafe"
                 break
         }
-        ["api", "chrome"].each {
-            def hubValue = true
+        ["chrome", "api"].each {
+            def hubValue = false
             def defaultWaitValue = setDevice(it, 30, 15).get('defaultWait')
             def tagsToRun
             switch (it) {

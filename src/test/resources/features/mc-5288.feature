@@ -1,11 +1,13 @@
-@feature-mc-5288 @capacity @pmt @smoke @wip
+@feature-mc-5288 @communication @pmt @smoke
 Feature: Post-Enrollment Communication
   As a user
   I want to be able
   modify and validate Post-Enrollment Communication features
 
   Background:
-    Given I create user with "ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER" and "All of Us", "", "", ""
+    Given I create test groups via API
+    When I create user with "ROLE_MC_COMMUNICATIONS_ENGAGEMENT_MANAGER" and "All of Us", "", "", ""
+    Then I toggle communication feature via API
 
   @mc-5306
   Scenario: As user I have permissions to access Communications
@@ -30,14 +32,13 @@ Feature: Post-Enrollment Communication
     Given I set up my credentials via API
     And I login as user
     And I created segmentation with "<org>" and "<site>" on Email channel
-    And I wait 2 seconds
     When I create a new campaign with "Email" channel
     Then Campaign is "<button>"
 
     Examples:
-      | button         | org           | site                          |
-      | created        | Banner Health | Banner Baywood Medical Center |
-      | saved as draft | Banner Health | Banner Baywood Medical Center |
+      | button         | org                          | site                 |
+      | created        | TEST AUTOMATION ORGANIZATION | TEST AUTOMATION SITE |
+      | saved as draft | TEST AUTOMATION ORGANIZATION | TEST AUTOMATION SITE |
 
   @mc-5494 @api
   Scenario Outline: As a user I create or draft campaign via API
@@ -62,14 +63,10 @@ Feature: Post-Enrollment Communication
     Then I verify organizations
 
   @mc-5559
-  Scenario Outline: As a user I want to create segmentation for particular organization and site
+  Scenario: As a user I want to create segmentation for particular organization and site
     Given I set up my credentials via API
     When I login as user
-    Then I created segmentation with "<org>" and "<site>" on Email channel
-    Examples:
-      | org                   | site                          |
-      | Banner Health         | Banner Baywood Medical Center |
-      | Boston Medical Center | Boston Medical Center         |
+    Then I created segmentation with "TEST AUTOMATION ORGANIZATION" and "TEST AUTOMATION SITE" on Email channel
 
   @mc-5664 @api
   Scenario: As a user I want to create new segmentation via API

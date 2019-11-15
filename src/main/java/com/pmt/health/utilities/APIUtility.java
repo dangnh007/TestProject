@@ -541,11 +541,12 @@ public class APIUtility {
         jsonObject.addProperty(CHANNEL, channel);
         jsonObject.addProperty("name", CAMPAIGN_NAME_RANDOM);
         jsonObject.addProperty("description", "Test Automation via API");
-        jsonObject.addProperty("goal", "1");//Survey/279
+        jsonObject.addProperty("goal", "SAMPLE/PHYSICAL_MEASUREMENT");//Survey/279
         jsonObject.addProperty("associatedSegmentListId", createSegmentationViaApi(channel));
         jsonObject.addProperty("associatedTemplateId", 1_038_584);
         jsonObject.addProperty("sendDate", "");
         jsonObject.addProperty("status", createOrDraft);
+        jsonObject.addProperty("type", "SINGLE");
         http.addHeaders(headers);
         RequestData requestData = new RequestData();
         requestData.setJSON(jsonObject);

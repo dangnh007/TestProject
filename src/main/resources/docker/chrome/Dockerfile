@@ -4,7 +4,7 @@ FROM maven:3.5.2-jdk-8
 ENV HOME="/home/PMTAutomationFramework"
 ENV JAVA_OPTS=""
 ENV ENVIRONMENT=""
-ENV TAGS="@pmi"
+ENV TAGS="@pmt"
 ENV DEVICE="chrome"
 ENV DEFAULT_WAIT="5"
 ENV S3_ACCESS=""
@@ -17,7 +17,7 @@ ENV EMAIL_PASSWORD=""
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
 	&& echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
 	&& apt-get update -qqy \
-	&& apt-get -qqy install google-chrome-stable \
+	&& apt-get -qqy install google-chrome-stable --allow-unauthenticated \
 	&& rm /etc/apt/sources.list.d/google-chrome.list \
 	&& rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
 	&& sed -i 's/"$HERE\/chrome"/"$HERE\/chrome" --no-sandbox --disable-dev-shm-usage/g' /opt/google/chrome/google-chrome

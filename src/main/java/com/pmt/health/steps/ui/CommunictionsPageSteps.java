@@ -49,7 +49,7 @@ public class CommunictionsPageSteps {
         communictionsPage.createNew();
         communictionsPage.selectProgramSegmentationCategory(filter1);
         communictionsPage.verifyConsentDropdown();
-        communictionsPage.selectConsent("Primary Consent");
+        communictionsPage.selectConsent("EHR Consent Response");
         communictionsPage.verifyEqualDropdown();
         communictionsPage.verifyStatusDropDown();
         communictionsPage.verifyDateDropDown();
@@ -82,6 +82,7 @@ public class CommunictionsPageSteps {
         communictionsPage.createNew();
         communictionsPage.assertNewCampaignsTitle();
         communictionsPage.enterCampaignName();
+        communictionsPage.selectCampaignType("Single");
         communictionsPage.enterDescriptionOptional();
         communictionsPage.selectCampaignGoal();
         communictionsPage.selectChannel(option);
@@ -135,7 +136,8 @@ public class CommunictionsPageSteps {
         communictionsPage.typeDescription();
         communictionsPage.selectProgramSegmentationCategory("Program Milestones");
         communictionsPage.consentDropDownClick();
-        communictionsPage.selectConsent("Primary Consent");
+        communictionsPage.selectConsent("EHR Consent Response");
+        communictionsPage.selectStatusDropDown("Yes");
         communictionsPage.addNewCategory();
         communictionsPage.selectProgramSegmentationCategory("Demographic Segmentation");
         communictionsPage.argDropdown();
