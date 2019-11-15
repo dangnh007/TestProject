@@ -97,6 +97,55 @@ Feature: Scheduling
     When I cancel that appointment via API
     Then Appointment change status to cancel successfully
 
+  @mc-6875
+  Scenario: Verify current day on Availability page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I set up my credentials via API
+    And I login as user
+    And I am logged in as Site Manager
+    And I am on Availability page
+    When I see current month
+    Then I see current day highlighted
+
+  @mc-6876
+  Scenario: Add hours of operation on Availability page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And Site custom hours of operation are not set
+    And I login as user
+    And I am on Availability page
+    When I select a day and add hours of operation
+    Then I verify new hours of operation and delete
+
+  @mc-6877
+  Scenario: Verify custom hours of operation added via API on Availability page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    When I am on Availability page
+    Then I see custom hours of operation
+
+  @mc-6878
+  Scenario: Edit custom hours of operation added via API on Availability page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I am on Availability page
+    When I select a day with hours of operation and edit hours of operation
+    Then I verify hours of operation after editing
+
+  @mc-6879
+  Scenario: Delete custom hours of operation on Availability page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I set up my credentials via API
+    And I login as user
+    And I am on Availability page
+    And I select a day and add hours of operation
+    When I select a day with hours of operation and delete
+    Then I verify site is closed
+
   @mc-6763
   Scenario: Edit Prospect's details
     Given I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""

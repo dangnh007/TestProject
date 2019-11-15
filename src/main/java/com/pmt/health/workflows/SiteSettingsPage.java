@@ -171,7 +171,7 @@ public class SiteSettingsPage {
         DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        int tomorrow = Integer.parseInt(sdf.format(calendar.getTime()).substring(0,2));
+        int tomorrow = Integer.parseInt(sdf.format(calendar.getTime()).substring(0, 2));
         WebbElement tomorrowDate = app.newElement(LocatorType.XPATH, "//tr/td[@" + DATA_VALUE + "='" + tomorrow + "']");
         tomorrowDate.click();
     }

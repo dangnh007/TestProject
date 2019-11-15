@@ -291,6 +291,17 @@ public class ApiSteps {
     }
 
     /**
+     * Delete site custom hours
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @And("^Site custom hours of operation are not set$")
+    public void deleteCustomForm() throws IOException {
+        apiUtility.createCustomHoursOfOperations();
+        apiUtility.deleteCustomForm();
+    }
+
+    /**
      * Logs in as edited user via API
      *
      * @throws IOException signals that an I/O exception of some sort has occurred.
