@@ -77,8 +77,8 @@ try {
         }
     }
 
-    ["safe", "unsafe"].each {
-        def threadsValue = 15
+    ["safe"].each {
+        def threadsValue = 1
         def tagsValue = ""
         def reportName = ""
         switch (it) {
@@ -141,7 +141,7 @@ try {
                                             platforms: [
                                                     [
                                                             name       : it,
-                                                            container  : 'vibrent/pmt-automation-framework-default',
+                                                            container  : "vibrent/pmt-automation-framework-${it == 'chrome' ? it : 'default'}",
                                                             fullTags   : tagsToRun,
                                                             defaultWait: defaultWaitValue,
                                                             threads    : threadsValue,

@@ -322,7 +322,14 @@ public class ApiSteps {
     @When("^I edit user and change its role from \"([^\"]*)\" to \"([^\"]*)\" via API$")
     public void getUserIdAndEditUser(String currentRole, String editedRole) throws IOException {
         userUtility.getAuthorizationToken();
-        apiUtility.getUserId();
+        apiUtility.getUserId("ROLE_MC_PROGRAM_MANAGER");
         apiUtility.editUserViaApi(currentRole, editedRole);
+    }
+
+    @Then("^I delete created user via API$")
+    public void deleteCreatedUserViaAPI() throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.getUserId("ROLE_MC_SYSTEM_ADMINISTRATOR");
+        apiUtility.deleteUserViaApi();
     }
 }

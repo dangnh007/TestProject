@@ -261,3 +261,9 @@ Feature: User Management
     When I login as user via API
     And I edit user and change its role from "ROLE_MC_PROGRAM_MANAGER" to "ROLE_MC_SITE_MANAGER" via API
     Then I login as edited user via API
+
+  @mc-6898 @api
+  Scenario: Delete User - API
+    Given I create test groups via API
+    When I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    Then I delete created user via API

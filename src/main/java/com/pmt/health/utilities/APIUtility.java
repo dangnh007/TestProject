@@ -68,6 +68,7 @@ public class APIUtility {
     private static final String REFERER_USERS = MAIN_URL + "/userAdmin?role=ROLE_MC_PROGRAM_MANAGER";
     private static final String REFERER_EDIT_USER = "/userAdmin/editUser/" + "/ROLE_MC_PROGRAM_MANAGER?role=ROLE_MC_PROGRAM_MANAGER";
     private static final String ENDPOINT_EDIT_USER = "/api/userAdmin/user";
+    private static final String REFERER_DELETE_USER = MAIN_URL + "/userAdmin?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
 
 
     protected Reporter reporter;
@@ -818,12 +819,12 @@ public class APIUtility {
     /**
      * Gets user id from users endpoint
      */
-    public void getUserId() throws IOException {
+    public void getUserId(String role) throws IOException {
         String action = "I get user id via API";
         String expected = "Successfully get user id via API";
         //Add headers and parameters
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("roleName", "ROLE_MC_PROGRAM_MANAGER");
+        parameters.put("roleName", role);
         Map<String, String> headers = new HashMap<>();
         headers.put(AUTHORIZATION, user.getAuthToken());
         headers.put(REFERER, REFERER_USERS);
@@ -844,5 +845,27 @@ public class APIUtility {
             }
         }
         user.setUserId(userId);
+    }
+
+    /**
+     * Gets user id from users endpoint
+     */
+    public void deleteUserViaApi() throws IOException {
+        String action = "I delete user via API";
+        String expected = "Successfully delete user via API";
+        //Add headers and parameters
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("roleName", "ROLE_MC_SYSTEM_ADMINISTRATOR");
+        parameters.put("userId", user.getUserId());
+        Map<String, String> headers = new HashMap<>();
+        headers.put(AUTHORIZATION, user.getAuthToken());
+        headers.put(REFERER, REFERER_DELETE_USER);
+        http.addHeaders(headers);
+        RequestData requestData = new RequestData();
+        requestData.setParams(parameters);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.get(ENDPOINT_USERS, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully delete user via API. ");
     }
 }
