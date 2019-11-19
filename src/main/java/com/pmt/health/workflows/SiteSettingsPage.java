@@ -11,7 +11,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class SiteSettingsPage {
 
@@ -67,6 +70,7 @@ public class SiteSettingsPage {
     private final WebbElement prospectEmail;
     private final WebbElement calendarModeDropDown;
     private final WebbElement calendarWeekMode;
+    private final WebbElement calendarMonthMode;
     private final WebbElement viewButtonInSearchResult;
     private final WebbElement reScheduledButton;
     private final WebbElement dateAndTime;
@@ -76,6 +80,8 @@ public class SiteSettingsPage {
     private final WebbElement outComeDropDownBtn;
     private final WebbElement saveEditedAppointmentButton;
     private final WebbElement prospectNameDiv;
+    private final WebbElement futureDayInHoursOfOperation;
+    private final WebbElement appointmentSchedulerHeading;
     private String calendarViewType;
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -129,6 +135,7 @@ public class SiteSettingsPage {
         this.selectLocationDropDownBtn = app.newElement(LocatorType.XPATH, "//span[text()=\"Select a Location\"]/../../..//span[@class=\"Select-arrow-zone\"]");
         this.locationTestAutomationSite = app.newElement(LocatorType.CSS, "div[aria-label=\"TEST AUTOMATION SITE\"]");
         this.calendarWeekMode = app.newElement(LocatorType.CSS, "div[aria-label='Week']");
+        this.calendarMonthMode = app.newElement(LocatorType.CSS, "div[aria-label='Month']");
         this.calendarModeDropDown = app.newElement(LocatorType.CSS, "div[class*='calendar-mode-selector'] span[class='Select-arrow-zone']");
         this.prospectEmail = app.newElement(LocatorType.CSS, "div[class=\"existing-participant-email\"]");
         this.viewButtonInSearchResult = app.newElement(LocatorType.CSS, "div[class=\"react-bs-container-body\"] button[class*=\"btn\"]");
@@ -140,6 +147,8 @@ public class SiteSettingsPage {
         this.outComeDropDownBtn = app.newElement(LocatorType.CSS, "div[class*='appointment-status-selector'] span[class='Select-arrow-zone']");
         this.saveEditedAppointmentButton = app.newElement(LocatorType.CSS, "button[class*='btn-schedule__save__edit']");
         this.prospectNameDiv = app.newElement(LocatorType.CSS, "div[class*='name']");
+        this.futureDayInHoursOfOperation = app.newElement(LocatorType.CSS, "div[class='calendar-day  active']");
+        this.appointmentSchedulerHeading =  app.newElement(LocatorType.XPATH, "//h1[contains(text(), 'Appointment Scheduler')]");
     }
 
     /**
@@ -557,6 +566,12 @@ public class SiteSettingsPage {
         calendarWeekMode.click();
     }
 
+    public void switchCalendarToMonthView() {
+        calendarModeDropDown.waitFor().displayed();
+        calendarModeDropDown.click();
+        calendarMonthMode.click();
+    }
+
     public void assertCalendarPage(String viewType) {
         calendarViewType = viewType;
         calendarMode.waitFor().displayed();
@@ -616,5 +631,49 @@ public class SiteSettingsPage {
         String prospectName = prospectNameDiv.get().text();
         WebbElement message = app.newElement(LocatorType.XPATH, "//div[text()='The appointment details for " + prospectName + " have been updated.']");
         message.waitFor().displayed();
+    }
+
+    public void assertHighlightCurrentDayOnMonthView() {
+        String[] currentDateArray = getCurrentDateGmtTimezone();
+        String expectedHeaderText = (currentDateArray[1] + " " + currentDateArray[2]).toUpperCase();
+        WebbElement divCurrentMonth = app.newElement(LocatorType.CSS, "div.calendar-header-text");
+        divCurrentMonth.assertContains().text(expectedHeaderText);
+        WebbElement divCurrentDay = app.newElement(LocatorType.CSS, "div.calendar-current-day");
+        divCurrentDay.waitFor().displayed();
+        divCurrentDay.assertContains().text(currentDateArray[0]);
+    }
+
+    public void assertAppointmentOnCalendar() {
+        TimeZone timeZone = TimeZone.getTimeZone("UTC");
+        Calendar calendar = GregorianCalendar.getInstance(timeZone);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("d/MMMM/yyyy");
+        sdf.setTimeZone(timeZone);
+        int expectedDate = Integer.parseInt(sdf.format(calendar.getTime()).split("/")[0]);
+        
+        WebbElement divAppointmentTimeOnMonthView = app.newElement(LocatorType.XPATH,
+                "//div[contains(@class,'calendar-day')][contains(text(),'" + expectedDate
+                        + "')]/parent::div/following-sibling::button//div[contains(@class,'time text-truncate')]");
+        divAppointmentTimeOnMonthView.assertState().displayed();
+    }
+
+    private static String[] getCurrentDateGmtTimezone() {
+        SimpleDateFormat sdf = new SimpleDateFormat("d/MMMM/yyyy");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date currentDate = new Date();
+        return sdf.format(currentDate).split("/");
+    }
+
+    public void doubleClickHoursOfOperations() {
+        futureDayInHoursOfOperation.doubleClick();
+    }
+
+    public void assertAppointmentSchedulerView() {
+        firstNameInput.assertState().displayed();
+        lastNameInput.assertState().displayed();
+        phoneNumberInput.assertState().displayed();
+        emailAddressInput.assertState().displayed();
+        languagesDropDown.assertState().displayed();
+        appointmentSchedulerHeading.assertState().displayed();
     }
 }

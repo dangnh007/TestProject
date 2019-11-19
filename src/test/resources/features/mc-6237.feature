@@ -155,3 +155,36 @@ Feature: Scheduling
     When I am on Search page and search prospect by email
     And I can view full appointment details
     Then I can edit information of prospect
+
+  @mc-6810
+  Scenario: User see current month view and current day highlighted on Calendar/Month view page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I am logged in as Site Manager
+    When I am on Calendar "Month" view and Scheduler site is selected as "Site/hpo-test-automation"
+    Then I can see current month view and current day is highlighted
+
+  @mc-6812
+  Scenario: User can see the appointment of prospects on Calendar/Month view page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I am logged in as Site Manager
+    And I create new appointment for prospect via API
+    When I am on Calendar "Month" view and Scheduler site is selected as "Site/hpo-test-automation"
+    Then I can see the appointment on Calendar "Month" view
+
+  @mc-6813
+  Scenario: User can see the appointment Scheduler from any future day with hours of operation on Calendar/Month view page
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I am logged in as Site Manager
+    And I create new appointment for prospect via API
+    When I am on Calendar "Month" view and Scheduler site is selected as "Site/hpo-test-automation"
+    And I access any future day with hours of operation
+    Then I can see the appointment Scheduler

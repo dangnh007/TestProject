@@ -151,7 +151,10 @@ public class SiteSettingsSteps {
     public void assertCalendarPage(String viewType, String site) {
         if ("Week".equals(viewType)) {
             siteSettingsPage.switchCalendarToWeekView();
+        } else if ("Month".equals(viewType)) {
+            siteSettingsPage.switchCalendarToMonthView();
         }
+        
         siteSettingsPage.assertCalendarPage(viewType);
         siteSettingsPage.assertSchedulerSite(site);
     }
@@ -179,5 +182,24 @@ public class SiteSettingsSteps {
     @And("^I should see a message$")
     public void assertMessageAfterSaveChanges() {
         siteSettingsPage.assertMessageAfterSaveChanges();
+    }
+
+    @Then("^I can see current month view and current day is highlighted$")
+    public void assertHighlightCurrentDayOnMonthView() {
+        siteSettingsPage.assertHighlightCurrentDayOnMonthView();
+    }
+
+    @Then("^I can see the appointment on Calendar \"([^\"]*)\" view$")
+    public void assertAppointmentOnCalendar(String viewType) {
+        siteSettingsPage.assertAppointmentOnCalendar();
+    }
+    @Then("^I can see the appointment Scheduler$")
+    public void assertAppointmentSchedulerView() {
+        siteSettingsPage.assertAppointmentSchedulerView();
+    }
+
+    @And("^I access any future day with hours of operation$")
+    public void doubleClickOnHoursOperation() {
+        siteSettingsPage.doubleClickHoursOfOperations();
     }
 }

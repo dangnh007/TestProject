@@ -71,7 +71,7 @@ public class UserAdminPage {
                 "//h1[text()='User Administration']");
         this.loggedInHeadingAdmin = app.newElement(LocatorType.XPATH, "//h1[text()='Reports']");
         this.loggedInHeadingUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
-        this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Appointment Scheduler']");
+        this.loggedInHeadingSiteManagerUser = app.newElement(LocatorType.XPATH, "//h1[contains(text(),'Appointment Scheduler')]");
         this.loggedInHeadingProgramManagerUser = app.newElement(LocatorType.XPATH, "//h1[text()='Dashboard']");
         this.createdUser = app.newElement(LocatorType.XPATH, DIV_CONTAIN_TEXT_PATTERN_XPATH + " \"" + user.getEmail() + "\")]");
         this.createdSortButton = app.newElement(LocatorType.CSS, "th[data-field='createdDate']");
