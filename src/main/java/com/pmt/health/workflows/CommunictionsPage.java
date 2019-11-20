@@ -130,6 +130,8 @@ public class CommunictionsPage {
     private final WebbElement warning;
     private final WebbElement sendNowButton;
     private final WebbElement successMessage;
+    private final WebbElement notExactlyFor;
+    private final WebbElement exactlyFor;
     private final List<WebbElement> emailList;
     private final List<WebbElement> orgList;
     private final List<WebbElement> campaignsGoalList;
@@ -197,9 +199,11 @@ public class CommunictionsPage {
         this.after = app.newElement(LocatorType.ARIALABEL, "after");
         this.onOrBefore = app.newElement(LocatorType.ARIALABEL, "on or before");
         this.onOrAfter = app.newElement(LocatorType.ARIALABEL, "on or after");
-        this.isWithin = app.newElement(LocatorType.ARIALABEL, "is within");
-        this.isNotWithin = app.newElement(LocatorType.ARIALABEL, "is not within");
-        dateList = Arrays.asList(onAnyDate, onExactDate, before, after, onOrBefore, onOrAfter, isWithin, isNotWithin);
+        this.isWithin = app.newElement(LocatorType.ARIALABEL, "within the last");
+        this.isNotWithin = app.newElement(LocatorType.ARIALABEL, "not within the last");
+        this.exactlyFor = app.newElement(LocatorType.ARIALABEL, "exactly for");
+        this.notExactlyFor = app.newElement(LocatorType.ARIALABEL, "not exactly for");
+        dateList = Arrays.asList(onAnyDate, onExactDate, before, after, onOrBefore, onOrAfter, isWithin, isNotWithin, exactlyFor, notExactlyFor);
         this.ageRaceGenderDropDown = app.newElement(LocatorType.XPATH, "(//div[@id='primary-select-value'])[2]");
         this.age = app.newElement(LocatorType.ARIALABEL, "Age");
         this.race = app.newElement(LocatorType.ARIALABEL, "Race");
