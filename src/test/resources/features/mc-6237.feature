@@ -197,3 +197,69 @@ Feature: Scheduling
     When I am on Calendar "Month" view and Scheduler site is selected as "Site/hpo-test-automation"
     And I access any future day with hours of operation
     Then I can see the appointment Scheduler
+
+  @mc-6946
+  Scenario: Search prospect by First name in Appointment Scheduler
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create a prospect account for searching
+    And I login as user
+    And I am logged in as Site Manager
+    When I am on Appointment Scheduler Search page and search prospect by first name
+    Then I see prospect displays in Search Result
+
+  @mc-6947
+  Scenario: Search prospect by Last name in Appointment Scheduler
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create a prospect account for searching
+    And I login as user
+    And I am logged in as Site Manager
+    When I am on Appointment Scheduler Search page and search prospect by last name
+    Then I see prospect displays in Search Result
+
+  @mc-6948
+  Scenario: Search prospect by email in Appointment Scheduler
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create a prospect account for searching
+    And I login as user
+    And I am logged in as Site Manager
+    When I am on Appointment Scheduler Search page and search prospect by email
+    Then I see prospect displays in Search Result
+
+  @mc-6949
+  Scenario: Search prospect by phone in Appointment Scheduler
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create a prospect account have phone number is "5555666677" for searching
+    And I login as user
+    And I am logged in as Site Manager
+    When I am on Appointment Scheduler Search page and search prospect by phone number "5555666677"
+    Then I see prospect displays in Search Result
+
+  @mc-6950
+  Scenario: Search prospect by DOB in Appointment Scheduler
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create a prospect account for searching
+    And I login as user
+    And I am logged in as Site Manager
+    When I am on Appointment Scheduler Search page and search prospect by DOB
+    Then I see prospect displays in Search Result
+
+  @mc-6951
+  Scenario: Search prospect by ParticipantID in Appointment Scheduler
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I create a default prospect and a special one with first name "Partial Automation API", last name "user API"
+    And I login as user
+    And I am logged in as Site Manager
+    When I am on Appointment Scheduler Search page and search prospect by partial first name "Automation"
+    Then I see that prospects displays in Search Result

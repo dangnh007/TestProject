@@ -83,6 +83,11 @@ public class SiteSettingsPage {
     private final WebbElement futureDayInHoursOfOperation;
     private final WebbElement appointmentSchedulerHeading;
     private final WebbElement moveToNextMonthBtn;
+    private final WebbElement labelSearch;
+    private final WebbElement searchButton;
+    private final WebbElement resultItem;
+    private final WebbElement expectResult1;
+    private final WebbElement expectResult2;
     private String calendarViewType;
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -149,9 +154,13 @@ public class SiteSettingsPage {
         this.saveEditedAppointmentButton = app.newElement(LocatorType.CSS, "button[class*='btn-schedule__save__edit']");
         this.prospectNameDiv = app.newElement(LocatorType.CSS, "div[class*='name']");
         this.futureDayInHoursOfOperation = app.newElement(LocatorType.CSS, "div[class='calendar-day  active']");
-        this.appointmentSchedulerHeading = app.newElement(LocatorType.XPATH, "//h1[contains(text(), 'Appointment Scheduler')]");
+        this.appointmentSchedulerHeading =  app.newElement(LocatorType.XPATH, "//h1[contains(text(), 'Appointment Scheduler')]");
         this.moveToNextMonthBtn = app.newElement(LocatorType.CSS, "th[class='rdtNext']");
-
+        this.labelSearch = app.newElement(LocatorType.XPATH, "//label[text()='Search']");
+        this.searchButton = app.newElement(LocatorType.CSS, "button[class*=btn-primary]");
+        this.resultItem = app.newElement(LocatorType.CSS, "div[class='result-item']");
+        this.expectResult1 = app.newElement(LocatorType.XPATH, "//div[contains(@class,'participant-name')][contains(text(),'Search Automation API')]");
+        this.expectResult2 = app.newElement(LocatorType.XPATH, "//div[contains(@class,'participant-name')][contains(text(),'Partial Automation API')]");
     }
 
     /**
@@ -684,5 +693,24 @@ public class SiteSettingsPage {
         emailAddressInput.assertState().displayed();
         languagesDropDown.assertState().displayed();
         appointmentSchedulerHeading.assertState().displayed();
+    }
+
+    public void clickLabelSearchOnAppointmentScheduler() {
+        labelSearch.waitFor().displayed();
+        labelSearch.click();
+    }
+
+    public void clickSearchButton() {
+        searchButton.waitFor().enabled();
+        searchButton.click();
+    }
+
+    public void assertResultItem() {
+        resultItem.waitFor().displayed();
+    }
+
+    public void assertProspectsInResult() {
+        expectResult1.waitFor().displayed();
+        expectResult2.waitFor().displayed();
     }
 }

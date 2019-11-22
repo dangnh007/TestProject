@@ -193,4 +193,62 @@ public class SiteSettingsSteps {
     public void doubleClickOnHoursOperation() {
         siteSettingsPage.doubleClickHoursOfOperations();
     }
+
+    @When("^I am on Appointment Scheduler Search page and search prospect by first name$")
+    public void searchByFirstNameOnAppointmentScheduler() {
+        siteSettingsPage.addNewAppointment();
+        siteSettingsPage.clickLabelSearchOnAppointmentScheduler();
+        siteSettingsPage.enterFirstName("Search " + user.getFirstName() + " API");
+        siteSettingsPage.clickSearchButton();
+    }
+
+    @When("^I am on Appointment Scheduler Search page and search prospect by last name$")
+    public void searchByLastNameOnAppointmentScheduler() {
+        siteSettingsPage.addNewAppointment();
+        siteSettingsPage.clickLabelSearchOnAppointmentScheduler();
+        siteSettingsPage.enterLastName("Search " + user.getLastName() + " API");
+        siteSettingsPage.clickSearchButton();
+    }
+
+    @When("^I am on Appointment Scheduler Search page and search prospect by email$")
+    public void searchByEmailOnAppointmentScheduler() {
+        siteSettingsPage.addNewAppointment();
+        siteSettingsPage.clickLabelSearchOnAppointmentScheduler();
+        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.clickSearchButton();
+    }
+
+    @When("^I am on Appointment Scheduler Search page and search prospect by phone number \"([^\"]*)\"$")
+    public void searchByPhoneOnAppointmentScheduler(String phoneNumber) {
+        siteSettingsPage.addNewAppointment();
+        siteSettingsPage.clickLabelSearchOnAppointmentScheduler();
+        siteSettingsPage.enterPhoneNumber(phoneNumber);
+        siteSettingsPage.clickSearchButton();
+    }
+
+    @When("^I am on Appointment Scheduler Search page and search prospect by DOB$")
+    public void searchByDOBOnAppointmentScheduler() {
+        siteSettingsPage.addNewAppointment();
+        siteSettingsPage.clickLabelSearchOnAppointmentScheduler();
+        siteSettingsPage.enterDateOfBirth("10/10/2000");
+        siteSettingsPage.clickSearchButton();
+    }
+
+    @When("^I am on Appointment Scheduler Search page and search prospect by partial first name \"([^\"]*)\"$")
+    public void searchByParticipantIDOnAppointmentScheduler(String partialName) {
+        siteSettingsPage.addNewAppointment();
+        siteSettingsPage.clickLabelSearchOnAppointmentScheduler();
+        siteSettingsPage.enterFirstName(partialName);
+        siteSettingsPage.clickSearchButton();
+    }
+
+    @Then("^I see prospect displays in Search Result$")
+    public void assertResultItem() {
+        siteSettingsPage.assertResultItem();
+    }
+
+    @Then("^I see that prospects displays in Search Result$")
+    public void assertProspectsInResult() {
+        siteSettingsPage.assertProspectsInResult();
+    }
 }
