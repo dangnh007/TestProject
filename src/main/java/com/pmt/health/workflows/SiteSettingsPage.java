@@ -82,6 +82,7 @@ public class SiteSettingsPage {
     private final WebbElement prospectNameDiv;
     private final WebbElement futureDayInHoursOfOperation;
     private final WebbElement appointmentSchedulerHeading;
+    private final WebbElement moveToNextMonthBtn;
     private String calendarViewType;
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -148,7 +149,9 @@ public class SiteSettingsPage {
         this.saveEditedAppointmentButton = app.newElement(LocatorType.CSS, "button[class*='btn-schedule__save__edit']");
         this.prospectNameDiv = app.newElement(LocatorType.CSS, "div[class*='name']");
         this.futureDayInHoursOfOperation = app.newElement(LocatorType.CSS, "div[class='calendar-day  active']");
-        this.appointmentSchedulerHeading =  app.newElement(LocatorType.XPATH, "//h1[contains(text(), 'Appointment Scheduler')]");
+        this.appointmentSchedulerHeading = app.newElement(LocatorType.XPATH, "//h1[contains(text(), 'Appointment Scheduler')]");
+        this.moveToNextMonthBtn = app.newElement(LocatorType.CSS, "th[class='rdtNext']");
+
     }
 
     /**
@@ -169,6 +172,8 @@ public class SiteSettingsPage {
      * clicks on 8:00 AM button
      */
     public void selectTime() {
+        time8am.waitFor().present();
+        time8am.move();
         time8am.click();
     }
 
@@ -177,11 +182,15 @@ public class SiteSettingsPage {
      * parsing attribute to set date for a next day
      */
     public void selectDate() {
-        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar calendar = Calendar.getInstance();
+        DateFormat sdf = new SimpleDateFormat("d");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Calendar calendar = GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
         calendar.add(Calendar.DAY_OF_YEAR, 1);
-        int tomorrow = Integer.parseInt(sdf.format(calendar.getTime()).substring(0, 2));
+        int tomorrow = Integer.parseInt(sdf.format(calendar.getTime()));
         WebbElement tomorrowDate = app.newElement(LocatorType.XPATH, "//tr/td[@" + DATA_VALUE + "='" + tomorrow + "']");
+        if (tomorrow == 1) {
+            moveToNextMonthBtn.click();
+        }
         tomorrowDate.click();
     }
 
@@ -650,7 +659,7 @@ public class SiteSettingsPage {
         SimpleDateFormat sdf = new SimpleDateFormat("d/MMMM/yyyy");
         sdf.setTimeZone(timeZone);
         int expectedDate = Integer.parseInt(sdf.format(calendar.getTime()).split("/")[0]);
-        
+
         WebbElement divAppointmentTimeOnMonthView = app.newElement(LocatorType.XPATH,
                 "//div[contains(@class,'calendar-day')][contains(text(),'" + expectedDate
                         + "')]/parent::div/following-sibling::button//div[contains(@class,'time text-truncate')]");

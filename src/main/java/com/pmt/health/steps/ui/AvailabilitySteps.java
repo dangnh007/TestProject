@@ -41,7 +41,7 @@ public class AvailabilitySteps {
     }
 
     @Then("^I verify new hours of operation and delete$")
-    public void verifyNewHoursOfOperation() {
+    public void verifyNewHoursOfOperation() throws InterruptedException {
         availabilityPage.verifyNewHoursOfOperation();
         clickAvailabilityTab();
         availabilityPage.clickCurrentDayOnAvailabilityPage();
@@ -54,13 +54,13 @@ public class AvailabilitySteps {
     }
 
     @When("^I select a day with hours of operation and edit hours of operation$")
-    public void editHoursOfOperation() {
+    public void editHoursOfOperation() throws InterruptedException {
         availabilityPage.clickTomorrowDiv();
         availabilityPage.editHoursOfOperation();
     }
 
     @When("^I select a day with hours of operation and delete$")
-    public void deleteHoursOfOperation() {
+    public void deleteHoursOfOperation() throws InterruptedException {
         availabilityPage.clickCurrentDayOnAvailabilityPage();
         availabilityPage.deleteHoursOfOperation();
     }

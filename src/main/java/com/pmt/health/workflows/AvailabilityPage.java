@@ -39,7 +39,7 @@ public class AvailabilityPage {
     private final WebbElement deleteBtn;
     private final WebbElement continueBtn;
     private final WebbElement closedDate;
-    private static final String AMERICA_CHICAGO = "America/Chicago";
+    private static final String TIMEZONE_UTC = "UTC";
     Logger log = Logger.getLogger(AvailabilityPage.class);
     private User user;
 
@@ -85,7 +85,8 @@ public class AvailabilityPage {
 
     public void assertCurrentMonthOnAvailabilityPage() {
         DateFormat sdf = new SimpleDateFormat("MMMMM yyyy");
-        Calendar calendar = Calendar.getInstance();
+        sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE_UTC));
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(TIMEZONE_UTC));
         String expectDate = sdf.format(calendar.getTime());
 
         String action = "Assert Current Month On Availability Page";
@@ -98,8 +99,9 @@ public class AvailabilityPage {
     }
 
     public void assertCurrentDayHighlighted() {
-        DateFormat sdf = new SimpleDateFormat("dd");
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(AMERICA_CHICAGO));
+        DateFormat sdf = new SimpleDateFormat("d");
+        sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE_UTC));
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(TIMEZONE_UTC));
         String expectDay = sdf.format(calendar.getTime());
         String action = "Assert Highlighted day On Availability Page";
         currentDay.waitFor().displayed();
@@ -154,14 +156,16 @@ public class AvailabilityPage {
         tomorrowDiv.click();
     }
 
-    public void editHoursOfOperation() {
+    public void editHoursOfOperation() throws InterruptedException {
         editBtn.click();
         startTimeDropDown.click();
         time5am.click();
         endTimeDropDown.click();
         time11pm.click();
         hoBlockUpdate.click();
-        if (!"0".equals("" + continueBtn.getWebElements().size())) {
+        //Pauses execution for 2 second
+        Thread.sleep(2000);
+        if (!continueBtn.getWebElements().isEmpty()) {
             continueBtn.click();
         }
         customSettingSaveBtn.waitFor().enabled();
@@ -173,9 +177,14 @@ public class AvailabilityPage {
         text5amTo11pm.waitFor().displayed();
     }
 
-    public void deleteHoursOfOperation() {
+    public void deleteHoursOfOperation() throws InterruptedException {
         deleteBtn.waitFor().enabled();
         deleteBtn.click();
+        //Pauses execution for 2 second
+        Thread.sleep(2000);
+        if (!continueBtn.getWebElements().isEmpty()) {
+            continueBtn.click();
+        }
         customSettingSaveBtn.waitFor().enabled();
         customSettingSaveBtn.click();
         spinner.waitFor().notDisplayed();

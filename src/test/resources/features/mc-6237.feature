@@ -97,6 +97,15 @@ Feature: Scheduling
     When I cancel that appointment via API
     Then Appointment change status to cancel successfully
 
+  @mc-6909
+  Scenario: Cancel future appointment then verify
+    Given I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
+    And I login as user via API
+    And I create new appointment for prospect via API
+    And I login as User then I can search prospect by email and view future appointment details
+    When I cancel that appointment then confirm
+    Then I should see the appointment cancel message
+
   @mc-6875
   Scenario: Verify current day on Availability page
     Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"

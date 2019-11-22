@@ -59,6 +59,26 @@ public class SearchPageSteps {
         searchPage.assertViewAppointmentDetailPage();
     }
 
+    @And("^I login as User then I can search prospect by email and view future appointment details$")
+    public void loginAsUserAndSearchProspectAndViewFutureAppointmentDetails() {
+        this.loginPage.loadEnvironment();
+        this.loginPage.login();
+        searchPage.searchAppointment();
+        searchPage.assertSearchedAppointment();
+        searchPage.clickViewButton();
+        searchPage.assertViewAppointmentDetailPage();
+    }
+
+    @When("^I cancel that appointment then confirm$")
+    public void cancelThatAppointmentThenConfirm() {
+        searchPage.cancelAppointment();
+    }
+
+    @Then("^I should see the appointment cancel message$")
+    public void iShouldSeeTheAppointmentCancelMessage() {
+        searchPage.assertCancelAppointment();
+    }
+
     @When("^I am on Search page and search prospect by email$")
     public void searchProspectByEmail() {
         loginPage.loadEnvironment();

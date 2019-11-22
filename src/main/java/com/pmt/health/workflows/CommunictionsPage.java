@@ -694,6 +694,7 @@ public class CommunictionsPage {
     public void verifyDateDropDown() {
         dateDropDown.click();
         for (WebbElement each : dateList) {
+            each.move();
             each.assertState().displayed();
         }
     }

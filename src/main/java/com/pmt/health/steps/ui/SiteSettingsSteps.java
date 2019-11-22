@@ -67,9 +67,6 @@ public class SiteSettingsSteps {
         siteSettingsPage.completeAppointmentDetails();
         siteSettingsPage.selectDate();
         siteSettingsPage.selectTime();
-        siteSettingsPage.completeAppointmentDetails();
-        siteSettingsPage.selectDate();
-        siteSettingsPage.selectTime();
         siteSettingsPage.scheduleAppointment();
         siteSettingsPage.assertSuccessAppointmentMessage();
     }
@@ -87,9 +84,6 @@ public class SiteSettingsSteps {
         siteSettingsPage.completeAppointmentDetails();
         siteSettingsPage.selectActiveDate();
         siteSettingsPage.selectTime();
-        siteSettingsPage.completeAppointmentDetails();
-        siteSettingsPage.selectActiveDate();
-        siteSettingsPage.selectTime();
         siteSettingsPage.scheduleAppointment();
     }
 
@@ -103,9 +97,6 @@ public class SiteSettingsSteps {
         siteSettingsPage.completeParticipantInfo();
         siteSettingsPage.assignToUser(assignedUser);
         siteSettingsPage.addAppointmentNotes();
-        siteSettingsPage.completeAppointmentDetails();
-        siteSettingsPage.selectDate();
-        siteSettingsPage.selectTime();
         siteSettingsPage.completeAppointmentDetails();
         siteSettingsPage.selectDate();
         siteSettingsPage.selectTime();

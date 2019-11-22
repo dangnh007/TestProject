@@ -5,7 +5,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.Assert;
 import org.testng.log4testng.Logger;
-
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
 import com.pmt.health.objects.user.User;
@@ -23,6 +22,8 @@ public class SearchPage {
     private final WebbElement spinner;
     private final WebbElement viewButton;
     private final WebbElement viewAppointmentDetailsText;
+    private final WebbElement cancelAppointment;
+    private final WebbElement cancelAppointmentConfirm;
     private final WebbElement editProspectButton;
     private final WebbElement inputFirstName;
     private final WebbElement inputLastName;
@@ -39,7 +40,7 @@ public class SearchPage {
     private static final String ATTRIBUTE_CLASS = "class";
     private static final String IS_SELECTED_CLASS = "is-selected";
     private static final Logger log = Logger.getLogger(SearchPage.class);
-    
+
     public SearchPage(App app, User user) {
         this.app = app;
         this.user = user;
@@ -49,10 +50,10 @@ public class SearchPage {
         this.searchButton = app.newElement(LocatorType.CSS, "button[class*=btn-primary]");
         this.createButtonFromSearchResult = app.newElement(LocatorType.CSS, "div[class=\"react-bs-table-container\"] button[class=\"button button-primary btn btn-primary\"]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
-        this.viewButton = app.newElement(LocatorType.CSS, "div.cell-container button[class*=btn-secondary]");
-        this.viewAppointmentDetailsText = app.newElement(LocatorType.XPATH,
-                "//h5[text()='Future Appointment Details']");
-        
+        this.viewButton = app.newElement(LocatorType.XPATH, "//strong[text()='View']/parent::button");
+        this.viewAppointmentDetailsText = app.newElement(LocatorType.XPATH, "//h5[text()='Future Appointment Details']");
+        this.cancelAppointment = app.newElement(LocatorType.CSS, "button.cancel-btn.btn.btn-link");
+        this.cancelAppointmentConfirm = app.newElement(LocatorType.CSS, "button.btn-cancel.btn.btn-default");
         this.editProspectButton = app.newElement(LocatorType.CSS, "button[class*=change-button]");
         this.inputFirstName = app.newElement(LocatorType.CSS, "input[name=firstName]");
         this.inputLastName = app.newElement(LocatorType.CSS, "input[name=lastName]");
@@ -67,6 +68,7 @@ public class SearchPage {
         this.checkboxProspectAcceptReceiveEmail = app.newElement(LocatorType.CSS, "input[type=checkbox]");
         this.cancelProspectDetails = app.newElement(LocatorType.CSS,
                 "div.small-button-wrapper button[class*=btn-cancel]");
+
     }
 
     /**
@@ -108,6 +110,17 @@ public class SearchPage {
     }
 
     /**
+     * Cancel Appointment then click on Confirm pop-up
+     */
+    public void cancelAppointment() {
+        cancelAppointment.click();
+        cancelAppointmentConfirm.waitFor().displayed();
+        if (cancelAppointmentConfirm.is().displayed()) {
+            cancelAppointmentConfirm.click();
+        }
+    }
+
+        /**
      * Assert full appointment info
      */
     public void assertAppointmentInfo() {
@@ -116,6 +129,15 @@ public class SearchPage {
             fieldValue.waitFor().displayed();
             Assert.assertNotNull(fieldValue.get().text());
         }
+    }
+
+    /**
+     * Verify that message of cancel action will be displayed
+     */
+    public void assertCancelAppointment() {
+        String s = "The appointment for " + user.getFirstName() +" API  " + user.getLastName() +" API was cancelled.";
+        WebbElement messageOfCancelAppointment = app.newElement(LocatorType.XPATH, "//div[contains(text(), '" + s + "')]");
+        messageOfCancelAppointment.waitFor().displayed();
     }
 
     /**
@@ -240,24 +262,24 @@ public class SearchPage {
         String valuePhoneNumberInput = phoneNumberInput.get().value().replace("-", "");
         Assert.assertEquals(valuePhoneNumberInput, newPhoneNumber);
     }
-    
+
     /**
      * Edit Checkbox Prospect Accept Receive Email
      */
     public boolean editCheckboxProspectAcceptReceiveEmail() {
         clickEditProspect();
         boolean isCheckedProspectAcceptReceiveEmail = false;
-        
+
         if(!checkboxProspectAcceptReceiveEmail.is().checked())
         {
             isCheckedProspectAcceptReceiveEmail = true;
         }
-        
+
         spanProspectAcceptReceiveEmail.click();
         saveProspectDetails.click();
         return isCheckedProspectAcceptReceiveEmail;
     }
-    
+
     /**
      * Assert Checkbox Prospect Accept Receive Email
      */
@@ -267,12 +289,12 @@ public class SearchPage {
         checkboxProspectAcceptReceiveEmail.is().present();
         Assert.assertEquals(isCheckedProspectAcceptReceiveEmail, checkboxProspectAcceptReceiveEmail.is().checked());
     }
-    
+
     private void assertBannerMessageSuccess() {
         boolean isWaitForDisplayedBannerMessageSuccess = attemptWaitforBannerMessageSuccess();
         Assert.assertEquals(isWaitForDisplayedBannerMessageSuccess, true);
     }
-    
+
     private boolean attemptWaitforBannerMessageSuccess() {
         boolean result = false;
         int attempts = 0;
