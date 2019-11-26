@@ -2,6 +2,7 @@ package com.pmt.health.workflows;
 
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
+import com.pmt.health.objects.user.Prospect;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.utilities.LocatorType;
 import org.openqa.selenium.Keys;
@@ -91,10 +92,12 @@ public class SiteSettingsPage {
     private String calendarViewType;
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
+    private final Prospect prospect;
 
-    public SiteSettingsPage(App app, User user) {
+    public SiteSettingsPage(App app, User user, Prospect prospect) {
         this.app = app;
         this.user = user;
+        this.prospect = prospect;
         this.siteSettingsHeading = app.newElement(LocatorType.XPATH, "//h1[text()='Settings']");
         this.toggleOnOff = app.newElement(LocatorType.CLASSNAME, "switch");
         this.pencilButton = app.newElement(LocatorType.CLASSNAME, "pencil-button");
@@ -575,7 +578,7 @@ public class SiteSettingsPage {
         }
         showDetailBtn.waitFor().displayed();
         showDetailBtn.click();
-        prospectEmail.assertContains().text(user.getParticipantEmail());
+        prospectEmail.assertContains().text(prospect.getEmail());
     }
 
     public void switchCalendarToWeekView() {
@@ -619,7 +622,7 @@ public class SiteSettingsPage {
         successfulMessage.waitFor().displayed();
         successfulMessage.waitFor().notDisplayed();
         showDetailBtn.click();
-        prospectEmail.assertContains().text(user.getParticipantEmail());
+        prospectEmail.assertContains().text(prospect.getEmail());
         dateAndTime.assertContains().text(time);
     }
 

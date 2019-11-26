@@ -160,8 +160,9 @@ Feature: Scheduling
     Given I create user with "ROLE_MC_PROGRAM_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", ""
     And I login as user via API
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
     And I create new appointment for prospect via API
-    When I am on Search page and search prospect by email
+    When I search prospect on Search page by Email info
     And I can view full appointment details
     Then I can edit information of prospect
 
@@ -273,3 +274,89 @@ Feature: Scheduling
     And I am logged in as Site Manager
     When I am on Appointment Scheduler Search page and search prospect by partial first name "Automation"
     Then I see that prospects displays in Search Result
+
+  @mc-6952
+  Scenario: User search prospect for manage existing appointment
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I am logged in as Site Manager
+    And I create new appointment for prospect via API
+    And I search prospect on Search page by First Name info
+    When I access Appointment Scheduler for managing existing appointment
+    Then I verify prospect's info
+
+  @mc-6953
+  Scenario: User search prospect for manage existing appointment then return to Scheduling Search
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I am logged in as Site Manager
+    And I create new appointment for prospect via API
+    And I search prospect on Search page by First Name info
+    When I access Appointment Scheduler for managing existing appointment
+    And I verify prospect's info
+    And I return to Scheduling Search with in-app button
+    Then I see prospect on the search page
+
+  @mc-6982
+  Scenario: User can search prospect from Search Navigation by Frist Name
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I create new appointment for prospect via API
+    When I search prospect on Search page by First Name info
+    Then I see prospect on the search page
+
+  @mc-6983
+  Scenario: User can search prospect from Search Navigation by Last Name
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I create new appointment for prospect via API
+    When I search prospect on Search page by Last Name info
+    Then I see prospect on the search page
+
+  @mc-6984
+  Scenario: User can search prospect from Search Navigation by Email
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I create new appointment for prospect via API
+    When I search prospect on Search page by Email info
+    Then I see prospect on the search page
+
+  @mc-6985
+  Scenario: User can search prospect from Search Navigation by Phone
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I create new appointment for prospect via API
+    When I search prospect on Search page by Phone info
+    Then I see prospect on the search page
+
+  @mc-6986
+  Scenario: User can search prospect from Search Navigation by Date Of Birth
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I create new appointment for prospect via API
+    When I search prospect on Search page by Date Of Birth info
+    Then I see prospect on the search page after search by Date Of Birth
+
+  @mc-6987
+  Scenario: User can search prospect from Search Navigation by Partial Name
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I login as user via API
+    And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
+    And I login as user
+    And I create new appointment for prospect via API
+    When I search prospect on Search page by Partial Name info
+    Then I see prospect on the search page

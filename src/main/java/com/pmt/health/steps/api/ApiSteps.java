@@ -2,6 +2,7 @@ package com.pmt.health.steps.api;
 
 import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
+import com.pmt.health.objects.user.Prospect;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
@@ -14,6 +15,7 @@ import cucumber.api.java.en.When;
 import com.pmt.health.interactions.services.Response;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.testng.Assert;
 
@@ -36,14 +38,15 @@ public class ApiSteps {
      * @param deviceController - object of the class which controls an application.
      * @param requestData      - object of the class which holds data needed to provide to the HTTP calls.
      * @param user             - object of the user class where we store user related values and methods.
+     * @param prospect         - object of the user class where we store prospect related values and methods.
      */
-    public ApiSteps(DeviceController deviceController, RequestData requestData, User user) {
+    public ApiSteps(DeviceController deviceController, RequestData requestData, User user, Prospect prospect) {
         this.http = new HTTP(Configuration.getEnvironmentURL().toString());
         this.user = user;
         this.userUtility = new UserUtility(deviceController.getReporter(), user, http);
         this.requestData = requestData;
         this.eMailUtility = new EMailUtility(user, deviceController.getReporter());
-        this.apiUtility = new APIUtility(deviceController.getReporter(), user, http);
+        this.apiUtility = new APIUtility(deviceController.getReporter(), user, http, prospect);
     }
 
     /**
@@ -202,9 +205,10 @@ public class ApiSteps {
      * Sends POST request to the user/schedule endpoint and sets particular values.
      *
      * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @throws ParseException that is occurred by parse string to date
      */
     @Then("^I create new appointment for prospect via API$")
-    public void createNewAppointmentForProspectViaAPI() throws IOException {
+    public void createNewAppointmentForProspectViaAPI() throws IOException, ParseException {
         apiUtility.scheduleProspectAppointment();
     }
 
@@ -260,9 +264,10 @@ public class ApiSteps {
      * Create a prospect account
      *
      * @throws IOException signals that an I/O exception of some sort has occurred.
+     * @throws ParseException that is occurred by parse string to date
      */
     @Then("^I create a prospect account$")
-    public void createProspectAccount() throws IOException {
+    public void createProspectAccount() throws IOException, ParseException {
         apiUtility.scheduleProspectAppointment();
         apiUtility.cancelProspectAppointment();
     }

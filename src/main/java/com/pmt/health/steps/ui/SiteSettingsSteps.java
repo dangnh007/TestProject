@@ -1,5 +1,6 @@
 package com.pmt.health.steps.ui;
 
+import com.pmt.health.objects.user.Prospect;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.SearchPage;
@@ -16,13 +17,15 @@ public class SiteSettingsSteps {
     private final SiteSettingsPage siteSettingsPage;
     private final SearchPage searchPage;
     private final UserAdminPage userAdminPage;
+    private final Prospect prospect;
 
-    public SiteSettingsSteps(DeviceController deviceController, User user) {
+    public SiteSettingsSteps(DeviceController deviceController, User user, Prospect prospect) {
         this.user = user;
         this.deviceController = deviceController;
-        siteSettingsPage = new SiteSettingsPage(this.deviceController.getApp(), user);
+        this.prospect = prospect;
+        siteSettingsPage = new SiteSettingsPage(this.deviceController.getApp(), user, prospect);
         userAdminPage = new UserAdminPage(this.deviceController.getApp(), user);
-        searchPage = new SearchPage(this.deviceController.getApp(), user);
+        searchPage = new SearchPage(this.deviceController.getApp(), user, prospect);
     }
 
     @Then("^I set new Site Settings with toggle \"([^\"]*)\", target \"([^\"]*)\", days \"([^\"]*)\"$")
@@ -58,9 +61,9 @@ public class SiteSettingsSteps {
     @When("^I create new appointment for prospect$")
     public void createNewAppointment() {
         siteSettingsPage.addNewAppointment();
-        siteSettingsPage.enterFirstName(user.getFirstName());
-        siteSettingsPage.enterLastName(user.getLastName());
-        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.enterFirstName(prospect.getFirstName());
+        siteSettingsPage.enterLastName(prospect.getLastName());
+        siteSettingsPage.enterEmailAddress(prospect.getEmail());
         siteSettingsPage.selectLanguage();
         siteSettingsPage.completeParticipantInfo();
         siteSettingsPage.addAppointmentNotes();
@@ -75,9 +78,9 @@ public class SiteSettingsSteps {
     public void createNewAppointmentOnTimeBlock() {
         siteSettingsPage.switchToFindFirstAvailableTimeBlock();
         siteSettingsPage.doubleClickOnTimeBlockToCreateNewAppointment();
-        siteSettingsPage.enterFirstName(user.getFirstName());
-        siteSettingsPage.enterLastName(user.getLastName());
-        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.enterFirstName(prospect.getFirstName());
+        siteSettingsPage.enterLastName(prospect.getLastName());
+        siteSettingsPage.enterEmailAddress(prospect.getEmail());
         siteSettingsPage.selectLanguage();
         siteSettingsPage.completeParticipantInfo();
         siteSettingsPage.addAppointmentNotes();
@@ -90,9 +93,9 @@ public class SiteSettingsSteps {
     @When("^I create new appointment for prospect and assign to \"([^\"]*)\"$")
     public void createNewAppointmentAndAssignUser(String assignedUser) {
         siteSettingsPage.addNewAppointment();
-        siteSettingsPage.enterFirstName(user.getFirstName());
-        siteSettingsPage.enterLastName(user.getLastName());
-        siteSettingsPage.enterEmailAddress(user.getParticipantEmail());
+        siteSettingsPage.enterFirstName(prospect.getFirstName());
+        siteSettingsPage.enterLastName(prospect.getLastName());
+        siteSettingsPage.enterEmailAddress(prospect.getEmail());
         siteSettingsPage.selectLanguage();
         siteSettingsPage.completeParticipantInfo();
         siteSettingsPage.assignToUser(assignedUser);
@@ -108,7 +111,7 @@ public class SiteSettingsSteps {
     public void assertCreatedAppointment() {
         siteSettingsPage.assertSuccessAppointmentMessage();
         siteSettingsPage.assertCreatedAppointment();
-        searchPage.searchAppointment();
+        searchPage.searchAppointmentByEmail();
         searchPage.assertSearchedAppointment();
     }
 

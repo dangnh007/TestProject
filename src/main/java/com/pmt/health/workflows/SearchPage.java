@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.log4testng.Logger;
 import com.pmt.health.interactions.application.App;
 import com.pmt.health.interactions.element.selenified.WebbElement;
+import com.pmt.health.objects.user.Prospect;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.utilities.LocatorType;
 
@@ -14,6 +15,7 @@ public class SearchPage {
 
     private final App app;
     private final User user;
+    private final Prospect prospect;
     private final WebbElement searchMenu;
     private final WebbElement emailSearchField;
     private final WebbElement searchedParticipantEmail;
@@ -28,6 +30,8 @@ public class SearchPage {
     private final WebbElement editProspectButton;
     private final WebbElement inputFirstName;
     private final WebbElement inputLastName;
+    private final WebbElement inputDateOfBirth;
+    private final WebbElement inputPhoneNumberSearchProspect;
     private final WebbElement phoneNumberInput;
     private final WebbElement emailAddressInput;
     private final WebbElement saveProspectDetails;
@@ -37,14 +41,16 @@ public class SearchPage {
     private final WebbElement spanProspectAcceptReceiveEmail;
     private final WebbElement checkboxProspectAcceptReceiveEmail;
     private final WebbElement cancelProspectDetails;
+    private final WebbElement backSchedulingSearchButton;
     private static final String FIELD_APPOINTMENT_INFO_PATTERN = "(//div[@class='form-group']//div[@class='col-sm-8']/p)";
     private static final String ATTRIBUTE_CLASS = "class";
     private static final String IS_SELECTED_CLASS = "is-selected";
     private static final Logger log = Logger.getLogger(SearchPage.class);
-
-    public SearchPage(App app, User user) {
+    
+    public SearchPage(App app, User user, Prospect prospect) {
         this.app = app;
         this.user = user;
+        this.prospect = prospect;
         this.searchMenu = app.newElement(LocatorType.CSS, "svg[class*=components-search]");
         this.emailSearchField = app.newElement(LocatorType.CSS, "input[name=emailAddress]");
         this.searchedParticipantEmail = app.newElement(LocatorType.CSS, "div[class=participant-emailAddress] div");
@@ -59,6 +65,8 @@ public class SearchPage {
         this.editProspectButton = app.newElement(LocatorType.CSS, "button[class*=change-button]");
         this.inputFirstName = app.newElement(LocatorType.CSS, "input[name=firstName]");
         this.inputLastName = app.newElement(LocatorType.CSS, "input[name=lastName]");
+        this.inputDateOfBirth = app.newElement(LocatorType.CSS, "input[name=dob]");
+        this.inputPhoneNumberSearchProspect = app.newElement(LocatorType.CSS, "input[name=phoneNumber]");
         this.saveProspectDetails = app.newElement(LocatorType.CSS,
                 "div.small-button-wrapper button[class*=btn-primary]");
         this.languagesDropDown = app.newElement(LocatorType.CSS, "div[class='language-control']");
@@ -70,16 +78,67 @@ public class SearchPage {
         this.checkboxProspectAcceptReceiveEmail = app.newElement(LocatorType.CSS, "input[type=checkbox]");
         this.cancelProspectDetails = app.newElement(LocatorType.CSS,
                 "div.small-button-wrapper button[class*=btn-cancel]");
-
+        this.backSchedulingSearchButton = app.newElement(LocatorType.XPATH,
+                "//span[contains(text(),'Scheduling Search')]");
     }
 
     /**
      * Search already created appointment
      */
-    public void searchAppointment() {
+    public void searchAppointmentByEmail() {
         searchMenu.waitFor().displayed();
         searchMenu.click();
-        emailSearchField.type(user.getParticipantEmail());
+        emailSearchField.type(prospect.getEmail());
+        searchButton.click();
+    }
+
+    /**
+     * Search already created appointment by First Name
+     */
+    public void searchAppointmentByFristName() {
+        searchMenu.waitFor().displayed();
+        searchMenu.click();
+        inputFirstName.type(prospect.getFirstName());
+        searchButton.click();
+    }
+
+    /**
+     * Search already created appointment by Last Name
+     */
+    public void searchAppointmentByLastName() {
+        searchMenu.waitFor().displayed();
+        searchMenu.click();
+        inputLastName.type(prospect.getLastName());
+        searchButton.click();
+    }
+
+    /**
+     * Search already created appointment by Date Of Birth
+     */
+    public void searchAppointmentByDateOfBirth() {
+        searchMenu.waitFor().displayed();
+        searchMenu.click();
+        inputDateOfBirth.type(prospect.getDateOfBirth());
+        searchButton.click();
+    }
+
+    /**
+     * Search already created appointment by Phone Number
+     */
+    public void searchAppointmentByPhone() {
+        searchMenu.waitFor().displayed();
+        searchMenu.click();
+        inputPhoneNumberSearchProspect.type(prospect.getPhoneNumber());
+        searchButton.click();
+    }
+
+    /**
+     * Search already created appointment by Partial Name
+     */
+    public void searchAppointmentByPartialName() {
+        searchMenu.waitFor().displayed();
+        searchMenu.click();
+        inputFirstName.type(prospect.getFirstName().substring(0, 15));
         searchButton.click();
     }
 
@@ -87,7 +146,8 @@ public class SearchPage {
      * Verify searched appointment should display in Search Result
      */
     public void assertSearchedAppointment() {
-        searchedParticipantEmail.assertEquals().text(user.getParticipantEmail());
+        searchedParticipantEmail.waitFor().present();
+        searchedParticipantEmail.assertEquals().text(prospect.getEmail());
     }
 
     /**
@@ -143,7 +203,7 @@ public class SearchPage {
      * Verify that message of cancel action will be displayed
      */
     public void assertCancelAppointment() {
-        String s = "The appointment for " + user.getFirstName() +" API  " + user.getLastName() +" API was cancelled.";
+        String s = "The appointment for " + prospect.getFirstName() + "  " + prospect.getLastName() + " was cancelled.";
         WebbElement messageOfCancelAppointment = app.newElement(LocatorType.XPATH, "//div[contains(text(), '" + s + "')]");
         messageOfCancelAppointment.waitFor().displayed();
     }
@@ -317,5 +377,33 @@ public class SearchPage {
             attempts++;
         }
         return result;
+    }
+
+    /**
+     * assert prospect's info
+     */
+    public void assertProspectInfo() {
+        clickEditProspect();
+        inputFirstName.assertEquals().value(prospect.getFirstName());
+        inputLastName.assertEquals().value(prospect.getLastName());
+        emailAddressInput.assertEquals().value(prospect.getEmail());
+        languagesDropDown.waitFor().displayed();
+        languagesDropDown.click();
+        selectEnglishLanguage.assertContains().attribute(ATTRIBUTE_CLASS, IS_SELECTED_CLASS);
+    }
+
+    public void clickBackSchedulingSearchButton() {
+        backSchedulingSearchButton.click();
+    }
+
+    public void assertProspectOnSearchPage() {
+        WebbElement prospectName = app.newElement(LocatorType.CSS, "strong.participant-name");
+        prospectName.assertContains().text(prospect.getFirstName() + " " + prospect.getLastName());
+    }
+
+    public void assertProspectOnSearchPageAfterSearchByDob() {
+        WebbElement prospectName = app.newElement(LocatorType.XPATH,
+                "//strong[contains(text(), '" + prospect.getFirstName() + " " + prospect.getLastName() + "')]");
+        prospectName.assertState().displayed();
     }
 }

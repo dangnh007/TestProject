@@ -6,12 +6,14 @@ import com.google.gson.JsonObject;
 import com.pmt.health.interactions.services.HTTP;
 import com.pmt.health.interactions.services.RequestData;
 import com.pmt.health.interactions.services.Response;
+import com.pmt.health.objects.user.Prospect;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
 import org.testng.log4testng.Logger;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 public class APIUtility {
@@ -75,17 +77,20 @@ public class APIUtility {
     protected Reporter reporter;
     private HTTP http;
     private User user;
+    private Prospect prospect;
 
-    public APIUtility(Reporter reporter, User user) {
+    public APIUtility(Reporter reporter, User user, Prospect prospect) {
         this.user = user;
         this.reporter = reporter;
         this.http = new HTTP(Configuration.getEnvironmentURL().toString(), reporter);
+        this.prospect = prospect;
     }
 
-    public APIUtility(Reporter reporter, User user, HTTP http) {
+    public APIUtility(Reporter reporter, User user, HTTP http, Prospect prospect) {
         this.user = user;
         this.reporter = reporter;
         this.http = http;
+        this.prospect = prospect;
     }
 
     private void reporterPassFailStep(String action, String expected, Response response, String failMessage) {
@@ -316,8 +321,9 @@ public class APIUtility {
 
     /**
      * Schedule appointment for prospect as Site Manager
+     * @throws ParseException 
      */
-    public Response scheduleProspectAppointment() throws IOException {
+    public Response scheduleProspectAppointment() throws IOException, ParseException {
         String action = "I schedule appointment for prospect via API";
         String expected = "Successfully schedule appointment for prospect via API";
         //add headers and parameters
@@ -330,13 +336,13 @@ public class APIUtility {
         jsonObject.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
         jsonObject.add("prospectId", null);
         jsonObject.add("participantId", null);
-        jsonObject.addProperty("lastName", user.getLastName() + " API");
-        jsonObject.addProperty("firstName", user.getFirstName() + " API");
-        jsonObject.addProperty(EMAIL_ADDRESS, user.getParticipantEmail());
-        jsonObject.add("dob", null);
+        jsonObject.addProperty("lastName", prospect.getLastName());
+        jsonObject.addProperty("firstName", prospect.getFirstName());
+        jsonObject.addProperty(EMAIL_ADDRESS, prospect.getEmail());
+        jsonObject.addProperty("dob", UserUtility.convertStringToDate(prospect.getDateOfBirth()).getTime());
         jsonObject.addProperty("language", "en");
         jsonObject.addProperty("emailCommunication", false);
-        jsonObject.add("phoneNumber", null);
+        jsonObject.addProperty("phoneNumber", prospect.getPhoneNumber());
         jsonObject.addProperty("userId", "");
         jsonObject.addProperty("duration", 90);
         jsonObject.addProperty("appointmentTypeName", "Full Enrollment");

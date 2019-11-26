@@ -14,6 +14,8 @@ import org.testng.log4testng.Logger;
 
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class UserUtility {
@@ -479,5 +481,30 @@ public class UserUtility {
             myGuid[i] = c;
         }
         return new String(myGuid);
+    }
+
+    /**
+     * Generates Date in the pass by years from input
+     *
+     * @return A String containing a random string number depending on size provided.
+     */
+    public static String generateDateInThePast(int yearsBefore) {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.add(Calendar.YEAR, -yearsBefore);
+        return formatter.format(calendar.getTime());
+    }
+    
+    /**
+     * Convert String to Date
+     *
+     * @return A Date follow UTC's time
+     * @throws ParseException 
+     */
+    public static Date convertStringToDate(String sDate) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return formatter.parse(sDate);
     }
 }
