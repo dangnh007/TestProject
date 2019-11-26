@@ -3,6 +3,7 @@ package com.pmt.health.steps.ui;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.AvailabilityPage;
+import com.pmt.health.workflows.LoginPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -12,11 +13,20 @@ public class AvailabilitySteps {
     private final User user;
     private final DeviceController deviceController;
     private final AvailabilityPage availabilityPage;
+    private final LoginPage loginPage;
 
     public AvailabilitySteps(DeviceController deviceController, User user) {
         this.user = user;
         this.deviceController = deviceController;
         availabilityPage = new AvailabilityPage(this.deviceController.getApp(), user);
+        loginPage = new LoginPage(this.deviceController.getApp(), user);
+    }
+
+    @And("^I login as user and navigate to Availability page$")
+    public void loginAndNavigateAvailabilityTab() {
+        this.loginPage.loadEnvironment();
+        this.loginPage.login();
+        availabilityPage.clickAvailabilityTab();
     }
 
     @And("^I am on Availability page$")
@@ -35,8 +45,9 @@ public class AvailabilitySteps {
     }
 
     @When("^I select a day and add hours of operation$")
-    public void selectCurrentDayAndAddHourOfOperation() {
+    public void selectCurrentDayAndAddHourOfOperation() throws InterruptedException {
         availabilityPage.clickCurrentDayOnAvailabilityPage();
+        availabilityPage.deleteHoursBeforeAdding();
         availabilityPage.addHourOfOperation();
     }
 

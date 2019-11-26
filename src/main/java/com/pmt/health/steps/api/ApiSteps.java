@@ -209,6 +209,18 @@ public class ApiSteps {
     }
 
     /**
+     * Sends POST request to the user/schedule endpoint and sets particular values.
+     *
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^I create new today appointment for prospect via API$")
+    public void createNewTodayAppointmentForProspectViaAPI() throws IOException {
+        userUtility.apiLoginUser(user.getEmail());
+        userUtility.apiLoginUserMFA(user.getSecretKey());
+        apiUtility.scheduleProspectAppointmentToday();
+    }
+
+    /**
      * Sends POST request to create or draft campaign via API.
      *
      * @param createOrDraft sets option between create or draft.

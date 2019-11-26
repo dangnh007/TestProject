@@ -165,6 +165,16 @@ Feature: Scheduling
     And I can view full appointment details
     Then I can edit information of prospect
 
+  @mc-6903
+  Scenario: Select today from date range of Report page then download report and verify
+    Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"
+    And I set up my credentials via API
+    And I login as user and navigate to Availability page
+    And I select a day and add hours of operation
+    And I create new today appointment for prospect via API
+    When I am on Reports Scheduling tab. I can select default Today from date range and download the report
+    Then Verify CSV file in filesystem
+
   @mc-6810
   Scenario: User see current month view and current day highlighted on Calendar/Month view page
     Given I create user with "ROLE_MC_SITE_MANAGER" and "All of Us", "TEST AUTOMATION AWARDEE", "TEST AUTOMATION ORGANIZATION", "SITE"

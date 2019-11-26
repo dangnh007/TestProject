@@ -357,6 +357,45 @@ public class APIUtility {
         return response;
     }
 
+    public Response scheduleProspectAppointmentToday() throws IOException {
+        String action = "I schedule appointment for prospect via API";
+        String expected = "Successfully schedule appointment for prospect via API";
+        //add headers and parameters
+        JsonObject jsonObject = new JsonObject();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 6);
+        calendar.set(Calendar.MINUTE, 0);
+        jsonObject.addProperty("time", calendar.getTimeInMillis() / 1000);
+        jsonObject.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
+        jsonObject.add("prospectId", null);
+        jsonObject.add("participantId", null);
+        jsonObject.addProperty("lastName", user.getLastName() + " API");
+        jsonObject.addProperty("firstName", user.getFirstName() + " API");
+        jsonObject.addProperty(EMAIL_ADDRESS, user.getParticipantEmail());
+        jsonObject.add("dob", null);
+        jsonObject.addProperty("language", "en");
+        jsonObject.addProperty("emailCommunication", false);
+        jsonObject.add("phoneNumber", null);
+        jsonObject.addProperty("userId", "");
+        jsonObject.addProperty("duration", 90);
+        jsonObject.addProperty("appointmentTypeName", "Full Enrollment");
+        jsonObject.addProperty("notes", "test automation via API");
+        Map<String, String> referer = new HashMap<>();
+        referer.put(REFERER, REFERER_SCHEDULE_APPOINTMENT);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+        requestData.setHeaders(referer);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simplePost(ENDPOINT_SCHEDULE_APPOINTMENT, requestData);
+        if (response.getCode() == 201 && response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString() != null) {
+            String appointmentId = response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString();
+            user.setAppointmentId(appointmentId);
+        }
+        reporterPassFailStep(action, expected, response, "Not successfully schedule appointment for prospect via API. ");
+        return response;
+    }
     /**
      * Schedule appointment for prospect as Site Manager (Use prospect to search)
      */

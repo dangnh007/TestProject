@@ -20,13 +20,15 @@ public class AvailabilityPage {
     private final WebbElement calendarHeaderText;
     private final WebbElement currentDay;
     private final WebbElement addBlockBtn;
+    private final WebbElement scheduleMenu;
+    private final WebbElement confirmDeleteBlockBtn;
     private final WebbElement startTimeDropDown;
     private final WebbElement endTimeDropDown;
     private final WebbElement time12am;
-    private final WebbElement time1145pm;
     private final WebbElement concurrentInput;
     private final WebbElement customSettingSaveBtn;
     private final WebbElement customHrName;
+    private final WebbElement time1145pm;
     private final WebbElement text12amTo1145pm;
     private final WebbElement text8amTo4pm;
     private final WebbElement text5amTo11pm;
@@ -49,19 +51,21 @@ public class AvailabilityPage {
         this.hoBlockUpdate = app.newElement(LocatorType.XPATH, "//button[contains(text(),'update')]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
         this.availabilityTab = app.newElement(LocatorType.CSS, "a[href='/scheduling/availability']");
-        this.calendarTab = app.newElement(LocatorType.CSS, "a[href='/scheduling/calendar']");
-        this.calendarHeaderText = app.newElement(LocatorType.CSS, "div[class='calendar-header-text']");
-        this.currentDay = app.newElement(LocatorType.CSS, "div[class*='calendar-current-day active']");
+        this.calendarHeaderText = app.newElement(LocatorType.CSS, "div[class=\"calendar-header-text\"]");
+        this.currentDay = app.newElement(LocatorType.CSS, "div[class*=\"calendar-current-day active\"]");
         this.addBlockBtn = app.newElement(LocatorType.CSS, "div[class*='add-block-button'] button");
+        this.confirmDeleteBlockBtn = app.newElement(LocatorType.XPATH, "//button[contains(text(),'Continue')]");
+        this.scheduleMenu = app.newElement(LocatorType.ID,"icon-Scheduling");
         this.startTimeDropDown = app.newElement(LocatorType.CSS, "div[class*='start-time-select']");
         this.endTimeDropDown = app.newElement(LocatorType.CSS, "div[class*='end-time-select']");
         this.time12am = app.newElement(LocatorType.XPATH, "//div[contains(@class,'Select-option')][text()='12:00 AM']");
-        this.time11pm = app.newElement(LocatorType.XPATH, "//div[contains(@class,'Select-option')][text()='11:00 PM']");
-        this.time5am = app.newElement(LocatorType.XPATH, "//div[contains(@class,'Select-option')][text()='05:00 AM']");
-        this.time1145pm = app.newElement(LocatorType.XPATH, "//div[contains(@class,'Select-option')][text()='11:45 PM']");
         this.concurrentInput = app.newElement(LocatorType.CSS, "input[class='concurrent-input form-control']");
         this.customSettingSaveBtn = app.newElement(LocatorType.CSS, "button[class*='button-save']");
         this.customHrName = app.newElement(LocatorType.CSS, "input[class*='name-block-time']");
+        this.calendarTab = app.newElement(LocatorType.CSS, "a[href='/scheduling/calendar']");
+        this.time11pm = app.newElement(LocatorType.XPATH, "//div[contains(@class,'Select-option')][text()='11:00 PM']");
+        this.time5am = app.newElement(LocatorType.XPATH, "//div[contains(@class,'Select-option')][text()='05:00 AM']");
+        this.time1145pm = app.newElement(LocatorType.XPATH, "//div[contains(@class,'Select-option')][text()='11:45 PM']");
         this.text12amTo1145pm = app.newElement(LocatorType.XPATH, "//div[contains(@class,'calendar-current-day')]/parent::div/following::div//div[text()='12:00 AM TO 11:45 PM']");
         this.text8amTo4pm = app.newElement(LocatorType.XPATH, "//div[contains(@class,'calendar-current-day')]/parent::div/following::div//div[text()='08:00 AM TO 04:00 PM']");
         this.text5amTo11pm = app.newElement(LocatorType.XPATH, "//div[contains(@class,'calendar-current-day')]/parent::div/following::div//div[text()='05:00 AM TO 11:00 PM']");
@@ -71,6 +75,11 @@ public class AvailabilityPage {
         this.editBtn = app.newElement(LocatorType.XPATH, "//button[contains(@class,'control-setting-block-time')][text()='edit']");
         this.deleteBtn = app.newElement(LocatorType.XPATH, "//button[contains(@class,'control-setting-block-time')][text()='delete']");
         this.continueBtn = app.newElement(LocatorType.XPATH, "//button[text()='Continue']");
+    }
+
+    public void clickScheduleMenu(){
+        scheduleMenu.waitFor().enabled();
+        scheduleMenu.click();
     }
 
     private void setCustomHrName() {
@@ -88,9 +97,9 @@ public class AvailabilityPage {
         sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE_UTC));
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(TIMEZONE_UTC));
         String expectDate = sdf.format(calendar.getTime());
-
         String action = "Assert Current Month On Availability Page";
         calendarHeaderText.waitFor().displayed();
+
         if (expectDate.equalsIgnoreCase(calendarHeaderText.get().text())) {
             app.getReporter().pass(action, expectDate, calendarHeaderText.get().text());
         } else {
@@ -104,7 +113,6 @@ public class AvailabilityPage {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(TIMEZONE_UTC));
         String expectDay = sdf.format(calendar.getTime());
         String action = "Assert Highlighted day On Availability Page";
-        currentDay.waitFor().displayed();
         if (expectDay.equals(currentDay.get().text())) {
             app.getReporter().pass(action, expectDay, currentDay.get().text());
         } else {
@@ -177,13 +185,28 @@ public class AvailabilityPage {
         text5amTo11pm.waitFor().displayed();
     }
 
+    public void deleteHoursBeforeAdding() throws InterruptedException {
+        if (!deleteBtn.getWebElements().isEmpty()) {
+            deleteBtn.click();
+            //Pauses execution for 2 second
+            Thread.sleep(2000);
+            if (!confirmDeleteBlockBtn.getWebElements().isEmpty()) {
+                confirmDeleteBlockBtn.click();
+            }
+            customSettingSaveBtn.waitFor().enabled();
+            customSettingSaveBtn.click();
+            currentDay.waitFor().enabled();
+            currentDay.click();
+        }
+    }
+
     public void deleteHoursOfOperation() throws InterruptedException {
         deleteBtn.waitFor().enabled();
         deleteBtn.click();
         //Pauses execution for 2 second
         Thread.sleep(2000);
-        if (!continueBtn.getWebElements().isEmpty()) {
-            continueBtn.click();
+        if (!confirmDeleteBlockBtn.getWebElements().isEmpty()) {
+            confirmDeleteBlockBtn.click();
         }
         customSettingSaveBtn.waitFor().enabled();
         customSettingSaveBtn.click();

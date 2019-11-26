@@ -170,7 +170,7 @@ public class CommunictionsPage {
         this.emailPreference = app.newElement(LocatorType.ARIALABEL, "Email");
         communicationList = Arrays.asList(emailPreference);
         this.organizationDropDown = app.newElement(LocatorType.XPATH, "(//div[@class=' select-custom-wrapper'])[2]");
-        this.siteDisable = app.newElement(LocatorType.CSS, "div[class='Select is-clearable is-disabled Select--multi']");
+        this.siteDisable = app.newElement(LocatorType.CSS, "div[class*='Select is-clearable is-disabled']");
         this.segmentationGroupDropDown = app.newElement(LocatorType.ID, "add-category-select");
         this.programSegmentation = app.newElement(LocatorType.ARIALABEL, "Program Milestones");
         this.demographicSegmentation = app.newElement(LocatorType.ARIALABEL, "Demographic Segmentation");

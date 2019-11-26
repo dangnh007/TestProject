@@ -21,6 +21,7 @@ public class SearchPage {
     private final WebbElement createButtonFromSearchResult;
     private final WebbElement spinner;
     private final WebbElement viewButton;
+    private final WebbElement viewButton1;
     private final WebbElement viewAppointmentDetailsText;
     private final WebbElement cancelAppointment;
     private final WebbElement cancelAppointmentConfirm;
@@ -51,6 +52,7 @@ public class SearchPage {
         this.createButtonFromSearchResult = app.newElement(LocatorType.CSS, "div[class=\"react-bs-table-container\"] button[class=\"button button-primary btn btn-primary\"]");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
         this.viewButton = app.newElement(LocatorType.XPATH, "//strong[text()='View']/parent::button");
+        this.viewButton1 = app.newElement(LocatorType.CSS, "input[name=DangNguyen]");
         this.viewAppointmentDetailsText = app.newElement(LocatorType.XPATH, "//h5[text()='Future Appointment Details']");
         this.cancelAppointment = app.newElement(LocatorType.CSS, "button.cancel-btn.btn.btn-link");
         this.cancelAppointmentConfirm = app.newElement(LocatorType.CSS, "button.btn-cancel.btn.btn-default");
@@ -104,6 +106,12 @@ public class SearchPage {
         spinner.waitFor().notPresent();
         viewButton.click();
     }
+
+    public void clickExample() {
+        viewButton1.waitFor().displayed();
+        viewButton1.click();
+    }
+
 
     public void assertViewAppointmentDetailPage() {
         viewAppointmentDetailsText.assertState().displayed();
