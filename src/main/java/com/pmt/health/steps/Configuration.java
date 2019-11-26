@@ -17,6 +17,8 @@ import org.testng.log4testng.Logger;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.pmt.health.utilities.Sauce.SESSION_ID;
 import static org.testng.Reporter.getCurrentTestResult;
@@ -49,6 +51,10 @@ public class Configuration {
                 environmentID = idOverride;
             }
         }
+    }
+
+    public static String timeStamp() {
+        return new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
     }
 
     /**

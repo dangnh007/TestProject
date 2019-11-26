@@ -56,6 +56,8 @@ import java.util.concurrent.Future;
  */
 public class HTTP {
 
+    private static final String LOOPED_TWICE_TO_COMPENSATE_FOR_CONNECT_EXCEPTION = "Looped twice to compensate for " +
+            "ConnectException.";
     private static final Logger log = Logger.getLogger(HTTP.class);
     private static final String BOUNDARY = "----WebKitFormBoundary7MA4YWxkTrZu0gW";
     private static final String NEWLINE = "\r\n";
@@ -65,6 +67,13 @@ public class HTTP {
     private static final String DELETE = "DELETE";
     private static final String APPLICATION_X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
     private static final String CONTENT_TYPE = "Content-Type";
+
+    private static final String A_CONNECTION_EXCEPTION_HAPPENED_ITERATION =
+            " A CONNECTION EXCEPTION HAPPENED! Iteration: ";
+    private static final String REQUEST_METHOD = "Request Method: ";
+    public static final String URL = "URL: ";
+    private static final String REQUEST_DATA = "Request Data:";
+
 
     private final String serviceBaseUrl;
     private String user = "";
@@ -240,16 +249,25 @@ public class HTTP {
     private Response call(String call, String service, RequestData requestData, File file, ResponseData expectedResponseData, String filePrefix) throws IOException {
         StringBuilder params = prepareParams(requestData);
         HttpURLConnection connection = null;
-        try {
-            connection = establishHttpUrlConnection(call, service, params);
-            writeFormURLEncodedToBody(params, connection);
-            // TODO: Optimize this. Determine what time works best
-            connection.connect();
-            writeDataRequest(connection, requestData, file);
-            return getResponse(connection, call, service, requestData, expectedResponseData, filePrefix);
-        } finally {
-            disconnect(connection);
+        for (int i = 0; i < 2; i++) {
+            try {
+                connection = establishHttpUrlConnection(call, service, params);
+                writeFormURLEncodedToBody(params, connection);
+                connection.connect();
+                writeDataRequest(connection, requestData, file);
+                return getResponse(connection, call, service, requestData, expectedResponseData, filePrefix);
+            } catch (ConnectException ce) {
+                log.warn(Configuration.timeStamp() + A_CONNECTION_EXCEPTION_HAPPENED_ITERATION + i, ce);
+                log.warn(REQUEST_METHOD + call);
+                log.warn(URL + service);
+                log.warn(REQUEST_DATA + requestData.toString());
+            } finally {
+                if (connection != null) {
+                    disconnect(connection);
+                }
+            }
         }
+        throw new VibrentIOException(LOOPED_TWICE_TO_COMPENSATE_FOR_CONNECT_EXCEPTION, 0, "");
     }
 
     private void disconnect(HttpURLConnection connection) {
