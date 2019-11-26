@@ -281,7 +281,6 @@ Feature: Scheduling
     And I login as user via API
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
     And I login as user
-    And I am logged in as Site Manager
     And I create new appointment for prospect via API
     And I search prospect on Search page by First Name info
     When I access Appointment Scheduler for managing existing appointment
@@ -293,7 +292,6 @@ Feature: Scheduling
     And I login as user via API
     And I set new Site Settings with toggle "on", target "15", goal "5", days "1" via API
     And I login as user
-    And I am logged in as Site Manager
     And I create new appointment for prospect via API
     And I search prospect on Search page by First Name info
     When I access Appointment Scheduler for managing existing appointment
