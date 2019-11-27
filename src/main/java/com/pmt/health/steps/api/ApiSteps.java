@@ -351,40 +351,15 @@ public class ApiSteps {
     }
 
     /**
-     * Create a prospect account for searching
+     * Sends POST request to segmentation via API.
      *
+     * @param channel sets a channel for campaign.
+     * @param name sets a name for segmentation.
      * @throws IOException signals that an I/O exception of some sort has occurred.
      */
-    @Then("^I create a prospect account for searching$")
-    public void createProspectAccountForSearching() throws IOException {
-        apiUtility.scheduleProspectAppointmentForSearching();
-        apiUtility.cancelProspectAppointment();
-    }
-
-    /**
-     * Create a prospect account for searching
-     *
-     *  @param firstName the first name of prospect
-     *  @param lastName the last name of prospect
-     * @throws IOException signals that an I/O exception of some sort has occurred.
-     */
-    @Then("^I create a default prospect and a special one with first name \"([^\"]*)\", last name \"([^\"]*)\"$")
-    public void createProspectAccountForSearching(String firstName, String lastName) throws IOException {
-        apiUtility.scheduleProspectAppointmentForSearching();
-        apiUtility.cancelProspectAppointment();
-        apiUtility.scheduleProspectAppointmentForSearching(firstName, lastName);
-        apiUtility.cancelProspectAppointment();
-    }
-
-    /**
-     * Create a prospect account for searching
-     *
-     * @param phoneNumber the phone number of prospect
-     * @throws IOException signals that an I/O exception of some sort has occurred.
-     */
-    @Then("^I create a prospect account have phone number is \"([^\"]*)\" for searching$")
-    public void createProspectAccountForSearching(String phoneNumber) throws IOException {
-        apiUtility.scheduleProspectAppointmentForSearching(phoneNumber);
-        apiUtility.cancelProspectAppointment();
+    @Then("^I create new segmentation named \"([^\"]*)\" with (Email|SMS) channel via API$")
+    public void createNewSegmentationViaApiWithSpecialName(String name, String channel) throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.createSegmentationViaApiWithSpecialName(name,channel);
     }
 }

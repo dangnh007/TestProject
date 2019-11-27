@@ -86,9 +86,6 @@ public class SiteSettingsPage {
     private final WebbElement moveToNextMonthBtn;
     private final WebbElement labelSearch;
     private final WebbElement searchButton;
-    private final WebbElement resultItem;
-    private final WebbElement expectResult1;
-    private final WebbElement expectResult2;
     private String calendarViewType;
     Logger log = Logger.getLogger(SiteSettingsPage.class);
     private User user;
@@ -161,9 +158,6 @@ public class SiteSettingsPage {
         this.moveToNextMonthBtn = app.newElement(LocatorType.CSS, "th[class='rdtNext']");
         this.labelSearch = app.newElement(LocatorType.XPATH, "//label[text()='Search']");
         this.searchButton = app.newElement(LocatorType.CSS, "button[class*=btn-primary]");
-        this.resultItem = app.newElement(LocatorType.CSS, "div[class='result-item']");
-        this.expectResult1 = app.newElement(LocatorType.XPATH, "//div[contains(@class,'participant-name')][contains(text(),'Search Automation API')]");
-        this.expectResult2 = app.newElement(LocatorType.XPATH, "//div[contains(@class,'participant-name')][contains(text(),'Partial Automation API')]");
     }
 
     /**
@@ -708,12 +702,14 @@ public class SiteSettingsPage {
         searchButton.click();
     }
 
-    public void assertResultItem() {
-        resultItem.waitFor().displayed();
+    public void assertProspectOnAppointmentSchedulerSearchPage() {
+        WebbElement prospectName = app.newElement(LocatorType.CSS, "div.participant-name");
+        prospectName.assertContains().text(prospect.getFirstName() + " " + prospect.getLastName());
     }
 
-    public void assertProspectsInResult() {
-        expectResult1.waitFor().displayed();
-        expectResult2.waitFor().displayed();
+    public void assertProspectOnAppointmentSchedulerSearchPageWhenSearchByDOB() {
+        WebbElement prospectName = app.newElement(LocatorType.XPATH,
+                "//div[contains(text(), '" + prospect.getFirstName() + " " + prospect.getLastName() + "')]");
+        prospectName.assertState().displayed();
     }
 }

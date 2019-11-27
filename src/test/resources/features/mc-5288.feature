@@ -72,3 +72,14 @@ Feature: Post-Enrollment Communication
   Scenario: As a user I want to create new segmentation via API
     When I login as user via API
     Then I create new segmentation with Email channel via API
+
+  @mc-7020
+  Scenario: As a user I want to clone an existing segmentation
+    Given I login as user via API
+    And I create new segmentation named "MC-7020" with Email channel via API
+    And I login as user
+    And I am on Audience Segmentation page
+    And I search segmentation by name "MC-7020" successfully
+    When I clone this segmentation successfully
+    Then Clone segmentation named "Copy of MC-7020" is displayed on grid
+

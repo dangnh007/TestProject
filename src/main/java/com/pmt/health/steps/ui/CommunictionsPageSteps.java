@@ -3,6 +3,7 @@ package com.pmt.health.steps.ui;
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.CommunictionsPage;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.springframework.context.annotation.Description;
@@ -148,5 +149,32 @@ public class CommunictionsPageSteps {
         communictionsPage.verifyCampaignActivityDropDown();
         communictionsPage.selectEmailFilter("Email Opened");
         communictionsPage.saveSegmentation();
+    }
+
+    @And("^I am on Audience Segmentation page$")
+    public void goToAudienceSegmentationPage() {
+        communictionsPage.selectCommunications();
+        communictionsPage.selectAudienceSegmentationTab();
+    }
+
+    @And("^I search segmentation by name \"([^\"]*)\" successfully$")
+    public void searchSegmentationByName(String name) {
+        communictionsPage.inputSearchName(name);
+        communictionsPage.assertSearchResult();
+    }
+
+    @And("^I clone this segmentation successfully$")
+    public void cloneSegmentation() {
+        communictionsPage.cloneSegmentation();
+        communictionsPage.saveSegmentation();
+        communictionsPage.waitForSpinnerDisappear();
+    }
+
+    @And("^Clone segmentation named \"([^\"]*)\" is displayed on grid$")
+    public void verifyCloneSegmentation(String name) {
+        communictionsPage.selectCommunications();
+        communictionsPage.selectAudienceSegmentationTab();
+        communictionsPage.inputSearchName(name);
+        communictionsPage.assertSearchResult();
     }
 }

@@ -71,8 +71,6 @@ public class APIUtility {
     private static final String REFERER_EDIT_USER = "/userAdmin/editUser/" + "/ROLE_MC_PROGRAM_MANAGER?role=ROLE_MC_PROGRAM_MANAGER";
     private static final String ENDPOINT_EDIT_USER = "/api/userAdmin/user";
     private static final String REFERER_DELETE_USER = MAIN_URL + "/userAdmin?role=ROLE_MC_SYSTEM_ADMINISTRATOR";
-    private static final String STR_SEARCH = "Search ";
-
 
     protected Reporter reporter;
     private HTTP http;
@@ -402,140 +400,6 @@ public class APIUtility {
         reporterPassFailStep(action, expected, response, "Not successfully schedule appointment for prospect via API. ");
         return response;
     }
-    /**
-     * Schedule appointment for prospect as Site Manager (Use prospect to search)
-     */
-    public Response scheduleProspectAppointmentForSearching() throws IOException {
-        String action = "I schedule appointment for prospect via API";
-        String expected = "Successfully schedule appointment for prospect via API";
-        //add headers and parameters
-        JsonObject jsonObject = new JsonObject();
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
-        calendar.set(Calendar.MINUTE, 0);
-        jsonObject.addProperty("time", calendar.getTimeInMillis() / 1000);
-        jsonObject.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
-        jsonObject.add("prospectId", null);
-        jsonObject.add("participantId", null);
-        jsonObject.addProperty("lastName",  STR_SEARCH + user.getLastName() + " API");
-        jsonObject.addProperty("firstName", STR_SEARCH + user.getFirstName() + " API");
-        jsonObject.addProperty(EMAIL_ADDRESS, user.getParticipantEmail());
-        calendar.set(2000, Calendar.OCTOBER, 10);
-        jsonObject.addProperty("dob", calendar.getTimeInMillis());
-        jsonObject.addProperty("language", "en");
-        jsonObject.addProperty("emailCommunication", false);
-        jsonObject.add("phoneNumber", null);
-        jsonObject.addProperty("userId", "");
-        jsonObject.addProperty("duration", 90);
-        jsonObject.addProperty("appointmentTypeName", "Full Enrollment");
-        jsonObject.addProperty("notes", "test automation via API");
-        Map<String, String> referer = new HashMap<>();
-        referer.put(REFERER, REFERER_SCHEDULE_APPOINTMENT);
-        RequestData requestData = new RequestData();
-        requestData.setJSON(jsonObject);
-        requestData.setHeaders(referer);
-        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
-        // make the actual call
-        Response response = http.simplePost(ENDPOINT_SCHEDULE_APPOINTMENT, requestData);
-        if (response.getCode() == 201 && response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString() != null) {
-            String appointmentId = response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString();
-            user.setAppointmentId(appointmentId);
-        }
-        reporterPassFailStep(action, expected, response, "Not successfully schedule appointment for prospect via API. ");
-        return response;
-    }
-
-    /**
-     * @param phoneNumber the phone number of prospect
-     * Schedule appointment for prospect as Site Manager (Use prospect to search)
-     */
-    public Response scheduleProspectAppointmentForSearching(String phoneNumber) throws IOException {
-        String action = "I schedule appointment for prospect via API";
-        String expected = "Successfully schedule appointment for prospect via API";
-        //add headers and parameters
-        JsonObject jsonObject = new JsonObject();
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
-        calendar.set(Calendar.MINUTE, 0);
-        jsonObject.addProperty("time", calendar.getTimeInMillis() / 1000);
-        jsonObject.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
-        jsonObject.add("prospectId", null);
-        jsonObject.add("participantId", null);
-        jsonObject.addProperty("lastName", STR_SEARCH + user.getLastName() + " API");
-        jsonObject.addProperty("firstName", STR_SEARCH + user.getFirstName() + " API");
-        jsonObject.addProperty(EMAIL_ADDRESS, user.getParticipantEmail());
-        calendar.set(2000, Calendar.OCTOBER, 10);
-        jsonObject.addProperty("dob", calendar.getTimeInMillis());
-        jsonObject.addProperty("language", "en");
-        jsonObject.addProperty("emailCommunication", false);
-        jsonObject.addProperty("phoneNumber", phoneNumber);
-        jsonObject.addProperty("userId", "");
-        jsonObject.addProperty("duration", 90);
-        jsonObject.addProperty("appointmentTypeName", "Full Enrollment");
-        jsonObject.addProperty("notes", "test automation via API");
-        Map<String, String> referer = new HashMap<>();
-        referer.put(REFERER, REFERER_SCHEDULE_APPOINTMENT);
-        RequestData requestData = new RequestData();
-        requestData.setJSON(jsonObject);
-        requestData.setHeaders(referer);
-        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
-        // make the actual call
-        Response response = http.simplePost(ENDPOINT_SCHEDULE_APPOINTMENT, requestData);
-        if (response.getCode() == 201 && response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString() != null) {
-            String appointmentId = response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString();
-            user.setAppointmentId(appointmentId);
-        }
-        reporterPassFailStep(action, expected, response, "Not successfully schedule appointment for prospect via API. ");
-        return response;
-    }
-
-    /**
-     *  @param firstName the first name of prospect
-     *  @param lastName the last name of prospect
-     * Schedule appointment for prospect as Site Manager (Use prospect to search)
-     */
-    public Response scheduleProspectAppointmentForSearching(String firstName, String lastName) throws IOException {
-        String action = "I schedule appointment for prospect via API";
-        String expected = "Successfully schedule appointment for prospect via API";
-        //add headers and parameters
-        JsonObject jsonObject = new JsonObject();
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 9);
-        calendar.set(Calendar.MINUTE, 0);
-        jsonObject.addProperty("time", calendar.getTimeInMillis() / 1000);
-        jsonObject.addProperty(SITE_ID, SITE_ID_TEST_AUTOMATION);
-        jsonObject.add("prospectId", null);
-        jsonObject.add("participantId", null);
-        jsonObject.addProperty("lastName", lastName);
-        jsonObject.addProperty("firstName", firstName);
-        jsonObject.addProperty(EMAIL_ADDRESS, UserUtility.makeRandomUserEmail());
-        calendar.set(2000, Calendar.OCTOBER, 10);
-        jsonObject.addProperty("dob", calendar.getTimeInMillis());
-        jsonObject.addProperty("language", "en");
-        jsonObject.addProperty("emailCommunication", false);
-        jsonObject.add("phoneNumber", null);
-        jsonObject.addProperty("userId", "");
-        jsonObject.addProperty("duration", 90);
-        jsonObject.addProperty("appointmentTypeName", "Full Enrollment");
-        jsonObject.addProperty("notes", "test automation via API");
-        Map<String, String> referer = new HashMap<>();
-        referer.put(REFERER, REFERER_SCHEDULE_APPOINTMENT);
-        RequestData requestData = new RequestData();
-        requestData.setJSON(jsonObject);
-        requestData.setHeaders(referer);
-        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
-        // make the actual call
-        Response response = http.simplePost(ENDPOINT_SCHEDULE_APPOINTMENT, requestData);
-        if (response.getCode() == 201 && response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString() != null) {
-            String appointmentId = response.getObjectData().get("data").getAsJsonObject().get(APPOINTMENT_ID).getAsString();
-            user.setAppointmentId(appointmentId);
-        }
-        reporterPassFailStep(action, expected, response, "Not successfully schedule appointment for prospect via API. ");
-        return response;
-    }
 
     /**
      * Cancel appointment for prospect
@@ -751,6 +615,83 @@ public class APIUtility {
         //json body
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("name", "API TEST");
+        jsonObject.addProperty("owner", "Automation user");
+        jsonObject.addProperty(CHANNEL, channel);
+        JsonArray orgs = new JsonArray();
+        JsonObject orgsObject = new JsonObject();
+        orgsObject.addProperty(ID, 25);
+        orgsObject.addProperty(VALUE, "Organization/AZ_TUCSON_BANNER_HEALTH");
+        orgsObject.addProperty(LABEL, "Banner Health");
+        orgsObject.addProperty("parentId", 24);
+        orgs.add(orgsObject);
+        jsonObject.add("selectedOrgs", orgs);
+        JsonArray sites = new JsonArray();
+        JsonObject sitesObject = new JsonObject();
+        sitesObject.addProperty(ID, 27);
+        sitesObject.addProperty(VALUE, "Site/hpo-site-bannerbaywood");
+        sitesObject.addProperty(LABEL, "Banner Baywood Medical Center");
+        sitesObject.addProperty("parentId", 25);
+        sites.add(sitesObject);
+        jsonObject.add("selectedSites", sites);
+        jsonObject.addProperty("description", "API TEST description");
+        jsonObject.add("recipients", null);
+        jsonObject.add("lastRefreshed", null);
+        jsonObject.add("lastUpdated", null);
+        jsonObject.addProperty("groupOperator", "or");
+        jsonObject.addProperty("archived", false);
+        jsonObject.addProperty("editable", true);
+        JsonArray groupList = new JsonArray();
+        JsonObject groupListObj = new JsonObject();
+        groupListObj.addProperty(ID, PROGRAM_ID);
+        groupListObj.addProperty("position", 0);
+        groupListObj.addProperty("categoryOperator", "and");
+        groupList.add(groupListObj);
+        jsonObject.add("segmentationGroupList", groupList);
+        JsonArray categoryList = new JsonArray();
+        //list of categories for filtering segmentation
+        categoryList.add(segmentationCategoryMemberObj("45dad55", PROGRAM_ID, "Program Milestones",
+                "programMilestones", "milestone",
+                "survey", "milestone", "primaryConsent", "Primary Consent",
+                "is", IS_EQUAL_TO,
+                "survey", 1, "Eligible, But Not Started",
+                "anytime", "on any date (default)"));
+        categoryList.add(segmentationCategoryMemberObj("f406869", PROGRAM_ID, "Demographic Segmentation",
+                "demographic", "multi",
+                "multi",
+                "age", "Age",
+                "is", IS_EQUAL_TO,
+                "age", 3, "35-44"));
+        categoryList.add(segmentationCategoryMemberObj("82bbea4", PROGRAM_ID, "Campaign Activity",
+                "campaignActivity", "campaign",
+                "email", "campaign", "emailSent", "Email Sent",
+                "is", IS_EQUAL_TO,
+                "email", 1, "Email Campaign 1",
+                "anytime", "on any date (default)"));
+        jsonObject.add("segmentationCategoryList", categoryList);
+        http.addHeaders(headers);
+        RequestData requestData = new RequestData();
+        requestData.setJSON(jsonObject);
+        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
+        // make the actual call
+        Response response = http.simplePost(ENDPOINT_SEGMENTATION, requestData);
+        reporterPassFailStep(action, expected, response, "Not successfully create segmentation via API");
+        return response.getObjectData().get("id").getAsString();
+    }
+
+    /**
+     * Creates segmentation
+     * @param name name of segmentation
+     */
+    public String createSegmentationViaApiWithSpecialName(String name, String channel) throws IOException {
+        String action = "I create segmentation via API";
+        String expected = "Successfully create segmentation via API";
+        //add headers
+        Map<String, String> headers = new HashMap<>();
+        headers.put(REFERER, REFERER_SEGMENTATION);
+        headers.put(AUTHORIZATION, user.getAuthToken());
+        //json body
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("name", name);
         jsonObject.addProperty("owner", "Automation user");
         jsonObject.addProperty(CHANNEL, channel);
         JsonArray orgs = new JsonArray();

@@ -145,6 +145,11 @@ public class CommunictionsPage {
     private final List<WebbElement> communicationList;
     private final List<WebbElement> segmentationList;
     private final List<WebbElement> statusList;
+    private final WebbElement inputSearchName;
+    private final WebbElement resultItem;
+    private final WebbElement confirmCloneBtn;
+    private final WebbElement copyBtn;
+    private final WebbElement spinner;
 
     public CommunictionsPage(App app, User user) {
         this.app = app;
@@ -274,6 +279,11 @@ public class CommunictionsPage {
         this.warning = app.newElement(LocatorType.CSS, "p[class='title']");
         this.sendNowButton = app.newElement(LocatorType.CSS, "button[class='button-send-now btn btn-primary']");
         this.successMessage = app.newElement(LocatorType.CSS, "div[class='message animated fade success in']");
+        this.inputSearchName = app.newElement(LocatorType.CSS, "input[class='searchinput']");
+        this.resultItem = app.newElement(LocatorType.CSS, "table[class='table datatable-custom-body'] tr");
+        this.copyBtn = app.newElement(LocatorType.CSS, "svg[data-icon='copy']");
+        this.confirmCloneBtn = app.newElement(LocatorType.CSS, "button[aria-label='Confirm clone']");
+        this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
     }
 
     public void selectCampaignType(String type) {
@@ -872,5 +882,26 @@ public class CommunictionsPage {
      */
     public void assertTemplates() {
         tabTemplates.assertState().displayed();
+    }
+
+    /**
+     * Input search name
+     */
+    public void inputSearchName(String search) {
+        inputSearchName.type(search);
+    }
+
+    public void assertSearchResult() {
+        resultItem.waitFor().displayed();
+    }
+
+    public void cloneSegmentation() {
+        copyBtn.click();
+        confirmCloneBtn.waitFor().displayed();
+        confirmCloneBtn.click();
+    }
+
+    public void waitForSpinnerDisappear() {
+        spinner.waitFor().notDisplayed();
     }
 }
