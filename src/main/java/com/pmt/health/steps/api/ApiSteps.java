@@ -8,6 +8,7 @@ import com.pmt.health.objects.user.UserUtility;
 import com.pmt.health.steps.Configuration;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.utilities.APIUtility;
+import com.pmt.health.utilities.Constants;
 import com.pmt.health.utilities.EMailUtility;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -234,7 +235,7 @@ public class ApiSteps {
     @Then("^I create \"([^\"]*)\" campaign with \"([^\"]*)\" via API$")
     public void createOrDraftCampaignViaAPI(String createOrDraft, String channel) throws IOException {
         userUtility.getAuthorizationToken();
-        apiUtility.createOrDraftCampaignViaApi(createOrDraft, channel);
+        apiUtility.createOrDraftCampaignViaApi(createOrDraft, Constants.SEGMENTATION_NAME, channel);
     }
 
     /**
@@ -246,7 +247,20 @@ public class ApiSteps {
     @Then("^I create new segmentation with (Email|SMS) channel via API$")
     public void createNewSegmentationViaAPI(String channel) throws IOException {
         userUtility.getAuthorizationToken();
-        apiUtility.createSegmentationViaApi(channel);
+        apiUtility.createSegmentationViaApi(Constants.SEGMENTATION_NAME, channel);
+    }
+
+    /**
+     * Sends POST request to segmentation via API.
+     *
+     * @param segmentationName sets a name for segmentation.
+     * @param channel sets a channel for campaign.
+     * @throws IOException signals that an I/O exception of some sort has occurred.
+     */
+    @Then("^I create new segmentation \"([^\"]*)\" with (Email|SMS) channel via API$")
+    public void createNewSegmentationWithNameViaAPI(String segmentationName, String channel) throws IOException {
+        userUtility.getAuthorizationToken();
+        apiUtility.createSegmentationViaApi(segmentationName, channel);
     }
 
     /**
@@ -360,6 +374,6 @@ public class ApiSteps {
     @Then("^I create new segmentation named \"([^\"]*)\" with (Email|SMS) channel via API$")
     public void createNewSegmentationViaApiWithSpecialName(String name, String channel) throws IOException {
         userUtility.getAuthorizationToken();
-        apiUtility.createSegmentationViaApiWithSpecialName(name,channel);
+        apiUtility.createSegmentationViaApi(name,channel);
     }
 }

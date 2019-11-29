@@ -150,6 +150,7 @@ public class CommunictionsPage {
     private final WebbElement confirmCloneBtn;
     private final WebbElement copyBtn;
     private final WebbElement spinner;
+    private final WebbElement searchSegmentInput;
 
     public CommunictionsPage(App app, User user) {
         this.app = app;
@@ -284,6 +285,7 @@ public class CommunictionsPage {
         this.copyBtn = app.newElement(LocatorType.CSS, "svg[data-icon='copy']");
         this.confirmCloneBtn = app.newElement(LocatorType.CSS, "button[aria-label='Confirm clone']");
         this.spinner = app.newElement(LocatorType.CSS, "canvas[class='spinner']");
+        this.searchSegmentInput = app.newElement(LocatorType.CSS, "input.searchinput");
     }
 
     public void selectCampaignType(String type) {
@@ -903,5 +905,21 @@ public class CommunictionsPage {
 
     public void waitForSpinnerDisappear() {
         spinner.waitFor().notDisplayed();
+    }
+
+    /**
+     * Search Segmentation on communications page
+     */
+    public void searchSegmentation(String searchData) {
+        searchSegmentInput.waitFor().displayed();
+        searchSegmentInput.type(searchData);
+    }
+
+    /**
+     * Assert record Segmentation on communications page
+     */
+    public void assertRecordSegmentation(String segmentationName) {
+        WebbElement recordSegment = app.newElement(LocatorType.XPATH, "//a[contains(text(), '" + segmentationName + "')]");
+        recordSegment.assertState().displayed();
     }
 }

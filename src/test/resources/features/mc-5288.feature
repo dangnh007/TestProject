@@ -83,3 +83,18 @@ Feature: Post-Enrollment Communication
     When I clone this segmentation successfully
     Then Clone segmentation named "Copy of MC-7020" is displayed on grid
 
+  @mc-7060
+  Scenario: As a user I want to create new segmentation via API
+    Given I login as user via API
+    And I create new segmentation "TEST SEGMENT EMAIL MC7060 API" with Email channel via API
+    And I create new segmentation "TEST SEGMENT SMS MC7060 API" with SMS channel via API
+    When I login as user
+    And I search segmentation by part of name "MC7060"
+    Then I can search segmentation "TEST SEGMENT EMAIL MC7060 API", "TEST SEGMENT SMS MC7060 API" are listed on grid
+
+  @mc-7061
+  Scenario: As a user I want to create new segmentation via API
+    Given I login as user via API
+    And I create new segmentation "TEST SEGMENT EMAIL MC7061 API" with Email channel via API
+    When I login as user
+    Then I can search segmentation by full name "TEST SEGMENT EMAIL MC7061 API" successfully

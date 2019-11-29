@@ -576,7 +576,7 @@ public class APIUtility {
     /**
      * Creates or drafts campaign.
      */
-    public void createOrDraftCampaignViaApi(String createOrDraft, String channel) throws IOException {
+    public void createOrDraftCampaignViaApi(String createOrDraft, String segmentationName, String channel) throws IOException {
         String action = "I " + createOrDraft + CAMPAIGN_VIA_API;
         String expected = "Successfully " + createOrDraft + CAMPAIGN_VIA_API;
         //add headers
@@ -588,7 +588,7 @@ public class APIUtility {
         jsonObject.addProperty("name", CAMPAIGN_NAME_RANDOM);
         jsonObject.addProperty("description", "Test Automation via API");
         jsonObject.addProperty("goal", "SAMPLE/PHYSICAL_MEASUREMENT");//Survey/279
-        jsonObject.addProperty("associatedSegmentListId", createSegmentationViaApi(channel));
+        jsonObject.addProperty("associatedSegmentListId", createSegmentationViaApi(segmentationName, channel));
         jsonObject.addProperty("associatedTemplateId", 1_038_584);
         jsonObject.addProperty("sendDate", "");
         jsonObject.addProperty("status", createOrDraft);
@@ -605,7 +605,7 @@ public class APIUtility {
     /**
      * Creates segmentation
      */
-    public String createSegmentationViaApi(String channel) throws IOException {
+    public String createSegmentationViaApi(String segmentationName, String channel) throws IOException {
         String action = "I create segmentation via API";
         String expected = "Successfully create segmentation via API";
         //add headers
@@ -614,84 +614,7 @@ public class APIUtility {
         headers.put(AUTHORIZATION, user.getAuthToken());
         //json body
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("name", "API TEST");
-        jsonObject.addProperty("owner", "Automation user");
-        jsonObject.addProperty(CHANNEL, channel);
-        JsonArray orgs = new JsonArray();
-        JsonObject orgsObject = new JsonObject();
-        orgsObject.addProperty(ID, 25);
-        orgsObject.addProperty(VALUE, "Organization/AZ_TUCSON_BANNER_HEALTH");
-        orgsObject.addProperty(LABEL, "Banner Health");
-        orgsObject.addProperty("parentId", 24);
-        orgs.add(orgsObject);
-        jsonObject.add("selectedOrgs", orgs);
-        JsonArray sites = new JsonArray();
-        JsonObject sitesObject = new JsonObject();
-        sitesObject.addProperty(ID, 27);
-        sitesObject.addProperty(VALUE, "Site/hpo-site-bannerbaywood");
-        sitesObject.addProperty(LABEL, "Banner Baywood Medical Center");
-        sitesObject.addProperty("parentId", 25);
-        sites.add(sitesObject);
-        jsonObject.add("selectedSites", sites);
-        jsonObject.addProperty("description", "API TEST description");
-        jsonObject.add("recipients", null);
-        jsonObject.add("lastRefreshed", null);
-        jsonObject.add("lastUpdated", null);
-        jsonObject.addProperty("groupOperator", "or");
-        jsonObject.addProperty("archived", false);
-        jsonObject.addProperty("editable", true);
-        JsonArray groupList = new JsonArray();
-        JsonObject groupListObj = new JsonObject();
-        groupListObj.addProperty(ID, PROGRAM_ID);
-        groupListObj.addProperty("position", 0);
-        groupListObj.addProperty("categoryOperator", "and");
-        groupList.add(groupListObj);
-        jsonObject.add("segmentationGroupList", groupList);
-        JsonArray categoryList = new JsonArray();
-        //list of categories for filtering segmentation
-        categoryList.add(segmentationCategoryMemberObj("45dad55", PROGRAM_ID, "Program Milestones",
-                "programMilestones", "milestone",
-                "survey", "milestone", "primaryConsent", "Primary Consent",
-                "is", IS_EQUAL_TO,
-                "survey", 1, "Eligible, But Not Started",
-                "anytime", "on any date (default)"));
-        categoryList.add(segmentationCategoryMemberObj("f406869", PROGRAM_ID, "Demographic Segmentation",
-                "demographic", "multi",
-                "multi",
-                "age", "Age",
-                "is", IS_EQUAL_TO,
-                "age", 3, "35-44"));
-        categoryList.add(segmentationCategoryMemberObj("82bbea4", PROGRAM_ID, "Campaign Activity",
-                "campaignActivity", "campaign",
-                "email", "campaign", "emailSent", "Email Sent",
-                "is", IS_EQUAL_TO,
-                "email", 1, "Email Campaign 1",
-                "anytime", "on any date (default)"));
-        jsonObject.add("segmentationCategoryList", categoryList);
-        http.addHeaders(headers);
-        RequestData requestData = new RequestData();
-        requestData.setJSON(jsonObject);
-        action += Reporter.formatAndLabelJson(requestData, Reporter.PAYLOAD);
-        // make the actual call
-        Response response = http.simplePost(ENDPOINT_SEGMENTATION, requestData);
-        reporterPassFailStep(action, expected, response, "Not successfully create segmentation via API");
-        return response.getObjectData().get("id").getAsString();
-    }
-
-    /**
-     * Creates segmentation
-     * @param name name of segmentation
-     */
-    public String createSegmentationViaApiWithSpecialName(String name, String channel) throws IOException {
-        String action = "I create segmentation via API";
-        String expected = "Successfully create segmentation via API";
-        //add headers
-        Map<String, String> headers = new HashMap<>();
-        headers.put(REFERER, REFERER_SEGMENTATION);
-        headers.put(AUTHORIZATION, user.getAuthToken());
-        //json body
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("name", name);
+        jsonObject.addProperty("name", segmentationName);
         jsonObject.addProperty("owner", "Automation user");
         jsonObject.addProperty(CHANNEL, channel);
         JsonArray orgs = new JsonArray();

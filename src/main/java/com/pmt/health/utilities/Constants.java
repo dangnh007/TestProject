@@ -30,6 +30,7 @@ public class Constants {
     public static final String AUTOMATION_ORG = "Organization/TEST_AUTOMATION_ORGANIZATION";
     public static final String UNLOCK_EMAIL_KEYWORD = "unlock";
     public static final String BANNER_BOSWELL_MEDICAL_CENTER_SITE = "Site/hpo-site-bannerboswell";
+    public static final String SEGMENTATION_NAME = "Test Segmenttation API";
 
     private Constants() {
         throw new UnsupportedOperationException("Don't call new on Constants");

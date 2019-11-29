@@ -1,12 +1,14 @@
 package com.pmt.health.steps.ui;
 
+import org.springframework.context.annotation.Description;
+
 import com.pmt.health.objects.user.User;
 import com.pmt.health.steps.DeviceController;
 import com.pmt.health.workflows.CommunictionsPage;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.springframework.context.annotation.Description;
 
 public class CommunictionsPageSteps {
 
@@ -176,5 +178,24 @@ public class CommunictionsPageSteps {
         communictionsPage.selectAudienceSegmentationTab();
         communictionsPage.inputSearchName(name);
         communictionsPage.assertSearchResult();
+    }
+
+    @When("^I search segmentation by part of name \"([^\"]*)\"$")
+    public void searchSegmentationByPartialName(String partialName) {
+        communictionsPage.selectCommunications();
+        communictionsPage.searchSegmentation(partialName);
+    }
+
+    @Then("^I can search segmentation \"([^\"]*)\", \"([^\"]*)\" are listed on grid$")
+    public void assertSegmentationBySearchPartialName(String segmentationEmailName, String segmentationSmsName) {
+        communictionsPage.assertRecordSegmentation(segmentationEmailName);
+        communictionsPage.assertRecordSegmentation(segmentationSmsName);
+    }
+
+    @Then("^I can search segmentation by full name \"([^\"]*)\" successfully$")
+    public void assertSegmentationBySearchFullName(String segmentationName) {
+        communictionsPage.selectCommunications();
+        communictionsPage.searchSegmentation(segmentationName);
+        communictionsPage.assertRecordSegmentation(segmentationName);
     }
 }
